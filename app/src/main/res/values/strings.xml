@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">betime.ly</string>
+    <string name="recommendation_title"><b>Waifu\'s Choice</b></string>
+    <string name="tomorrow_events_title"><b>明日</b></string>
 </resources>
