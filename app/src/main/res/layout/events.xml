@@ -36,7 +36,7 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <include layout="@layout/events_closed"/>
+        <include layout="@layout/events_open"/>
         <include layout="@layout/events_closed"/>
 
     </LinearLayout>

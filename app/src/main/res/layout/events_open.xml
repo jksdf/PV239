@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/event_rounded_corners"
+            android:background="@drawable/event_open_title_rounded_corners"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -36,6 +36,27 @@
                     android:gravity="right"
                     android:text="2nd March 2019 (Sat)"
                     android:textColor="@color/colorTextDark"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/event_open_body_rounded_corners"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewDate2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec metus nibh, venenatis quis sem vitae, sagittis pellentesque leo. Nulla lacus diam, interdum at ligula quis, sollicitudin fermentum mi"
+                    android:textColor="@color/colorText"
                     android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
