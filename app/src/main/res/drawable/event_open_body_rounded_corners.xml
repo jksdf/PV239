@@ -4,9 +4,9 @@
 
     <stroke
         android:width="4dp"
-        android:color="@color/coloreLightBackground" />
+        android:color="@color/colorLightBackground" />
 
-    <solid android:color="@color/coloreLightBackground"/>
+    <solid android:color="@color/colorLightBackground"/>
 
     <corners
         android:topRightRadius="0dp"

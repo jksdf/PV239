@@ -44,7 +44,7 @@ public final class DummyAlarmService implements AlarmService {
      */
     private AlarmEntity generateAlarm() {
         AlarmEntity alarm = new AlarmEntity();
-        alarm.setName(String.format(Locale.JAPAN, "先輩%d", random.nextInt(999)));
+        alarm.setName(String.format(Locale.JAPAN, "先輩 %d", random.nextInt(999)));
         alarm.setTime(LocalTime.of(random.nextInt(24), random.nextInt(60)));
         alarm.setEnabled(random.nextBoolean());
         alarm.setRepeating(generateRandomRepeat());
