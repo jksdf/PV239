@@ -38,7 +38,7 @@ public final class DummyAlarmService implements AlarmService {
     }
 
     /**
-     * Generates random alarm
+     * Generates random alarm_context_menu
      *
      * @return New dummy
      */
@@ -70,19 +70,19 @@ public final class DummyAlarmService implements AlarmService {
 
     @Override
     public void updateAlarm(AlarmEntity alarm) {
-        LOGGER.log(Level.INFO, "Updating alarm " + alarm);
+        LOGGER.log(Level.INFO, "Updating alarm_context_menu " + alarm);
     }
 
     @Override
     public void createAlarm(AlarmEntity alarm) {
-        LOGGER.log(Level.INFO, "Creating new alarm");
+        LOGGER.log(Level.INFO, "Creating new alarm_context_menu");
         alarm.setId(random.nextInt());
         alarms.add(alarm);
     }
 
     @Override
     public void removeAlarm(AlarmEntity alarm) {
-        LOGGER.log(Level.INFO, "Removing alarm" + alarm);
+        LOGGER.log(Level.INFO, "Removing alarm_context_menu" + alarm);
         alarms.remove(alarm);
     }
 }

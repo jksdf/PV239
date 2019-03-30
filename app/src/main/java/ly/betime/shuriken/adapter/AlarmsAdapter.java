@@ -1,8 +1,6 @@
 package ly.betime.shuriken.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmEntity;
@@ -20,6 +20,7 @@ import ly.betime.shuriken.service.AlarmEntity;
  */
 public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewHolder> {
 
+    private int contextMenuPosition;
     private List<AlarmEntity> alarms;
     private LanguageTextHelper languageTextHelper;
     private AlarmSwitchListener alarmSwitchListener;
@@ -31,6 +32,10 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
 
     public void setAlarmSwitchListener(AlarmSwitchListener alarmSwitchListener) {
         this.alarmSwitchListener = alarmSwitchListener;
+    }
+
+    public int getContextMenuPosition() {
+        return contextMenuPosition;
     }
 
     @NonNull
@@ -74,6 +79,10 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
             alarmRepeat = itemView.findViewById(R.id.alarmRepeatTextView);
             switchButton = itemView.findViewById(R.id.alarmSwitch);
 
+            setListeners();
+        }
+
+        private void setListeners() {
             switchButton.setOnCheckedChangeListener(((buttonView, isChecked) -> {
                 AlarmEntity alarm = alarms.get(getAdapterPosition());
                 if (alarm.isEnabled() != isChecked) {
@@ -84,6 +93,12 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
                     }
                 }
             }));
+
+            itemView.setOnLongClickListener((View v) -> {
+                AlarmsAdapter.this.contextMenuPosition = getAdapterPosition();
+                itemView.showContextMenu();
+                return true;
+            });
         }
 
         /**

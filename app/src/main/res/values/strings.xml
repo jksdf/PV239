@@ -2,8 +2,13 @@
     <string name="app_name">betime.ly</string>
     <string name="recommendation_title"><b>Waifu\'s Choice</b></string>
     <string name="tomorrow_events_title"><b>明日</b></string>
+
     <string name="alarm_time_format">HH:mm</string>
+
     <string name="repeat_everyday">Everyday</string>
     <string name="repeat_non">Never repeat</string>
     <string name="repeat_delimiter">&#160;|&#160;</string>
+
+    <string name="edit_alarm">Edit alarm</string>
+    <string name="delete_alarm">Delete alarm</string>
 </resources>

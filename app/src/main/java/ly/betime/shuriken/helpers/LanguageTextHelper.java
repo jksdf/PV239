@@ -1,15 +1,14 @@
 package ly.betime.shuriken.helpers;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.TextStyle;
 
 import java.util.EnumSet;
-import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import ly.betime.shuriken.R;
 
 /**
