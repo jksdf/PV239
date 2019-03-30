@@ -57,7 +57,10 @@ public class AlarmsActivity extends AppCompatActivity {
         if (alarmsAdapter == null) {
             alarms = Lists.newArrayList(alarmService.listAlarms());
             Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
+
             alarmsAdapter = new AlarmsAdapter(alarms, languageTextHelper);
+            alarmsAdapter.setAlarmSwitchListener((alarm) -> alarmService.updateAlarm(alarm));
+
             alarmsView.setAdapter(alarmsAdapter);
             alarmsView.setLayoutManager(new LinearLayoutManager(this));
         } else {

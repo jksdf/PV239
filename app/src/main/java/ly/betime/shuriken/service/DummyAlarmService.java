@@ -70,7 +70,7 @@ public final class DummyAlarmService implements AlarmService {
 
     @Override
     public void updateAlarm(AlarmEntity alarm) {
-        LOGGER.log(Level.INFO, "Updating alarm {0}", alarm.getId());
+        LOGGER.log(Level.INFO, "Updating alarm " + alarm);
     }
 
     @Override
@@ -82,7 +82,7 @@ public final class DummyAlarmService implements AlarmService {
 
     @Override
     public void removeAlarm(AlarmEntity alarm) {
-        LOGGER.log(Level.INFO, "Removing alarm {0}", alarm.getId());
+        LOGGER.log(Level.INFO, "Removing alarm" + alarm);
         alarms.remove(alarm);
     }
 }

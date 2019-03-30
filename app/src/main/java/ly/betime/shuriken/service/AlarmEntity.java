@@ -57,4 +57,15 @@ public class AlarmEntity {
         checkNotNull(repeating);
         this.repeating = repeating;
     }
+
+    @Override
+    public String toString() {
+        return "AlarmEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", time=" + time +
+                ", enabled=" + enabled +
+                ", repeating=" + repeating +
+                '}';
+    }
 }

@@ -22,10 +22,15 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
 
     private List<AlarmEntity> alarms;
     private LanguageTextHelper languageTextHelper;
+    private AlarmSwitchListener alarmSwitchListener;
 
     public AlarmsAdapter(List<AlarmEntity> alarms, LanguageTextHelper languageTextHelper) {
         this.alarms = alarms;
         this.languageTextHelper = languageTextHelper;
+    }
+
+    public void setAlarmSwitchListener(AlarmSwitchListener alarmSwitchListener) {
+        this.alarmSwitchListener = alarmSwitchListener;
     }
 
     @NonNull
@@ -68,6 +73,17 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
             alarmTime = itemView.findViewById(R.id.alarmTimeTextView);
             alarmRepeat = itemView.findViewById(R.id.alarmRepeatTextView);
             switchButton = itemView.findViewById(R.id.alarmSwitch);
+
+            switchButton.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                AlarmEntity alarm = alarms.get(getAdapterPosition());
+                if (alarm.isEnabled() != isChecked) {
+                    alarm.setEnabled(isChecked);
+                    itemView.post(() -> AlarmsAdapter.this.notifyItemChanged(getAdapterPosition()));
+                    if (AlarmsAdapter.this.alarmSwitchListener != null) {
+                        AlarmsAdapter.this.alarmSwitchListener.alarmEnabledChanged(alarm);
+                    }
+                }
+            }));
         }
 
         /**
@@ -83,5 +99,10 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
                 alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorTextDark, null));
             }
         }
+    }
+
+    @FunctionalInterface
+    public interface AlarmSwitchListener {
+        void alarmEnabledChanged(AlarmEntity alarmEntity);
     }
 }
