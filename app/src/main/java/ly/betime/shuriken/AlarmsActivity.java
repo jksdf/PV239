@@ -1,17 +1,14 @@
 package ly.betime.shuriken;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.common.collect.Lists;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -34,6 +31,7 @@ public class AlarmsActivity extends AppCompatActivity {
     private AlarmsAdapter alarmsAdapter;
 
     private RecyclerView alarmsView;
+    private FloatingActionButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +43,8 @@ public class AlarmsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_alarms);
         alarmsView = findViewById(R.id.alarmsContainer);
+
+        addButton = findViewById(R.id.addButton);
 
         renderAlarmList();
     }
