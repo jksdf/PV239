@@ -31,6 +31,12 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
+    public Alarm getAlarm(int id) {
+        Log.i(LOG_TAG, "Getting alarm " + id);
+        return alarmDao.get(id);
+    }
+
+    @Override
     public void updateAlarm(Alarm alarm) {
         Log.i(LOG_TAG, "Updating alarm " + alarm.getId());
         alarmDao.update(alarm);

@@ -25,4 +25,7 @@ public interface AlarmDAO {
 
     @Query("SELECT * FROM Alarm")
     List<Alarm> list();
+
+    @Query("SELECT * FROM Alarm WHERE id = :id LIMIT 1")
+    Alarm get(int id);
 }

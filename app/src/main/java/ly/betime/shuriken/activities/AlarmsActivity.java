@@ -1,12 +1,13 @@
-package ly.betime.shuriken;
+package ly.betime.shuriken.activities;
 
 import android.app.AlarmManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
+
 import androidx.room.Room;
+import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapter.AlarmsAdapter;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
@@ -63,8 +67,25 @@ public class AlarmsActivity extends AppCompatActivity {
         registerForContextMenu(alarmsView);
 
         addButton = findViewById(R.id.addButton);
+        addButton.setOnClickListener((View v) -> startAlarmFormActivity(null));
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         renderAlarmList();
+    }
+
+    /**
+     * Starts AlarmFormActivity
+     * @param alarm Alarm for editing if any is needed
+     */
+    protected void startAlarmFormActivity(@Nullable Alarm alarm) {
+        Intent intent = new Intent(this, AlarmFormActivity.class);
+        if (alarm != null) {
+            intent.putExtra(AlarmFormActivity.ALARM_ID_MESSAGE, alarm.getId());
+        }
+        startActivity(intent);
     }
 
     /**
@@ -72,10 +93,16 @@ public class AlarmsActivity extends AppCompatActivity {
      * Use notify functions of {@link RecyclerView.Adapter} if only one item changed.
      */
     public void renderAlarmList() {
-        if (alarmsAdapter == null) {
+        if (alarms == null) {
             alarms = Lists.newArrayList(alarmService.listAlarms());
-            Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
+        } else {
+            alarms.clear();
+            alarms.addAll(alarmService.listAlarms());
+        }
 
+        Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
+
+        if (alarmsAdapter == null) {
             alarmsAdapter = new AlarmsAdapter(alarms, languageTextHelper);
             alarmsAdapter.setAlarmSwitchListener((alarm, state) -> alarmService.setAlarm(alarm, state));
 
@@ -122,11 +149,10 @@ public class AlarmsActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Alarm alarm = alarms.get(alarmsAdapter.getContextMenuPosition());
         switch (item.getItemId()) {
             case R.id.editAlarm:
-                LOGGER.info("Edit alarm " + alarm);
+                startAlarmFormActivity(alarm);
                 return true;
             case R.id.deleteAlarm:
                 deleteAlarm(alarm, alarmsAdapter.getContextMenuPosition());

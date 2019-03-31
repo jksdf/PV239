@@ -2,8 +2,6 @@ package ly.betime.shuriken.helpers;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.TextStyle;
@@ -51,7 +49,7 @@ public class LanguageTextHelper {
             sb.append(day.getDisplayName(
                     TextStyle.SHORT,
                     // TODO: Probably will need to change if we add manual way of changing locale
-                    context.getResources().getConfiguration().getLocales().get(0)));
+                    context.getResources().getConfiguration().locale));
         }
 
         return sb.toString();

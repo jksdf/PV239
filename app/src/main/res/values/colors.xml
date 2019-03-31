@@ -9,4 +9,5 @@
 
     <color name="colorText">#ffffff</color>
     <color name="colorTextDark">#8CFFFFFF</color>
+    <color name="colorTextDarkest">#59FFFFFF</color>
 </resources>

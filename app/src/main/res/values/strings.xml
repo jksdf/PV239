@@ -11,4 +11,12 @@
 
     <string name="edit_alarm">Edit alarm</string>
     <string name="delete_alarm">Delete alarm</string>
+
+    <string name="label">Label:</string>
+    <string name="label_hint">Display while ringing</string>
+    <string name="repeat">Repeat:</string>
+
+    <string name="save">Save</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>
