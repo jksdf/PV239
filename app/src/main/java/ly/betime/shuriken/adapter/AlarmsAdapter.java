@@ -106,11 +106,11 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
         public void setColors(boolean enabled) {
             // WTF: You can't change style of view in code
             if (enabled) {
-                alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorText, null));
-                alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorText, null));
+                alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorText));
+                alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorText));
             } else {
-                alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorTextDark, null));
-                alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorTextDark, null));
+                alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
+                alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
             }
         }
     }

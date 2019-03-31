@@ -13,6 +13,12 @@
         <item name="android:textColor">@color/colorText</item>
     </style>
 
+    <style name="AlarmBackground">
+        <item name="android:background">@drawable/alarm_bg</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
     <style name="NormalAlarm">
         <item name="android:textColor">@color/colorText</item>
     </style>
@@ -25,7 +31,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">2dp</item>
         <item name="android:layout_marginHorizontal">10dp</item>
-        <item name="android:layout_marginVertical">5dp</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:background">@color/colorPrimaryDark</item>
     </style>
 
@@ -52,6 +58,8 @@
 
     <style name="AlarmForm.Container">
         <item name="android:background">@drawable/form_item_bg</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
     </style>
 
     <style name="AlarmForm.Label">
