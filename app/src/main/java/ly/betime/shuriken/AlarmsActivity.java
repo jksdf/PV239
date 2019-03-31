@@ -1,11 +1,15 @@
 package ly.betime.shuriken;
 
+import android.app.AlarmManager;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Lists;
@@ -15,14 +19,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 import ly.betime.shuriken.adapter.AlarmsAdapter;
+import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
-import ly.betime.shuriken.service.AlarmEntity;
+import ly.betime.shuriken.persistance.AppDatabase;
+import ly.betime.shuriken.service.AlarmManagerApi;
 import ly.betime.shuriken.service.AlarmService;
-import ly.betime.shuriken.service.DummyAlarmService;
+import ly.betime.shuriken.service.AlarmServiceImpl;
+import ly.betime.shuriken.service.DummyFiller;
 
 public class AlarmsActivity extends AppCompatActivity {
 
@@ -32,7 +37,7 @@ public class AlarmsActivity extends AppCompatActivity {
     private AlarmService alarmService;
     private LanguageTextHelper languageTextHelper;
 
-    private List<AlarmEntity> alarms;
+    private List<Alarm> alarms;
     private AlarmsAdapter alarmsAdapter;
 
     private RecyclerView alarmsView;
@@ -42,8 +47,15 @@ public class AlarmsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AndroidThreeTen.init(this);
-        alarmService = new DummyAlarmService(25);
+        AndroidThreeTen.init(getApplicationContext());
+        // Hardcoded DI is the best DI
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "db").allowMainThreadQueries().build();
+        alarmService = new AlarmServiceImpl(db.alarmDAO(), new AlarmManagerApi((AlarmManager) getSystemService(ALARM_SERVICE), getApplicationContext(), AlarmsActivity.class));
+        if (alarmService.listAlarms().size() == 0) {
+            for (Alarm alarm : DummyFiller.generate(5)) {
+                alarmService.createAlarm(alarm);
+            }
+        }
         languageTextHelper = new LanguageTextHelper(this);
 
         setContentView(R.layout.activity_alarms);
@@ -65,7 +77,7 @@ public class AlarmsActivity extends AppCompatActivity {
             Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
 
             alarmsAdapter = new AlarmsAdapter(alarms, languageTextHelper);
-            alarmsAdapter.setAlarmSwitchListener((alarm) -> alarmService.updateAlarm(alarm));
+            alarmsAdapter.setAlarmSwitchListener((alarm, state) -> alarmService.setAlarm(alarm, state));
 
             alarmsView.setAdapter(alarmsAdapter);
             alarmsView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,7 +91,7 @@ public class AlarmsActivity extends AppCompatActivity {
      *
      * @param alarmEntity AlarmEntity
      */
-    public void deleteAlarm(AlarmEntity alarmEntity) {
+    public void deleteAlarm(Alarm alarmEntity) {
         deleteAlarm(alarmEntity, -1);
     }
 
@@ -89,7 +101,7 @@ public class AlarmsActivity extends AppCompatActivity {
      * @param alarmEntity AlarmEntity
      * @param position    Position of alarm in the AlarmsAdapter, if now know use negative number
      */
-    public void deleteAlarm(AlarmEntity alarmEntity, int position) {
+    public void deleteAlarm(Alarm alarmEntity, int position) {
         alarmService.removeAlarm(alarmEntity);
         alarmsView.post(() -> {
             if (position >= 0) {
@@ -110,7 +122,7 @@ public class AlarmsActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        AlarmEntity alarm = alarms.get(alarmsAdapter.getContextMenuPosition());
+        Alarm alarm = alarms.get(alarmsAdapter.getContextMenuPosition());
         switch (item.getItemId()) {
             case R.id.editAlarm:
                 LOGGER.info("Edit alarm " + alarm);

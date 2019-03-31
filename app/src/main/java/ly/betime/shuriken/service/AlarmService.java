@@ -1,8 +1,17 @@
 package ly.betime.shuriken.service;
 
+import java.util.List;
+
+import ly.betime.shuriken.entities.Alarm;
+
 public interface AlarmService {
-    Iterable<AlarmEntity> listAlarms();
-    void updateAlarm(AlarmEntity alarm);
-    void createAlarm(AlarmEntity alarm);
-    void removeAlarm(AlarmEntity alarm);
+    List<Alarm> listAlarms();
+
+    void updateAlarm(Alarm alarm);
+
+    void createAlarm(Alarm alarm);
+
+    void removeAlarm(Alarm alarm);
+
+    void setAlarm(Alarm alarm, boolean enable);
 }

@@ -12,20 +12,20 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.R;
+import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
-import ly.betime.shuriken.service.AlarmEntity;
 
 /**
- * Adapter for rendering {@link ly.betime.shuriken.service.AlarmEntity} in {@link RecyclerView}
+ * Adapter for rendering {@link ly.betime.shuriken.entities.Alarm} in {@link RecyclerView}
  */
 public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewHolder> {
 
     private int contextMenuPosition;
-    private List<AlarmEntity> alarms;
+    private List<Alarm> alarms;
     private LanguageTextHelper languageTextHelper;
     private AlarmSwitchListener alarmSwitchListener;
 
-    public AlarmsAdapter(List<AlarmEntity> alarms, LanguageTextHelper languageTextHelper) {
+    public AlarmsAdapter(List<Alarm> alarms, LanguageTextHelper languageTextHelper) {
         this.alarms = alarms;
         this.languageTextHelper = languageTextHelper;
     }
@@ -54,7 +54,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
     @Override
     public void onBindViewHolder(@NonNull AlarmViewHolder viewHolder, int position) {
         // Get the data model based on position
-        AlarmEntity alarm = alarms.get(position);
+        Alarm alarm = alarms.get(position);
 
         viewHolder.alarmTime.setText(alarm.getTime().format(languageTextHelper.getAlarmTimeFormatter()));
         viewHolder.alarmRepeat.setText(languageTextHelper.getAlarmRepeatText(alarm.getRepeating()));
@@ -84,13 +84,12 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
 
         private void setListeners() {
             switchButton.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-                AlarmEntity alarm = alarms.get(getAdapterPosition());
+                Alarm alarm = alarms.get(getAdapterPosition());
                 if (alarm.isEnabled() != isChecked) {
-                    alarm.setEnabled(isChecked);
-                    itemView.post(() -> AlarmsAdapter.this.notifyItemChanged(getAdapterPosition()));
                     if (AlarmsAdapter.this.alarmSwitchListener != null) {
-                        AlarmsAdapter.this.alarmSwitchListener.alarmEnabledChanged(alarm);
+                        AlarmsAdapter.this.alarmSwitchListener.alarmEnabledChanged(alarm, isChecked);
                     }
+                    itemView.post(() -> AlarmsAdapter.this.notifyItemChanged(getAdapterPosition()));
                 }
             }));
 
@@ -118,6 +117,6 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
 
     @FunctionalInterface
     public interface AlarmSwitchListener {
-        void alarmEnabledChanged(AlarmEntity alarmEntity);
+        void alarmEnabledChanged(Alarm alarmEntity, boolean enabled);
     }
 }
