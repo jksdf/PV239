@@ -102,6 +102,7 @@ public class AlarmsActivity extends AppCompatActivity {
      * @param position    Position of alarm in the AlarmsAdapter, if now know use negative number
      */
     public void deleteAlarm(Alarm alarmEntity, int position) {
+        alarms.remove(alarmEntity);
         alarmService.removeAlarm(alarmEntity);
         alarmsView.post(() -> {
             if (position >= 0) {
