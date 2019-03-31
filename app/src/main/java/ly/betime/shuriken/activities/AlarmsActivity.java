@@ -51,7 +51,6 @@ public class AlarmsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AndroidThreeTen.init(getApplicationContext());
         // Hardcoded DI is the best DI
         AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "db").allowMainThreadQueries().build();
         alarmService = new AlarmServiceImpl(db.alarmDAO(), new AlarmManagerApi((AlarmManager) getSystemService(ALARM_SERVICE), getApplicationContext(), AlarmsActivity.class));

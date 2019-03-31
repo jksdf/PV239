@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -12,6 +13,8 @@ import javax.inject.Named;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AlarmManagerApi {
+
+    private static final String LOG_TAG = AlarmManagerApi.class.getSimpleName();
 
     private AlarmManager alarmManager;
     private Context context;
@@ -29,7 +32,12 @@ public class AlarmManagerApi {
      * @param id of the alarm
      */
     public void cancelAlarm(int id) {
-        this.alarmManager.cancel(getPendingIntent(id, false));
+        PendingIntent pendingIntent = getPendingIntent(id, false);
+        if (pendingIntent == null) {
+            Log.w(LOG_TAG, "Pending alarm not found, id: " + id);
+            return;
+        }
+        this.alarmManager.cancel(pendingIntent);
     }
 
     /**
