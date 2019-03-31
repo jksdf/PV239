@@ -93,7 +93,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
                 }
             }));
 
-            itemView.setOnLongClickListener((View v) -> {
+            itemView.findViewById(R.id.alarmContainer).setOnLongClickListener((View v) -> {
                 AlarmsAdapter.this.contextMenuPosition = getAdapterPosition();
                 itemView.showContextMenu();
                 return true;
