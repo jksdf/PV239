@@ -1,16 +1,11 @@
 package ly.betime.shuriken.activities;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Lists;
@@ -22,16 +17,15 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-import androidx.room.Room;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapter.AlarmsAdapter;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
-import ly.betime.shuriken.persistance.AppDatabase;
-import ly.betime.shuriken.service.AlarmManagerApi;
 import ly.betime.shuriken.service.AlarmService;
-import ly.betime.shuriken.service.AlarmServiceImpl;
 import ly.betime.shuriken.service.DummyFiller;
 
 public class AlarmsActivity extends AppCompatActivity {
@@ -54,15 +48,11 @@ public class AlarmsActivity extends AppCompatActivity {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
 
-        // Hardcoded DI is the best DI
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "db").allowMainThreadQueries().build();
-        alarmService = new AlarmServiceImpl(db.alarmDAO(), new AlarmManagerApi((AlarmManager) getSystemService(ALARM_SERVICE), getApplicationContext(), AlarmsActivity.class));
         if (alarmService.listAlarms().size() == 0) {
             for (Alarm alarm : DummyFiller.generate(5)) {
                 alarmService.createAlarm(alarm);
             }
         }
-        languageTextHelper = new LanguageTextHelper(this);
 
         setContentView(R.layout.activity_alarms);
         alarmsView = findViewById(R.id.alarmsContainer);

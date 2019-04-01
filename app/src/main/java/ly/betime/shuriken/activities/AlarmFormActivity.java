@@ -53,7 +53,6 @@ public class AlarmFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
-        Log.i(LOG_TAG, "alarm service" + alarmService);
         setContentView(R.layout.activity_alarm_form);
 
         labelEditText = findViewById(R.id.labelText);
