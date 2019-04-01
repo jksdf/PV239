@@ -16,9 +16,9 @@ public class AlarmManagerApi {
 
     private static final String LOG_TAG = AlarmManagerApi.class.getSimpleName();
 
-    private AlarmManager alarmManager;
-    private Context context;
-    private Class<?> receiver;
+    private final AlarmManager alarmManager;
+    private final Context context;
+    private final Class<?> receiver;
 
     @Inject
     public AlarmManagerApi(AlarmManager alarmManager, @Named("application") Context context, Class<?> receiver) {

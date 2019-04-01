@@ -2,7 +2,6 @@ package ly.betime.shuriken.persistance;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -17,7 +16,7 @@ public interface AlarmDAO {
     @Update
     void update(Alarm alarm);
 
-    @Insert(onConflict = ABORT)
+    @Insert()
     long insert(Alarm alarm);
 
     @Delete

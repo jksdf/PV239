@@ -14,7 +14,7 @@ import java.util.Random;
 import ly.betime.shuriken.entities.Alarm;
 
 public class DummyFiller {
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public static List<Alarm> generate(int numberOfAlarms) {
         List<Alarm> alarms = new ArrayList<>();

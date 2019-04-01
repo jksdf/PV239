@@ -21,7 +21,7 @@ import ly.betime.shuriken.R;
 
 public class AlarmRepeatDialog extends DialogFragment {
 
-    private Map<DayOfWeek, Boolean> selectedDays = new HashMap<>();
+    private final Map<DayOfWeek, Boolean> selectedDays = new HashMap<>();
     private OnSavedListener onSavedListener;
 
     @NonNull
@@ -30,9 +30,7 @@ public class AlarmRepeatDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.repeat).setMultiChoiceItems(getDays(), getCheckedDays(),
-                (DialogInterface dialog, int which, boolean isChecked) -> {
-                    selectedDays.put(DayOfWeek.values()[which], isChecked);
-                }).setPositiveButton(R.string.ok, (dialog, id) -> {
+                (DialogInterface dialog, int which, boolean isChecked) -> selectedDays.put(DayOfWeek.values()[which], isChecked)).setPositiveButton(R.string.ok, (dialog, id) -> {
                     if (onSavedListener != null) {
                         onSavedListener.onSaved();
                     }

@@ -1,6 +1,5 @@
 package ly.betime.shuriken.activities;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.jakewharton.threetenabp.AndroidThreeTen;
-
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalTime;
 
@@ -22,17 +19,12 @@ import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.room.Room;
-import dagger.android.AndroidInjection;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.dialogs.AlarmRepeatDialog;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
-import ly.betime.shuriken.persistance.AppDatabase;
-import ly.betime.shuriken.service.AlarmManagerApi;
 import ly.betime.shuriken.service.AlarmService;
-import ly.betime.shuriken.service.AlarmServiceImpl;
 
 public class AlarmFormActivity extends AppCompatActivity {
 
@@ -80,13 +72,11 @@ public class AlarmFormActivity extends AppCompatActivity {
         if (alarm != null) {
             repeatDialog.setSelectedDays(alarm.getRepeating());
         }
-        repeatDialog.setOnSavedListener(() -> {
-            repeatValueText.setText(
-                    languageTextHelper.getAlarmRepeatText(
-                            EnumSet.copyOf(repeatDialog.getSelectedDays())
-                    )
-            );
-        });
+        repeatDialog.setOnSavedListener(() -> repeatValueText.setText(
+                languageTextHelper.getAlarmRepeatText(
+                        EnumSet.copyOf(repeatDialog.getSelectedDays())
+                )
+        ));
         repeatDialog.show(getSupportFragmentManager(), REPEAT_DIALOG_TAG);
     }
 

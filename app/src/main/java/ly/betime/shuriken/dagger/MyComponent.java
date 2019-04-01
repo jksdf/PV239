@@ -1,7 +1,5 @@
 package ly.betime.shuriken.dagger;
 
-import android.app.Activity;
-
 import dagger.Component;
 import ly.betime.shuriken.activities.AlarmFormActivity;
 import ly.betime.shuriken.activities.AlarmsActivity;

@@ -18,8 +18,8 @@ public class AlarmServiceImpl implements AlarmService {
 
     private static final String LOG_TAG = "AlarmServiceImpl";
 
-    private AlarmDAO alarmDao;
-    private AlarmManagerApi alarmManagerApi;
+    private final AlarmDAO alarmDao;
+    private final AlarmManagerApi alarmManagerApi;
 
     @Inject
     public AlarmServiceImpl(AlarmDAO alarmDao, AlarmManagerApi alarmManagerApi) {

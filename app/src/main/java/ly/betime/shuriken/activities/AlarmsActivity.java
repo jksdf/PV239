@@ -1,7 +1,6 @@
 package ly.betime.shuriken.activities;
 
 import android.app.AlarmManager;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Lists;
-import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import java.util.Collections;
 import java.util.List;

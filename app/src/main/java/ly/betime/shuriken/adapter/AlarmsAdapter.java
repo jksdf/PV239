@@ -21,8 +21,8 @@ import ly.betime.shuriken.helpers.LanguageTextHelper;
 public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewHolder> {
 
     private int contextMenuPosition;
-    private List<Alarm> alarms;
-    private LanguageTextHelper languageTextHelper;
+    private final List<Alarm> alarms;
+    private final LanguageTextHelper languageTextHelper;
     private AlarmSwitchListener alarmSwitchListener;
 
     public AlarmsAdapter(List<Alarm> alarms, LanguageTextHelper languageTextHelper) {
@@ -69,9 +69,9 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
     }
 
     class AlarmViewHolder extends RecyclerView.ViewHolder {
-        TextView alarmTime;
-        TextView alarmRepeat;
-        Switch switchButton;
+        final TextView alarmTime;
+        final TextView alarmRepeat;
+        final Switch switchButton;
 
         AlarmViewHolder(@NonNull View itemView) {
             super(itemView);
