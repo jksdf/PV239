@@ -7,6 +7,8 @@ import org.threeten.bp.ZoneId;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.persistance.AlarmDAO;
 
@@ -19,6 +21,7 @@ public class AlarmServiceImpl implements AlarmService {
     private AlarmDAO alarmDao;
     private AlarmManagerApi alarmManagerApi;
 
+    @Inject
     public AlarmServiceImpl(AlarmDAO alarmDao, AlarmManagerApi alarmManagerApi) {
         this.alarmDao = checkNotNull(alarmDao);
         this.alarmManagerApi = checkNotNull(alarmManagerApi);

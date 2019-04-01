@@ -59,7 +59,7 @@ public class AlarmFormActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.component.inject(this);
+        App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
         Log.i(LOG_TAG, "alarm service" + alarmService);
         setContentView(R.layout.activity_alarm_form);

@@ -40,7 +40,6 @@ public class AlarmsActivity extends AppCompatActivity {
 
     private final static Logger LOGGER = Logger.getLogger(AlarmsActivity.class.getName());
 
-    // TODO: DI by Nororok
     @Inject
     public AlarmService alarmService;
     @Inject
@@ -54,7 +53,7 @@ public class AlarmsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.component.inject(this);
+        App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
 
         // Hardcoded DI is the best DI

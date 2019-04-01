@@ -3,7 +3,6 @@ package ly.betime.shuriken.persistance;
 import android.content.Context;
 
 import javax.inject.Named;
-import javax.inject.Singleton;
 
 import androidx.room.Room;
 import dagger.Module;
@@ -11,9 +10,18 @@ import dagger.Provides;
 
 @Module
 public class PersistanceModule {
+    private final AppDatabase db;
+
+    public PersistanceModule(@Named("application") Context context) {
+        // TODO(slivka): remove main thread query support
+        db = Room
+                .databaseBuilder(context, AppDatabase.class, "db")
+                .allowMainThreadQueries()
+                .build();
+    }
+
     @Provides
-//    @Singleton
-    public AppDatabase db(@Named("application") Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, "db").allowMainThreadQueries().build();
+    public AlarmDAO alarm() {
+        return db.alarmDAO();
     }
 }

@@ -8,6 +8,9 @@ import org.threeten.bp.format.TextStyle;
 
 import java.util.EnumSet;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import androidx.annotation.NonNull;
 import ly.betime.shuriken.R;
 
@@ -18,7 +21,8 @@ public class LanguageTextHelper {
     private Context context;
     private DateTimeFormatter alarmTimeFormatter;
 
-    public LanguageTextHelper(@NonNull Context context) {
+    @Inject
+    public LanguageTextHelper(@Named("application") Context context) {
         setContext(context);
     }
 
