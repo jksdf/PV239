@@ -1,6 +1,7 @@
 package ly.betime.shuriken.activities;
 
 import android.app.AlarmManager;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -21,8 +22,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import androidx.room.Room;
+import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapter.AlarmsAdapter;
 import ly.betime.shuriken.entities.Alarm;
@@ -38,8 +41,10 @@ public class AlarmsActivity extends AppCompatActivity {
     private final static Logger LOGGER = Logger.getLogger(AlarmsActivity.class.getName());
 
     // TODO: DI by Nororok
-    private AlarmService alarmService;
-    private LanguageTextHelper languageTextHelper;
+    @Inject
+    public AlarmService alarmService;
+    @Inject
+    public  LanguageTextHelper languageTextHelper;
 
     private List<Alarm> alarms;
     private AlarmsAdapter alarmsAdapter;
@@ -49,6 +54,7 @@ public class AlarmsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.component.inject(this);
         super.onCreate(savedInstanceState);
 
         // Hardcoded DI is the best DI

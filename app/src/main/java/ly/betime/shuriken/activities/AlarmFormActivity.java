@@ -3,6 +3,7 @@ package ly.betime.shuriken.activities;
 import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +18,13 @@ import org.threeten.bp.LocalTime;
 
 import java.util.EnumSet;
 
+import javax.inject.Inject;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.room.Room;
+import dagger.android.AndroidInjection;
+import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.dialogs.AlarmRepeatDialog;
 import ly.betime.shuriken.entities.Alarm;
@@ -31,15 +36,16 @@ import ly.betime.shuriken.service.AlarmServiceImpl;
 
 public class AlarmFormActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = AlarmFormActivity.class.getName();
+    private static final String LOG_TAG = "AlarmFormActivity";
 
     public final static String ALARM_ID_MESSAGE = "alarmId";
 
     private static final String REPEAT_DIALOG_TAG = "repeatDialog";
 
-    // TODO: DI by Nororok
-    private AlarmService alarmService;
-    private LanguageTextHelper languageTextHelper;
+    @Inject
+    public AlarmService alarmService;
+    @Inject
+    public LanguageTextHelper languageTextHelper;
 
     private Alarm alarm;
 
@@ -53,14 +59,9 @@ public class AlarmFormActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.component.inject(this);
         super.onCreate(savedInstanceState);
-
-        // Hardcoded DI is the best DI
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "db").allowMainThreadQueries().build();
-        alarmService = new AlarmServiceImpl(db.alarmDAO(), new AlarmManagerApi((AlarmManager) getSystemService(ALARM_SERVICE), getApplicationContext(), AlarmsActivity.class));
-
-        languageTextHelper = new LanguageTextHelper(this);
-
+        Log.i(LOG_TAG, "alarm service" + alarmService);
         setContentView(R.layout.activity_alarm_form);
 
         labelEditText = findViewById(R.id.labelText);
