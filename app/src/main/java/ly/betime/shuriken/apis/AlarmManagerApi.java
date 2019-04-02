@@ -10,6 +10,8 @@ import android.util.Log;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import ly.betime.shuriken.activities.ActiveAlarmActivity;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AlarmManagerApi {
@@ -57,6 +59,7 @@ public class AlarmManagerApi {
 
     private PendingIntent getPendingIntent(int id, boolean enable) {
         Intent intent = new Intent(this.context, this.receiver);
+        intent.putExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_NAME, id);
         return PendingIntent.getBroadcast(
                 context, id, intent, enable ? 0 : PendingIntent.FLAG_NO_CREATE);
     }

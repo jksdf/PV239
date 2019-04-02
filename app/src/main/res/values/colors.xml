@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#b5095f</color>
+    <color name="colorPrimary">#B5095F</color>
     <color name="colorPrimaryDark">#690537</color>
+    <color name="colorPrimaryDarkest">#690537</color>
     <color name="colorAccent">#b5095f</color>
     <color name="colorMorePink">#e80c7a</color>
     <color name="colorLightBackground">#333333</color>
     <color name="colorBackground">#111111</color>
+    <color name="colorBlack">#000000</color>
 
     <color name="colorText">#ffffff</color>
     <color name="colorTextDark">#8CFFFFFF</color>

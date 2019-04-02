@@ -15,6 +15,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".activities.ActiveAlarmActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".activities.AlarmFormActivity"
             android:parentActivityName=".activities.AlarmsActivity">
             <meta-data
@@ -37,7 +41,6 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
