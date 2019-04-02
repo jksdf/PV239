@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ly.betime.shuriken">
 
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -27,7 +29,10 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receivers.UpgradeReceiver"  android:enabled="true" android:exported="true">
+        <receiver
+            android:name=".receivers.UpgradeReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>

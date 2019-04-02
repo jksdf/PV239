@@ -8,7 +8,7 @@ import ly.betime.shuriken.dagger.ApplicationModule;
 import ly.betime.shuriken.dagger.DaggerMyComponent;
 import ly.betime.shuriken.dagger.MyComponent;
 import ly.betime.shuriken.persistance.PersistanceModule;
-import ly.betime.shuriken.service.AlarmApiModule;
+import ly.betime.shuriken.apis.ApisModule;
 import ly.betime.shuriken.service.ServiceModule;
 
 public class App extends Application {
@@ -22,7 +22,7 @@ public class App extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .persistanceModule(new PersistanceModule(this.getApplicationContext()))
                 .serviceModule(new ServiceModule())
-                .alarmApiModule(new AlarmApiModule())
+                .alarmApiModule(new ApisModule())
                 .build();
         AndroidThreeTen.init(getApplicationContext());
     }

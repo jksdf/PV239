@@ -2,6 +2,7 @@ package ly.betime.shuriken.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,6 +10,9 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Lists;
+
+import org.threeten.bp.Instant;
+import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +30,8 @@ import ly.betime.shuriken.adapter.AlarmsAdapter;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmService;
+import ly.betime.shuriken.apis.CalendarApi;
+import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.service.DummyFiller;
 
 public class AlarmsActivity extends AppCompatActivity {
@@ -36,6 +42,8 @@ public class AlarmsActivity extends AppCompatActivity {
     public AlarmService alarmService;
     @Inject
     public  LanguageTextHelper languageTextHelper;
+    @Inject
+    public CalendarApi calendarApi;
 
     private List<Alarm> alarms;
     private AlarmsAdapter alarmsAdapter;
@@ -60,6 +68,9 @@ public class AlarmsActivity extends AppCompatActivity {
 
         addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener((View v) -> startAlarmFormActivity(null));
+
+        List<CalendarEvent> events = calendarApi.getEvents(this, Instant.now().toEpochMilli(), Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli());
+        Log.i("Alarms Activity", (events != null ? events.toString() : "null"));
     }
 
     @Override

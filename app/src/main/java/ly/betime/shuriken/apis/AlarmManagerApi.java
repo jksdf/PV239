@@ -1,4 +1,4 @@
-package ly.betime.shuriken.service;
+package ly.betime.shuriken.apis;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
