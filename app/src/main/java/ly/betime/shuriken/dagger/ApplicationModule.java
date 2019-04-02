@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.threeten.bp.ZoneId;
+
 import javax.inject.Named;
 
 import dagger.Module;
@@ -45,6 +47,11 @@ public class ApplicationModule {
     public Class<? extends Activity> alarmActivity() {
         //TODO(kurcik): change to the alarm ringing activity
         return AlarmsActivity.class;
+    }
+
+    @Provides
+    public ZoneId zoneId() {
+        return ZoneId.systemDefault();
     }
 
 }

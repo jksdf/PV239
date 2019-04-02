@@ -69,7 +69,7 @@ public class AlarmsActivity extends AppCompatActivity {
         addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener((View v) -> startAlarmFormActivity(null));
 
-        List<CalendarEvent> events = calendarApi.getEvents(this, Instant.now().toEpochMilli(), Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli());
+        List<CalendarEvent> events = calendarApi.getEvents(Instant.now().toEpochMilli(), Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli());
         Log.i("Alarms Activity", (events != null ? events.toString() : "null"));
     }
 

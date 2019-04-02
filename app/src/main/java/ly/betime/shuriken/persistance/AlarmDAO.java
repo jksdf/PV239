@@ -9,8 +9,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 import ly.betime.shuriken.entities.Alarm;
 
-import static androidx.room.OnConflictStrategy.ABORT;
-
 @Dao
 public interface AlarmDAO {
     @Update

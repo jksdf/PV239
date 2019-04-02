@@ -11,6 +11,7 @@ public class CalendarEvent {
     private LocalDateTime from;
     private LocalDateTime to;
     private String name;
+    private int status;
 
     public long getEventId() {
         return eventId;
@@ -42,6 +43,14 @@ public class CalendarEvent {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @NonNull

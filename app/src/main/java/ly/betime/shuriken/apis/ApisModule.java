@@ -5,11 +5,12 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.os.Build;
 
-import com.google.common.collect.ImmutableList;
-
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneId;
 import org.threeten.bp.temporal.ChronoUnit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.inject.Named;
@@ -26,9 +27,13 @@ public class ApisModule {
     }
 
     @Provides
-    public CalendarApi calendarApi(@Named("application") Context context) {
+    public CalendarApi calendarApi(@Named("application") Context context, ZoneId zoneId) {
         // TODO(slivka): only for debug
-        return new CalendarApiFake(ImmutableList.of(generateEvent(), generateEvent(), generateEvent(), generateEvent(), generateEvent()));
+        List<CalendarEvent> eventList = new ArrayList<>();
+        for (int i = 0; i < 40; i++) {
+            eventList.add(generateEvent());
+        }
+        return new CalendarApiFake(eventList, zoneId);
     }
 
     private static CalendarEvent generateEvent() {
@@ -40,6 +45,7 @@ public class ApisModule {
             event.setTo(start.plus(20 + random.nextInt() % 50, ChronoUnit.MINUTES));
             event.setEventId(random.nextLong());
             event.setName("TestEvent" + random.nextInt() % 10);
+            event.setStatus(random.nextInt() % 3);
             return event;
         }
         throw new RuntimeException();
