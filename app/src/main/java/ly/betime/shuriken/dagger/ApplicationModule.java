@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
+import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.activities.AlarmsActivity;
 
 import static android.content.Context.ALARM_SERVICE;
@@ -43,8 +44,7 @@ public class ApplicationModule {
     @Provides
     @Named("AlarmActivity")
     public Class<? extends Activity> alarmActivity() {
-        //TODO(kurcik): change to the alarm ringing activity
-        return AlarmsActivity.class;
+        return ActiveAlarmActivity.class;
     }
 
 }
