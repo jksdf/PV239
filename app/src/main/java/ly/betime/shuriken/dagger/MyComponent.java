@@ -1,6 +1,7 @@
 package ly.betime.shuriken.dagger;
 
 import dagger.Component;
+import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.activities.AlarmFormActivity;
 import ly.betime.shuriken.activities.AlarmsActivity;
 import ly.betime.shuriken.persistance.PersistanceModule;
@@ -26,6 +27,8 @@ public interface MyComponent {
     void inject(AlarmFormActivity app);
 
     void inject(AlarmsActivity app);
+
+    void inject(ActiveAlarmActivity app);
 
     void inject(UpgradeReceiver app);
 

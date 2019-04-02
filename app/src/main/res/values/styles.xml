@@ -8,6 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="AlarmTimeText">
         <item name="android:textSize">45sp</item>
         <item name="android:textColor">@color/colorText</item>
@@ -71,6 +76,54 @@
         <item name="android:textColor">@color/colorTextDark</item>
         <item name="android:textColorHint">@color/colorTextDarkest</item>
         <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="ActiveAlarm">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
+    <style name="ActiveAlarm.Time">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
+    <style name="ActiveAlarm.Name">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+
+    <style name="ActiveAlarm.Stop">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/stop_button_color</item>
+        <item name="android:background">@drawable/stop_button_bg</item>
+        <item name="android:paddingVertical">15dp</item>
+        <item name="android:paddingHorizontal">30dp</item>
+    </style>
+
+    <style name="ActiveAlarm.Snooze">
+        <item name="android:background">@drawable/snooze_button_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+
+    <style name="ActiveAlarm.SnoozeIcon">
+        <item name="android:tint">@color/snooze_button_color</item>
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="ActiveAlarm.SnoozeText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/snooze_button_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>
