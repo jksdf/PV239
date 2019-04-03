@@ -1,4 +1,4 @@
-package ly.betime.shuriken.adapter;
+package ly.betime.shuriken.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

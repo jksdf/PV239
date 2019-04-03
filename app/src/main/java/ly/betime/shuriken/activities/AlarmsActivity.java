@@ -16,19 +16,18 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
-import ly.betime.shuriken.adapter.AlarmsAdapter;
+import ly.betime.shuriken.adapters.AlarmsAdapter;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmService;
 import ly.betime.shuriken.service.DummyFiller;
 
-public class AlarmsActivity extends AppCompatActivity {
+public class AlarmsActivity extends AMenuActivity {
 
     @Inject
     public AlarmService alarmService;
