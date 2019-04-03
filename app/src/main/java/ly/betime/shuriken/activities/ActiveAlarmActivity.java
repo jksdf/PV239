@@ -1,5 +1,8 @@
 package ly.betime.shuriken.activities;
 
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +37,8 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
     private Alarm alarm;
 
+    Ringtone beep;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         App.getComponent().inject(this);
@@ -46,6 +51,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         snoozeButton = findViewById(R.id.snoozeButton);
         stopButton = findViewById(R.id.stopButton);
 
+        playSound();
         addListeners();
     }
 
@@ -53,6 +59,18 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setAlarmValues();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        beep.stop();
+    }
+
+    private void playSound() {
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        beep = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        beep.play();
     }
 
     private void setAlarmValues() {
