@@ -69,9 +69,7 @@ public class AlarmFormActivity extends AppCompatActivity {
             repeatDialog.setSelectedDays(alarm.getRepeating());
         }
         repeatDialog.setOnSavedListener(() -> repeatValueText.setText(
-                languageTextHelper.getAlarmRepeatText(
-                        EnumSet.copyOf(repeatDialog.getSelectedDays())
-                )
+                languageTextHelper.getAlarmRepeatText(repeatDialog.getSelectedDays())
         ));
         repeatDialog.show(getSupportFragmentManager(), REPEAT_DIALOG_TAG);
     }
@@ -128,8 +126,7 @@ public class AlarmFormActivity extends AppCompatActivity {
     private void setAlarmValues(Alarm alarm) {
         alarm.setName(labelEditText.getText().toString());
         alarm.setTime(LocalTime.of(timePicker.getCurrentHour(), timePicker.getCurrentMinute()));
-        alarm.setRepeating(repeatDialog != null ?
-                EnumSet.copyOf(repeatDialog.getSelectedDays()) : EnumSet.noneOf(DayOfWeek.class));
+        alarm.setRepeating(repeatDialog != null ? repeatDialog.getSelectedDays() : EnumSet.noneOf(DayOfWeek.class));
     }
 
     /**

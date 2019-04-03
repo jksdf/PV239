@@ -71,8 +71,8 @@ public class AlarmRepeatDialog extends DialogFragment {
         }
     }
 
-    public Set<DayOfWeek> getSelectedDays() {
-        Set<DayOfWeek> selected = new HashSet<>();
+    public EnumSet<DayOfWeek> getSelectedDays() {
+        EnumSet<DayOfWeek> selected = EnumSet.noneOf(DayOfWeek.class);
         for (Map.Entry<DayOfWeek, Boolean> day : selectedDays.entrySet()) {
             if (day.getValue()) {
                 selected.add(day.getKey());
