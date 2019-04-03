@@ -1,5 +1,6 @@
 package ly.betime.shuriken.activities;
 
+import android.content.Context;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
+import ly.betime.shuriken.preferences.Preferences;
 import ly.betime.shuriken.service.AlarmService;
 
 public class ActiveAlarmActivity extends AppCompatActivity {
@@ -68,8 +70,8 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     }
 
     private void playSound() {
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        beep = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        String sound = getSharedPreferences(Preferences.NAME, Context.MODE_PRIVATE).getString(Preferences.ALARM_SOUND, null);
+        beep = RingtoneManager.getRingtone(getApplicationContext(), sound != null ? Uri.parse(sound) : RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
         beep.play();
     }
 

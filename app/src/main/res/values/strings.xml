@@ -30,4 +30,6 @@
     <!--Settings-->
     <string name="hour_format_24">Use 24-hour format</string>
     <string name="snooze_settings">TODO(slivka): Change text Sneez</string>
+    <string name="alarm_sound">Alarm sound</string>
+    <string name="sound_pick_title">Select sound</string>
 </resources>

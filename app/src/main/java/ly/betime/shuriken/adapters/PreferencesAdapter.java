@@ -9,19 +9,24 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import ly.betime.shuriken.activities.SettingsActivity;
 import ly.betime.shuriken.adapters.views.PreferenceBooleanViewHolder;
 import ly.betime.shuriken.adapters.views.PreferenceIntegerViewHolder;
+import ly.betime.shuriken.adapters.views.PreferenceSoundViewHolder;
 import ly.betime.shuriken.adapters.views.PreferenceViewHolder;
 import ly.betime.shuriken.preferences.Preference;
+import ly.betime.shuriken.preferences.Sound;
 
 public class PreferencesAdapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
-    private final static int INTEGER_VIEW = 1, BOOLEAN_VIEW = 2;
+    private final static int INTEGER_VIEW = 1, BOOLEAN_VIEW = 2, SOUND_VIEW = 3;
 
     private final List<Preference> preferenceList;
+    private SettingsActivity activity;
 
-    public PreferencesAdapter(List<Preference> preferenceList) {
+    public PreferencesAdapter(SettingsActivity activity, List<Preference> preferenceList) {
         this.preferenceList = preferenceList;
+        this.activity = activity;
     }
 
     @Override
@@ -32,6 +37,9 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferenceViewHolde
         }
         if (preference.getType().equals(Integer.class)) {
             return INTEGER_VIEW;
+        }
+        if (preference.getType().equals(Sound.class)) {
+            return SOUND_VIEW;
         }
         return -1;
     }
@@ -50,6 +58,9 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferenceViewHolde
             case BOOLEAN_VIEW:
                 contactView = inflater.inflate(PreferenceBooleanViewHolder.LAYOUT, viewGroup, false);
                 return new PreferenceBooleanViewHolder(contactView, this);
+            case SOUND_VIEW:
+                contactView = inflater.inflate(PreferenceSoundViewHolder.LAYOUT, viewGroup, false);
+                return new PreferenceSoundViewHolder(contactView, this);
             default:
                 throw new IllegalStateException("Unknown view type inside preferecnes adapter");
         }
@@ -63,6 +74,10 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferenceViewHolde
 
     public Preference get(int position) {
         return preferenceList.get(position);
+    }
+
+    public SettingsActivity getActivity() {
+        return activity;
     }
 
     @Override

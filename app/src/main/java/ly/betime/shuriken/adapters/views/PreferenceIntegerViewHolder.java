@@ -22,6 +22,7 @@ public class PreferenceIntegerViewHolder extends PreferenceViewHolder {
         super(itemView, adapter);
         label = itemView.findViewById(R.id.labelText);
         value = itemView.findViewById(R.id.value);
+        itemView.setOnClickListener((v) -> value.requestFocus());
         setValueListener();
     }
 
