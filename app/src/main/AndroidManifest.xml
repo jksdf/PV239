@@ -14,10 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activities.SettingsActivity"></activity>
         <activity
             android:name=".activities.ActiveAlarmActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.AlarmFormActivity"
             android:parentActivityName=".activities.AlarmsActivity">
@@ -44,7 +44,6 @@
         <receiver
             android:name=".receivers.AlarmReceiver"
             android:enabled="true" />
-
     </application>
 
 </manifest>

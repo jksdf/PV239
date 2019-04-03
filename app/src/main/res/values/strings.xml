@@ -3,6 +3,10 @@
     <string name="recommendation_title"><b>Waifu\'s Choice</b></string>
     <string name="tomorrow_events_title"><b>明日</b></string>
 
+    <!--Menu-->
+    <string name="alarms">Alarms</string>
+    <string name="settings">Settings</string>
+
     <string name="alarm_time_format">HH:mm</string>
 
     <string name="repeat_everyday">Everyday</string>
@@ -22,4 +26,8 @@
     <string name="stop">🙀 Hold to staph 😹</string>
     <string name="snooze">😿 Snooze 😿</string>
     <string name="logo_alt">Our beautiful mascot Betimely-chan</string>
+
+    <!--Settings-->
+    <string name="hour_format_24">Use 24-hour format</string>
+    <string name="snooze_settings">TODO(slivka): Change text Sneez</string>
 </resources>
