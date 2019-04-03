@@ -1,7 +1,5 @@
 package ly.betime.shuriken.apis;
 
-import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.Context;
 import android.os.Build;
 
@@ -21,10 +19,10 @@ import dagger.Provides;
 @Module
 public class ApisModule {
     private static final Random random = new Random();
-    @Provides
-    public AlarmManagerApi alarmManagerApi(AlarmManager alarmManager, @Named("application") Context context, @Named("AlarmActivity") Class<? extends Activity> activity) {
-        return new AlarmManagerApi(alarmManager, context, activity);
-    }
+//    @Provides
+//    public AlarmManagerApi alarmManagerApi(AlarmManager alarmManager, @Named("application") Context context) {
+//        return new AlarmManagerApi(alarmManager, context);
+//    }
 
     @Provides
     public CalendarApi calendarApi(@Named("application") Context context, ZoneId zoneId) {

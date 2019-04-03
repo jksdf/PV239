@@ -27,8 +27,8 @@ public class UpgradeReceiver extends BroadcastReceiver {
 
         for (Alarm alarm : alarmService.listAlarms()) {
             if (alarm.isEnabled()) {
-                alarm.setEnabled(false);
-                alarmService.setAlarm(alarm, true);
+                alarm.setRinging(null);
+                alarmService.setAlarm(alarm, AlarmService.AlarmAction.ENABLE);
             }
         }
         Log.i(LOG_TAG, "All alarms were reset after upgrade.");

@@ -5,6 +5,7 @@ import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.activities.AlarmFormActivity;
 import ly.betime.shuriken.activities.AlarmsActivity;
 import ly.betime.shuriken.persistance.PersistanceModule;
+import ly.betime.shuriken.receivers.AlarmReceiver;
 import ly.betime.shuriken.receivers.UpgradeReceiver;
 import ly.betime.shuriken.apis.ApisModule;
 import ly.betime.shuriken.service.ServiceModule;
@@ -31,5 +32,7 @@ public interface MyComponent {
     void inject(ActiveAlarmActivity app);
 
     void inject(UpgradeReceiver app);
+
+    void inject(AlarmReceiver alarmReceiver);
 
 }

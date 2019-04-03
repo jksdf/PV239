@@ -27,8 +27,6 @@ import ly.betime.shuriken.service.AlarmService;
 
 public class AlarmFormActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = "AlarmFormActivity";
-
     public final static String ALARM_ID_MESSAGE = "alarmId";
 
     private static final String REPEAT_DIALOG_TAG = "repeatDialog";
@@ -116,9 +114,8 @@ public class AlarmFormActivity extends AppCompatActivity {
     private void saveAlarm() {
         if (alarm == null) {
             alarm = new Alarm();
-            alarm.setEnabled(true);
             setAlarmValues(alarm);
-            alarmService.createAlarm(alarm);
+            alarmService.createAlarm(alarm, true);
         } else {
             setAlarmValues(alarm);
             alarmService.updateAlarm(alarm);

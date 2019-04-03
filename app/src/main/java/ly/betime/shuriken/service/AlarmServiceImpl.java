@@ -47,12 +47,11 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public void createAlarm(Alarm alarm) {
+    public void createAlarm(Alarm alarm, boolean enabled) {
         Log.i(LOG_TAG, "Creating alarm.");
         alarm.setId((int) alarmDao.insert(alarm));
-        if (alarm.isEnabled()) {
-            alarm.setEnabled(false);
-            setAlarm(alarm, true);
+        if (enabled) {
+            setAlarm(alarm, AlarmAction.ENABLE);
         }
     }
 
@@ -60,29 +59,46 @@ public class AlarmServiceImpl implements AlarmService {
     public void removeAlarm(Alarm alarm) {
         Log.i(LOG_TAG, String.format("Alarm %d removed.", alarm.getId()));
         if (alarm.isEnabled()) {
-            this.setAlarm(alarm, false);
+            this.setAlarm(alarm, AlarmAction.DISABLE);
         }
         alarmDao.delete(alarm);
     }
 
+
+
     @Override
-    public void setAlarm(Alarm alarm, boolean enable) {
-        Log.i(LOG_TAG, String.format("Alarm %d set to %b", alarm.getId(), enable));
-        if (enable == alarm.isEnabled()) {
-            Log.w(LOG_TAG, String.format("Alarm %d was already set correctly, skipping.", alarm.getId()));
+    public void setAlarm(Alarm alarm, AlarmAction action) {
+        Log.i(LOG_TAG, String.format("Alarm %d set to %s", alarm.getId(), action));
+        if (alarm.isEnabled() && action == AlarmAction.ENABLE) {
+            Log.w(LOG_TAG, String.format("Alarm %d was already set, skipping.", alarm.getId()));
             return;
         }
-        alarm.setEnabled(enable);
-        alarmDao.update(alarm);
-        if (enable) {
+        if (action == AlarmAction.ENABLE) {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime adjusted = now.with(alarm.getTime());
             if (adjusted.isBefore(now)) {
                 adjusted = adjusted.plusDays(1);
             }
-            alarmManagerApi.setAlarm(alarm.getId(), adjusted.atZone(ZoneId.systemDefault()).toEpochSecond());
-        } else {
+            now = adjusted;
+            if (!alarm.getRepeating().isEmpty()) {
+                while (!alarm.getRepeating().contains(now.getDayOfWeek())) {
+                    now = now.plusDays(1);
+                }
+                now = now.with(alarm.getTime());
+            }
+            alarm.setRinging(now);
+            alarmDao.update(alarm);
+            alarmManagerApi.setAlarm(alarm.getId(), now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        } else if (action == AlarmAction.DISABLE) {
+            alarm.setRinging(null);
+            alarmDao.update(alarm);
             alarmManagerApi.cancelAlarm(alarm.getId());
+        } else if (action == AlarmAction.SNOOZE) {
+            //TODO(slivka): since snooze or since start of alarm (how to handle alarm ringing for 10+ mins)
+            alarm.setRinging(LocalDateTime.now().plusMinutes(10));
+            alarmDao.update(alarm);
+            alarmManagerApi.cancelAlarm(alarm.getId());
+            alarmManagerApi.setAlarm(alarm.getId(), alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         }
     }
 }

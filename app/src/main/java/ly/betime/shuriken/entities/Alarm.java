@@ -3,6 +3,7 @@ package ly.betime.shuriken.entities;
 import com.google.common.base.MoreObjects;
 
 import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 
 import java.util.EnumSet;
@@ -15,8 +16,11 @@ import androidx.room.TypeConverters;
 public class Alarm {
     @PrimaryKey(autoGenerate = true)
     private Integer id;
+
     private String name;
-    private boolean enabled;
+
+    @TypeConverters(LocalDateTimeConverter.class)
+    private LocalDateTime ringing;
 
     @TypeConverters(TimeConverter.class)
     private LocalTime time;
@@ -40,14 +44,6 @@ public class Alarm {
         this.name = name;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public LocalTime getTime() {
         return time;
     }
@@ -64,13 +60,25 @@ public class Alarm {
         this.repeating = repeating;
     }
 
+    public LocalDateTime getRinging() {
+        return ringing;
+    }
+
+    public void setRinging(LocalDateTime ringing) {
+        this.ringing = ringing;
+    }
+
+    public boolean isEnabled() {
+        return getRinging() != null;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(Alarm.class)
                 .add("id", getId())
                 .add("name", getName())
                 .add("time", getTime())
-                .add("enabled", isEnabled())
+                .add("ringing", getRinging())
                 .add("repeating", getRepeating())
                 .toString();
     }

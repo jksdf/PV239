@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import org.threeten.bp.Instant;
+
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import ly.betime.shuriken.receivers.AlarmReceiver;
 
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
 
@@ -23,10 +27,10 @@ public class AlarmManagerApi {
     private final Class<?> receiver;
 
     @Inject
-    public AlarmManagerApi(AlarmManager alarmManager, @Named("application") Context context, Class<?> receiver) {
+    public AlarmManagerApi(AlarmManager alarmManager, @Named("application") Context context) {
         this.alarmManager = checkNotNull(alarmManager);
         this.context = checkNotNull(context);
-        this.receiver = checkNotNull(receiver);
+        this.receiver = AlarmReceiver.class;
     }
 
     /**
@@ -34,6 +38,7 @@ public class AlarmManagerApi {
      * @param id of the alarm
      */
     public void cancelAlarm(int id) {
+        Log.i(LOG_TAG, "Cancelling alarm, id: " + id);
         PendingIntent pendingIntent = getPendingIntent(id, false);
         if (pendingIntent == null) {
             Log.w(LOG_TAG, "Pending alarm not found, id: " + id);
@@ -48,6 +53,7 @@ public class AlarmManagerApi {
      * @param triggerTime milliseconds since epoch when to trigger the alarm.
      */
     public void setAlarm(int id, long triggerTime) {
+        Log.i(LOG_TAG, "Setting alarm " + id + " to " + Instant.ofEpochMilli(triggerTime) + " as " + triggerTime);
         PendingIntent pendingIntent = getPendingIntent(id, true);
         if (Build.VERSION.SDK_INT >= 21) {
             this.alarmManager.setAlarmClock(

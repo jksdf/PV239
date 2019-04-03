@@ -2,7 +2,6 @@ package ly.betime.shuriken.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,12 +10,8 @@ import android.view.View;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Lists;
 
-import org.threeten.bp.Instant;
-import org.threeten.bp.temporal.ChronoUnit;
-
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -27,16 +22,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapter.AlarmsAdapter;
+import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmService;
-import ly.betime.shuriken.apis.CalendarApi;
-import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.service.DummyFiller;
 
 public class AlarmsActivity extends AppCompatActivity {
-
-    private final static Logger LOGGER = Logger.getLogger(AlarmsActivity.class.getName());
 
     @Inject
     public AlarmService alarmService;
@@ -58,7 +50,7 @@ public class AlarmsActivity extends AppCompatActivity {
 
         if (alarmService.listAlarms().size() == 0) {
             for (Alarm alarm : DummyFiller.generate(5)) {
-                alarmService.createAlarm(alarm);
+                alarmService.createAlarm(alarm, false);
             }
         }
 
@@ -68,9 +60,6 @@ public class AlarmsActivity extends AppCompatActivity {
 
         addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener((View v) -> startAlarmFormActivity(null));
-
-        List<CalendarEvent> events = calendarApi.getEvents(Instant.now().toEpochMilli(), Instant.now().plus(7, ChronoUnit.DAYS).toEpochMilli());
-        Log.i("Alarms Activity", (events != null ? events.toString() : "null"));
     }
 
     @Override
@@ -81,6 +70,7 @@ public class AlarmsActivity extends AppCompatActivity {
 
     /**
      * Starts AlarmFormActivity
+     *
      * @param alarm Alarm for editing if any is needed
      */
     protected void startAlarmFormActivity(@Nullable Alarm alarm) {
@@ -107,7 +97,11 @@ public class AlarmsActivity extends AppCompatActivity {
 
         if (alarmsAdapter == null) {
             alarmsAdapter = new AlarmsAdapter(alarms, languageTextHelper);
-            alarmsAdapter.setAlarmSwitchListener((alarm, state) -> alarmService.setAlarm(alarm, state));
+            alarmsAdapter.setAlarmSwitchListener(
+                    (alarm, state) ->
+                            alarmService.setAlarm(
+                                    alarm,
+                                    state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE));
 
             alarmsView.setAdapter(alarmsAdapter);
             alarmsView.setLayoutManager(new LinearLayoutManager(this));

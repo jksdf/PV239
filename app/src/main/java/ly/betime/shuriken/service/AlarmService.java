@@ -11,9 +11,13 @@ public interface AlarmService {
 
     void updateAlarm(Alarm alarm);
 
-    void createAlarm(Alarm alarm);
+    void createAlarm(Alarm alarm, boolean enable);
 
     void removeAlarm(Alarm alarm);
 
-    void setAlarm(Alarm alarm, boolean enable);
+    void setAlarm(Alarm alarm, AlarmAction action);
+
+    enum AlarmAction {
+        DISABLE, ENABLE, SNOOZE
+    }
 }
