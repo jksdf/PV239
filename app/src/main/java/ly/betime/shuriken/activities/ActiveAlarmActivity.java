@@ -1,5 +1,6 @@
 package ly.betime.shuriken.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -67,12 +68,22 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private void addListeners() {
         snoozeButton.setOnClickListener((v) -> {
             Log.i(LOG_TAG, "Snoozed");
-            // TODO(slivka): Do something
+            alarmService.setAlarm(alarm, AlarmService.AlarmAction.SNOOZE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                finishAffinity();
+            } else {
+                finish();
+            }
         });
 
         stopButton.setOnLongClickListener((v) -> {
             Log.i(LOG_TAG, "Stoped");
-            // TODO(slivka): Do something even better
+            alarmService.setAlarm(alarm, AlarmService.AlarmAction.DISABLE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                finishAffinity();
+            } else {
+                finish();
+            }
             return true;
         });
     }
