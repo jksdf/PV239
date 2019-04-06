@@ -5,14 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.google.common.collect.ImmutableSet;
+
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.service.AlarmService;
 
-public class UpgradeReceiver extends BroadcastReceiver {
-    private static final String LOG_TAG = "UpgradeReceiver";
+public class ReloadAlarmsReceiver extends BroadcastReceiver {
+    private static final String LOG_TAG = "ReloadAlarmsReceiver";
+
+    private static final Set<String> ACTIONS =
+            ImmutableSet.of(Intent.ACTION_MY_PACKAGE_REPLACED, Intent.ACTION_BOOT_COMPLETED);
 
     @Inject
     public AlarmService alarmService;
@@ -20,8 +27,8 @@ public class UpgradeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         App.getComponent().inject(this);
-        Log.i(LOG_TAG, "App upgrade detected, resetting alarms.");
-        if (intent.getAction() == null || !intent.getAction().equals(Intent.ACTION_MY_PACKAGE_REPLACED)) {
+        Log.i(LOG_TAG, "Resetting alarms.");
+        if (intent.getAction() == null || !ACTIONS.contains(intent.getAction())) {
             Log.w(LOG_TAG, String.format("Bad intent action %s", intent.getAction()));
         }
 
@@ -31,6 +38,6 @@ public class UpgradeReceiver extends BroadcastReceiver {
                 alarmService.setAlarm(alarm, AlarmService.AlarmAction.ENABLE);
             }
         }
-        Log.i(LOG_TAG, "All alarms were reset after upgrade.");
+        Log.i(LOG_TAG, "All alarms were reset.");
     }
 }
