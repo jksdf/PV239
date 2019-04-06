@@ -35,17 +35,14 @@ public class ApisModule {
     }
 
     private static CalendarEvent generateEvent() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CalendarEvent event = new CalendarEvent();
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime start = now.plus(60 + random.nextInt() % 10000, ChronoUnit.MINUTES);
-            event.setFrom(start);
-            event.setTo(start.plus(20 + random.nextInt() % 50, ChronoUnit.MINUTES));
-            event.setEventId(random.nextLong());
-            event.setName("TestEvent" + random.nextInt() % 10);
-            event.setStatus(random.nextInt() % 3);
-            return event;
-        }
-        throw new RuntimeException();
+        CalendarEvent event = new CalendarEvent();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = now.plus(60 + random.nextInt() % 10000, ChronoUnit.MINUTES);
+        event.setFrom(start);
+        event.setTo(start.plus(20 + random.nextInt() % 50, ChronoUnit.MINUTES));
+        event.setEventId(random.nextLong());
+        event.setName("TestEvent" + random.nextInt() % 10);
+        event.setStatus(random.nextInt() % 3);
+        return event;
     }
 }

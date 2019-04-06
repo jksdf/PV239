@@ -55,7 +55,6 @@ public class AlarmFormActivity extends AppCompatActivity {
 
         labelEditText = findViewById(R.id.labelText);
         timePicker = findViewById(R.id.timePicker);
-        timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
 
         labelContainer = findViewById(R.id.labelContainer);
         labelContainer.setOnClickListener((v) -> labelEditText.requestFocus());
@@ -139,7 +138,7 @@ public class AlarmFormActivity extends AppCompatActivity {
         LocalTime time = alarm != null ? alarm.getTime() : LocalTime.now();
         timePicker.setCurrentHour(time.getHour());
         timePicker.setCurrentMinute(time.getMinute());
-        timePicker.setIs24HourView(true); // TODO: Add to settings
+        timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
         repeatValueText.setText(languageTextHelper.getAlarmRepeatText(
                 alarm != null ? alarm.getRepeating() : EnumSet.noneOf(DayOfWeek.class)
         ));

@@ -9,8 +9,7 @@
 
     <string name="alarm_time_format_24">HH:mm</string>
     <string name="alarm_time_format_12">hh:mm</string>
-    <string name="time_pm">pm</string>
-    <string name="time_am">am</string>
+    <string name="alarm_period_format">a</string>
 
     <string name="repeat_everyday">Everyday</string>
     <string name="repeat_non">Never repeat</string>
