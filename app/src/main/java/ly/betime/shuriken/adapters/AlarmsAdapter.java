@@ -57,6 +57,7 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
         Alarm alarm = alarms.get(position);
 
         viewHolder.alarmTime.setText(alarm.getTime().format(languageTextHelper.getAlarmTimeFormatter()));
+        viewHolder.alarmTimePeriod.setText(alarm.getTime().format(languageTextHelper.getAlarmPeriodFormatter()));
         viewHolder.alarmRepeat.setText(languageTextHelper.getAlarmRepeatText(alarm.getRepeating()));
         viewHolder.switchButton.setChecked(alarm.isEnabled());
 
@@ -70,12 +71,14 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
 
     class AlarmViewHolder extends RecyclerView.ViewHolder {
         final TextView alarmTime;
+        final TextView alarmTimePeriod;
         final TextView alarmRepeat;
         final Switch switchButton;
 
         AlarmViewHolder(@NonNull View itemView) {
             super(itemView);
             alarmTime = itemView.findViewById(R.id.alarmTimeTextView);
+            alarmTimePeriod = itemView.findViewById(R.id.alarmTimePeriodTextView);
             alarmRepeat = itemView.findViewById(R.id.alarmRepeatTextView);
             switchButton = itemView.findViewById(R.id.alarmSwitch);
 
@@ -107,9 +110,11 @@ public class AlarmsAdapter extends RecyclerView.Adapter<AlarmsAdapter.AlarmViewH
             // WTF: You can't change style of view in code
             if (enabled) {
                 alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorText));
+                alarmTimePeriod.setTextColor(itemView.getResources().getColor(R.color.colorText));
                 alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorText));
             } else {
                 alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
+                alarmTimePeriod.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
                 alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
             }
         }

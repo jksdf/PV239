@@ -18,6 +18,10 @@
         <item name="android:textColor">@color/colorText</item>
     </style>
 
+    <style name="AlarmTimeText.Period">
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="AlarmBackground">
         <item name="android:background">@drawable/alarm_bg</item>
         <item name="android:clickable">true</item>
