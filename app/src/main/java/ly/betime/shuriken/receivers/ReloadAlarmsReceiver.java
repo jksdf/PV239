@@ -3,6 +3,8 @@ package ly.betime.shuriken.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 
 import com.google.common.collect.ImmutableSet;
@@ -27,17 +29,22 @@ public class ReloadAlarmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         App.getComponent().inject(this);
-        Log.i(LOG_TAG, "Resetting alarms.");
-        if (intent.getAction() == null || !ACTIONS.contains(intent.getAction())) {
-            Log.w(LOG_TAG, String.format("Bad intent action %s", intent.getAction()));
-        }
-
-        for (Alarm alarm : alarmService.listAlarms()) {
-            if (alarm.isEnabled()) {
-                alarm.setRinging(null);
-                alarmService.setAlarm(alarm, AlarmService.AlarmAction.ENABLE);
+        HandlerThread handlerThread =  new HandlerThread("database_helper");
+        handlerThread.start();
+        Handler handler =  new Handler(handlerThread.getLooper());
+        handler.post(() -> {
+            Log.i(LOG_TAG, "Resetting alarms.");
+            if (intent.getAction() == null || !ACTIONS.contains(intent.getAction())) {
+                Log.w(LOG_TAG, String.format("Bad intent action %s", intent.getAction()));
             }
-        }
-        Log.i(LOG_TAG, "All alarms were reset.");
+            for (Alarm alarm : alarmService.listAlarmsSync()) {
+                if (alarm.isEnabled()) {
+                    alarm.setRinging(null);
+                    alarmService.setAlarm(alarm, AlarmService.AlarmAction.ENABLE);
+                }
+            }
+            Log.i(LOG_TAG, "All alarms were reset.");
+        });
+
     }
 }

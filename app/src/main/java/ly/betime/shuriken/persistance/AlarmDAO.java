@@ -2,6 +2,7 @@ package ly.betime.shuriken.persistance;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -21,8 +22,14 @@ public interface AlarmDAO {
     void delete(Alarm alarm);
 
     @Query("SELECT * FROM Alarm")
-    List<Alarm> list();
+    LiveData<List<Alarm>> list();
+
+    @Query("SELECT * FROM Alarm")
+    List<Alarm> listSync();
 
     @Query("SELECT * FROM Alarm WHERE id = :id LIMIT 1")
-    Alarm get(int id);
+    LiveData<Alarm> get(int id);
+
+    @Query("SELECT * FROM Alarm WHERE id = :id LIMIT 1")
+    Alarm getSync(int id);
 }

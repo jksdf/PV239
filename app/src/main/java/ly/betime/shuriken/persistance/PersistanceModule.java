@@ -13,10 +13,8 @@ public class PersistanceModule {
     private final AppDatabase db;
 
     public PersistanceModule(@Named("application") Context context) {
-        // TODO(slivka): remove main thread query support
         db = Room
                 .databaseBuilder(context, AppDatabase.class, "db")
-                .allowMainThreadQueries()
                 .build();
     }
 
