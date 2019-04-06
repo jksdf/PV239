@@ -24,7 +24,6 @@ public class SettingsActivity extends AMenuActivity {
     private static final int SOUND_PICKER_ACTIVITY = 64;
 
     private final List<Preference> preferenceList = Arrays.asList(
-            new Preference(Preferences.HOUR_FORMAT_24, R.string.hour_format_24, Boolean.class),
             new Preference(Preferences.ALARM_SOUND, R.string.alarm_sound, Sound.class),
             new Preference(Preferences.SNOOZE_TIME, R.string.snooze_settings, Integer.class)
     );

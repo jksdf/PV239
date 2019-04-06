@@ -1,6 +1,7 @@
 package ly.betime.shuriken.helpers;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -19,7 +20,8 @@ import ly.betime.shuriken.R;
  */
 public class LanguageTextHelper {
     private Context context;
-    private DateTimeFormatter alarmTimeFormatter;
+    private DateTimeFormatter alarmTimeFormatter24;
+    private DateTimeFormatter alarmTimeFormatter12;
 
     @Inject
     public LanguageTextHelper(@Named("application") Context context) {
@@ -28,12 +30,13 @@ public class LanguageTextHelper {
 
     public void setContext(@NonNull Context context) {
         this.context = context;
-        alarmTimeFormatter = DateTimeFormatter.ofPattern(context.getString(R.string.alarm_time_format));
+        alarmTimeFormatter24 = DateTimeFormatter.ofPattern(context.getString(R.string.alarm_time_format_24));
+        alarmTimeFormatter12 = DateTimeFormatter.ofPattern(context.getString(R.string.alarm_time_format_12));
     }
 
 
     public DateTimeFormatter getAlarmTimeFormatter() {
-        return alarmTimeFormatter;
+        return DateFormat.is24HourFormat(context) ? alarmTimeFormatter24 : alarmTimeFormatter12;
     }
 
 

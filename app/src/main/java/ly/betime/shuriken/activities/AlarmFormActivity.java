@@ -1,8 +1,8 @@
 package ly.betime.shuriken.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +24,6 @@ import ly.betime.shuriken.R;
 import ly.betime.shuriken.dialogs.AlarmRepeatDialog;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
-import ly.betime.shuriken.preferences.Preferences;
 import ly.betime.shuriken.service.AlarmService;
 
 public class AlarmFormActivity extends AppCompatActivity {
@@ -56,8 +55,7 @@ public class AlarmFormActivity extends AppCompatActivity {
 
         labelEditText = findViewById(R.id.labelText);
         timePicker = findViewById(R.id.timePicker);
-        timePicker.setIs24HourView(getSharedPreferences(Preferences.NAME, Context.MODE_PRIVATE)
-                .getBoolean(Preferences.HOUR_FORMAT_24, true));
+        timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
 
         labelContainer = findViewById(R.id.labelContainer);
         labelContainer.setOnClickListener((v) -> labelEditText.requestFocus());
