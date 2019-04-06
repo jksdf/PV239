@@ -1,5 +1,6 @@
 package ly.betime.shuriken.service;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.threeten.bp.LocalDateTime;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.persistance.AlarmDAO;
+import ly.betime.shuriken.preferences.Preferences;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -21,11 +23,13 @@ public class AlarmServiceImpl implements AlarmService {
 
     private final AlarmDAO alarmDao;
     private final AlarmManagerApi alarmManagerApi;
+    private final SharedPreferences sharedPreferences;
 
     @Inject
-    public AlarmServiceImpl(AlarmDAO alarmDao, AlarmManagerApi alarmManagerApi) {
+    public AlarmServiceImpl(AlarmDAO alarmDao, AlarmManagerApi alarmManagerApi, SharedPreferences sharedPreferences) {
         this.alarmDao = checkNotNull(alarmDao);
         this.alarmManagerApi = checkNotNull(alarmManagerApi);
+        this.sharedPreferences = sharedPreferences;
     }
 
     @Override
@@ -94,8 +98,7 @@ public class AlarmServiceImpl implements AlarmService {
             alarmDao.update(alarm);
             alarmManagerApi.cancelAlarm(alarm.getId());
         } else if (action == AlarmAction.SNOOZE) {
-            //TODO(slivka): since snooze or since start of alarm (how to handle alarm ringing for 10+ mins)
-            alarm.setRinging(LocalDateTime.now().plusMinutes(10));
+            alarm.setRinging(LocalDateTime.now().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, 10)));
             alarmDao.update(alarm);
             alarmManagerApi.cancelAlarm(alarm.getId());
             alarmManagerApi.setAlarm(alarm.getId(), alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
