@@ -156,6 +156,8 @@
     <style name="Preference.Label">
         <item name="android:textColor">@color/colorText</item>
         <item name="android:background">#00000000</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">none</item>
     </style>
 
     <style name="Preference.Input">
@@ -163,6 +165,8 @@
         <item name="android:textColorHint">@color/colorTextDarkest</item>
         <item name="android:background">#00000000</item>
         <item name="android:gravity">right</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
 </resources>
