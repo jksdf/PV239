@@ -34,6 +34,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
     private TextView alarmName;
     private TextView alarmTime;
+    private TextView alarmPeriod;
     private View snoozeButton;
     private View stopButton;
 
@@ -50,6 +51,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
         alarmName = findViewById(R.id.alarmName);
         alarmTime = findViewById(R.id.alarmTime);
+        alarmPeriod = findViewById(R.id.alarmTimePeriod);
         snoozeButton = findViewById(R.id.snoozeButton);
         stopButton = findViewById(R.id.stopButton);
 
@@ -84,6 +86,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
             }
             alarmName.setText(alarm.getName());
             alarmTime.setText(alarm.getTime().format(languageTextHelper.getAlarmTimeFormatter()));
+            alarmPeriod.setText(alarm.getTime().format(languageTextHelper.getAlarmPeriodFormatter()));
         });
     }
 

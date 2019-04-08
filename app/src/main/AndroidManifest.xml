@@ -20,6 +20,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.AlarmFormActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".activities.AlarmsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

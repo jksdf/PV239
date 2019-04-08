@@ -2,6 +2,7 @@ package ly.betime.shuriken.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -139,7 +140,7 @@ public class AlarmFormActivity extends AppCompatActivity {
         LocalTime time = alarm != null ? alarm.getTime() : LocalTime.now();
         timePicker.setCurrentHour(time.getHour());
         timePicker.setCurrentMinute(time.getMinute());
-        timePicker.setIs24HourView(true); // TODO: Add to settings
+        timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
         repeatValueText.setText(languageTextHelper.getAlarmRepeatText(
                 alarm != null ? alarm.getRepeating() : EnumSet.noneOf(DayOfWeek.class)
         ));

@@ -23,21 +23,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/alarmTime"
-        style="@style/ActiveAlarm.Time"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="0dp"
-
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alarmName" />
+        app:layout_constraintTop_toBottomOf="@+id/alarmName"
+        android:gravity="center|bottom"
+        >
+        <TextView
+            android:id="@+id/alarmTime"
+            style="@style/ActiveAlarm.Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="06:90"/>
+        <TextView
+            android:id="@+id/alarmTimePeriod"
+            style="@style/ActiveAlarm.Time.Period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pm"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/snoozeButton"

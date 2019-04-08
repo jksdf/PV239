@@ -18,6 +18,10 @@
         <item name="android:textColor">@color/colorText</item>
     </style>
 
+    <style name="AlarmTimeText.Period">
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="AlarmBackground">
         <item name="android:background">@drawable/alarm_bg</item>
         <item name="android:clickable">true</item>
@@ -35,7 +39,8 @@
     <style name="AlarmLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">2dp</item>
-        <item name="android:layout_marginHorizontal">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:background">@color/colorPrimaryDark</item>
     </style>
@@ -55,8 +60,10 @@
 
     <style name="AlarmForm">
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingHorizontal">10dp</item>
-        <item name="android:paddingVertical">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
         <item name="android:background">@color/colorBackground</item>
     </style>
 
@@ -88,6 +95,10 @@
         <item name="android:textColor">@color/colorText</item>
     </style>
 
+    <style name="ActiveAlarm.Time.Period">
+        <item name="android:textSize">60sp</item>
+    </style>
+
     <style name="ActiveAlarm.Name">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -99,8 +110,10 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/stop_button_color</item>
         <item name="android:background">@drawable/stop_button_bg</item>
-        <item name="android:paddingVertical">15dp</item>
-        <item name="android:paddingHorizontal">30dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
     </style>
 
     <style name="ActiveAlarm.Snooze">
@@ -127,8 +140,10 @@
 
     <style name="Preference">
         <item name="android:textSize">20sp</item>
-        <item name="android:paddingHorizontal">10dp</item>
-        <item name="android:paddingVertical">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
         <item name="android:background">@color/colorBackground</item>
     </style>
 
