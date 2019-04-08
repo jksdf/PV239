@@ -5,6 +5,10 @@
         android:title="@string/alarms"
         android:icon="@drawable/ic_alarm_48"
         app:showAsAction="always"/>
+    <item android:id="@+id/calendar"
+        android:title="@string/calendar"
+        android:icon="@drawable/ic_event_note_48"
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/settings"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings_48"

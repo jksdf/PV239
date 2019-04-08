@@ -14,14 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.CalendarActivity"></activity>
+        <activity android:name=".activities.SettingsActivity" />
         <activity
             android:name=".activities.ActiveAlarmActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.AlarmFormActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".activities.AlarmsActivity">
+            android:parentActivityName=".activities.AlarmsActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.AlarmsActivity" />
@@ -43,6 +44,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
