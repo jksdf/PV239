@@ -47,12 +47,6 @@ public class AlarmsActivity extends AMenuActivity {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
 
-        if (alarmService.listAlarms().size() == 0) {
-            for (Alarm alarm : DummyFiller.generate(5)) {
-                alarmService.createAlarm(alarm, false);
-            }
-        }
-
         setContentView(R.layout.activity_alarms);
         alarmsView = findViewById(R.id.alarmsContainer);
         registerForContextMenu(alarmsView);
@@ -85,28 +79,30 @@ public class AlarmsActivity extends AMenuActivity {
      * Use notify functions of {@link RecyclerView.Adapter} if only one item changed.
      */
     public void renderAlarmList() {
-        if (alarms == null) {
-            alarms = Lists.newArrayList(alarmService.listAlarms());
-        } else {
-            alarms.clear();
-            alarms.addAll(alarmService.listAlarms());
-        }
+        alarmService.listAlarms().observe(this, x->{
+            if (alarms == null) {
+                alarms = Lists.newArrayList(x);
+            } else {
+                alarms.clear();
+                alarms.addAll(x);
+            }
 
-        Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
+            Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
 
-        if (alarmsAdapter == null) {
-            alarmsAdapter = new AlarmsAdapter(alarms, languageTextHelper);
-            alarmsAdapter.setAlarmSwitchListener(
-                    (alarm, state) ->
-                            alarmService.setAlarm(
-                                    alarm,
-                                    state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE));
+            if (alarmsAdapter == null) {
+                alarmsAdapter = new AlarmsAdapter(alarms, languageTextHelper);
+                alarmsAdapter.setAlarmSwitchListener(
+                        (alarm, state) ->
+                                alarmService.setAlarm(
+                                        alarm,
+                                        state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE));
 
-            alarmsView.setAdapter(alarmsAdapter);
-            alarmsView.setLayoutManager(new LinearLayoutManager(this));
-        } else {
-            alarmsAdapter.notifyDataSetChanged();
-        }
+                alarmsView.setAdapter(alarmsAdapter);
+                alarmsView.setLayoutManager(new LinearLayoutManager(this));
+            } else {
+                alarmsAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /**

@@ -19,10 +19,6 @@ import dagger.Provides;
 @Module
 public class ApisModule {
     private static final Random random = new Random();
-//    @Provides
-//    public AlarmManagerApi alarmManagerApi(AlarmManager alarmManager, @Named("application") Context context) {
-//        return new AlarmManagerApi(alarmManager, context);
-//    }
 
     @Provides
     public CalendarApi calendarApi(@Named("application") Context context, ZoneId zoneId) {

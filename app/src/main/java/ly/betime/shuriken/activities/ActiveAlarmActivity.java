@@ -79,13 +79,15 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
     private void setAlarmValues() {
         int alarmId = getIntent().getIntExtra(ALARM_ID_EXTRA_NAME, -1);
-        alarm = alarmService.getAlarm(alarmId);
-        if (alarm == null) {
-            throw new IllegalStateException("In " + this.getClass().getName() + " without valid alarm id");
-        }
-        alarmName.setText(alarm.getName());
-        alarmTime.setText(alarm.getTime().format(languageTextHelper.getAlarmTimeFormatter()));
-        alarmPeriod.setText(alarm.getTime().format(languageTextHelper.getAlarmPeriodFormatter()));
+        alarmService.getAlarm(alarmId).observe(this, newAlarm -> {
+            alarm = newAlarm;
+            if (alarm == null) {
+                throw new IllegalStateException("In " + this.getClass().getName() + " without valid alarm id");
+            }
+            alarmName.setText(alarm.getName());
+            alarmTime.setText(alarm.getTime().format(languageTextHelper.getAlarmTimeFormatter()));
+            alarmPeriod.setText(alarm.getTime().format(languageTextHelper.getAlarmPeriodFormatter()));
+        });
     }
 
     private void addListeners() {

@@ -82,9 +82,11 @@ public class AlarmFormActivity extends AppCompatActivity {
         int alarmId = intent.getIntExtra(ALARM_ID_MESSAGE, 0);
         alarm = null;
         if (alarmId != 0) {
-            alarm = alarmService.getAlarm(alarmId);
+            alarmService.getAlarm(alarmId).observe(this, newAlarm -> {
+                alarm = newAlarm;
+                setFormValues(alarm);
+            });
         }
-        setFormValues(alarm);
     }
 
     @Override

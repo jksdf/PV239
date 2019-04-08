@@ -2,12 +2,16 @@ package ly.betime.shuriken.service;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import ly.betime.shuriken.entities.Alarm;
 
 public interface AlarmService {
-    List<Alarm> listAlarms();
+    LiveData<List<Alarm>> listAlarms();
+    List<Alarm> listAlarmsSync();
 
-    Alarm getAlarm(int id);
+    LiveData<Alarm> getAlarm(int id);
+
+    Alarm getAlarmSync(int id);
 
     void updateAlarm(Alarm alarm);
 
