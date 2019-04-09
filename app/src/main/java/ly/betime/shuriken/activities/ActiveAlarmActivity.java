@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +43,8 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
     private Alarm alarm;
 
-    Ringtone beep;
+    private Ringtone beep;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +72,27 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
         beep.stop();
     }
 
     private void playSound() {
         String sound = getSharedPreferences(Preferences.NAME, Context.MODE_PRIVATE).getString(Preferences.ALARM_SOUND, null);
         beep = RingtoneManager.getRingtone(getApplicationContext(), sound != null ? Uri.parse(sound) : RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            beep.setLooping(true);
+        } else {
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                public void run() {
+                    if (!beep.isPlaying()) {
+                        beep.play();
+                    }
+                }
+            }, 1000, 1000);
+        }
         beep.play();
     }
 

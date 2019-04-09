@@ -78,6 +78,9 @@ public class AlarmFormActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
+
         Intent intent = getIntent();
         int alarmId = intent.getIntExtra(ALARM_ID_MESSAGE, 0);
         alarm = null;
@@ -140,7 +143,6 @@ public class AlarmFormActivity extends AppCompatActivity {
         LocalTime time = alarm != null ? alarm.getTime() : LocalTime.now();
         timePicker.setCurrentHour(time.getHour());
         timePicker.setCurrentMinute(time.getMinute());
-        timePicker.setIs24HourView(DateFormat.is24HourFormat(this));
         repeatValueText.setText(languageTextHelper.getAlarmRepeatText(
                 alarm != null ? alarm.getRepeating() : EnumSet.noneOf(DayOfWeek.class)
         ));
