@@ -125,19 +125,25 @@ public class AlarmServiceImpl implements AlarmService {
             Log.w(LOG_TAG, String.format("Alarm %d was already set, skipping.", alarm.getId()));
             return;
         }
-        if (action == AlarmAction.ENABLE) {
-            LocalDateTime nextRinging = calculateNextRinging(alarm);
-            new UpdateTask(alarmDao).execute(alarm);
-            alarmManagerApi.setAlarm(alarm.getId(), nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        } else if (action == AlarmAction.DISABLE) {
-            alarm.setRinging(null);
-            new UpdateTask(alarmDao).execute(alarm);
-            alarmManagerApi.cancelAlarm(alarm.getId());
-        } else if (action == AlarmAction.SNOOZE) {
-            alarm.setRinging(LocalDateTime.now().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, 10)));
-            new UpdateTask(alarmDao).execute(alarm);
-            alarmManagerApi.cancelAlarm(alarm.getId());
-            alarmManagerApi.setAlarm(alarm.getId(), alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        switch (action) {
+            case ENABLE:
+                LocalDateTime nextRinging = calculateNextRinging(alarm);
+                new UpdateTask(alarmDao).execute(alarm);
+                alarmManagerApi.setAlarm(alarm.getId(), nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                return;
+            case DISABLE:
+                alarm.setRinging(null);
+                new UpdateTask(alarmDao).execute(alarm);
+                alarmManagerApi.cancelAlarm(alarm.getId());
+                return;
+            case SNOOZE:
+                alarm.setRinging(LocalDateTime.now().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, 10)));
+                new UpdateTask(alarmDao).execute(alarm);
+                alarmManagerApi.cancelAlarm(alarm.getId());
+                alarmManagerApi.setAlarm(alarm.getId(), alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                return;
+            default:
+                throw new AssertionError();
         }
     }
 
