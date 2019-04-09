@@ -12,10 +12,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.persistance.AlarmDAO;
@@ -65,6 +62,14 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public void updateAlarm(Alarm alarm) {
         Log.i(LOG_TAG, "Updating alarm " + alarm.getId());
+        if (alarm.isEnabled()) {
+            LocalDateTime nextRinging = calculateNextRinging(alarm);
+            alarm.setRinging(nextRinging);
+            alarmManagerApi.cancelAlarm(alarm.getId());
+            alarmManagerApi.setAlarm(alarm.getId(), nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        } else {
+            alarm.setRinging(null);
+        }
         new UpdateTask(alarmDao).execute(alarm);
     }
 
@@ -72,7 +77,6 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public void createAlarm(Alarm alarm, boolean enabled) {
         Log.i(LOG_TAG, "Creating alarm.");
-        //TODO(slivka): try to find a nicer solution maybe
         new AsyncTask<Alarm, Void, Alarm>() {
             @Override
             protected Alarm doInBackground(Alarm... alarms) {
@@ -92,13 +96,24 @@ public class AlarmServiceImpl implements AlarmService {
         }.execute(alarm);
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void removeAlarm(Alarm alarm) {
-        Log.i(LOG_TAG, String.format("Alarm %d removed.", alarm.getId()));
-        if (alarm.isEnabled()) {
-            this.setAlarm(alarm, AlarmAction.DISABLE);
-        }
-        alarmDao.delete(alarm);
+        new AsyncTask<Alarm, Void, Alarm>() {
+            @Override
+            protected Alarm doInBackground(Alarm... alarms) {
+                alarmDao.delete(alarm);
+                return alarm;
+            }
+
+            @Override
+            protected void onPostExecute(Alarm alarm) {
+                if (alarm.isEnabled()) {
+                    setAlarm(alarm, AlarmAction.DISABLE);
+                }
+                Log.i(LOG_TAG, String.format("Alarm %d removed.", alarm.getId()));
+            }
+        }.execute(alarm);
     }
 
 
@@ -111,21 +126,9 @@ public class AlarmServiceImpl implements AlarmService {
             return;
         }
         if (action == AlarmAction.ENABLE) {
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime adjusted = now.with(alarm.getTime());
-            if (adjusted.isBefore(now)) {
-                adjusted = adjusted.plusDays(1);
-            }
-            now = adjusted;
-            if (!alarm.getRepeating().isEmpty()) {
-                while (!alarm.getRepeating().contains(now.getDayOfWeek())) {
-                    now = now.plusDays(1);
-                }
-                now = now.with(alarm.getTime());
-            }
-            alarm.setRinging(now);
+            LocalDateTime nextRinging = calculateNextRinging(alarm);
             new UpdateTask(alarmDao).execute(alarm);
-            alarmManagerApi.setAlarm(alarm.getId(), now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            alarmManagerApi.setAlarm(alarm.getId(), nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         } else if (action == AlarmAction.DISABLE) {
             alarm.setRinging(null);
             new UpdateTask(alarmDao).execute(alarm);
@@ -136,6 +139,23 @@ public class AlarmServiceImpl implements AlarmService {
             alarmManagerApi.cancelAlarm(alarm.getId());
             alarmManagerApi.setAlarm(alarm.getId(), alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         }
+    }
+
+    private LocalDateTime calculateNextRinging(Alarm alarm) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime adjusted = now.with(alarm.getTime());
+        if (adjusted.isBefore(now)) {
+            adjusted = adjusted.plusDays(1);
+        }
+        now = adjusted;
+        if (!alarm.getRepeating().isEmpty()) {
+            while (!alarm.getRepeating().contains(now.getDayOfWeek())) {
+                now = now.plusDays(1);
+            }
+            now = now.with(alarm.getTime());
+        }
+        alarm.setRinging(now);
+        return now;
     }
 
     private static class UpdateTask extends AsyncTask<Alarm, Void, Void> {
