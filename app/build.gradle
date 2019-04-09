@@ -40,8 +40,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     def room_version = "2.1.0-alpha04"
+    //noinspection GradleDependency
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    //noinspection GradleDependency
     implementation "androidx.room:room-guava:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
@@ -55,5 +57,5 @@ dependencies {
 
     testImplementation "com.google.truth:truth:0.43"
 
-    testImplementation "org.mockito:mockito-core:2.+"
+    testImplementation "org.mockito:mockito-core:2.26.0"
 }

@@ -28,7 +28,7 @@ public class AlarmGeneratorTest {
     private static final LocalDate TODAY = LocalDate.of(2019, 1, 5);
     private static final ZoneId ZONE_ID = ZoneOffset.UTC;
 
-    private static CalendarApi fakeCalendar = mock(CalendarApi.class);
+    private static final CalendarApi fakeCalendar = mock(CalendarApi.class);
 
     private static final LocalTime DEFAULT_ALARM =
             LocalTime.of(8, 0);
