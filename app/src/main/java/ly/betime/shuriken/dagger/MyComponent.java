@@ -7,10 +7,9 @@ import ly.betime.shuriken.activities.AlarmsActivity;
 import ly.betime.shuriken.persistance.PersistanceModule;
 import ly.betime.shuriken.receivers.AlarmReceiver;
 import ly.betime.shuriken.receivers.ReloadAlarmsReceiver;
-import ly.betime.shuriken.apis.ApisModule;
 import ly.betime.shuriken.service.ServiceModule;
 
-@Component(modules = {ApplicationModule.class, PersistanceModule.class, ServiceModule.class, ApisModule.class})
+@Component(modules = {ApplicationModule.class, PersistanceModule.class, ServiceModule.class})
 public interface MyComponent {
     @Component.Builder
     interface Builder {
@@ -22,7 +21,6 @@ public interface MyComponent {
 
         Builder applicationModule(ApplicationModule module);
 
-        Builder alarmApiModule(ApisModule module);
     }
 
     void inject(AlarmFormActivity app);

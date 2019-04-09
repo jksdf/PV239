@@ -8,9 +8,6 @@ import com.google.common.collect.ImmutableMap;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDate;
-
-import static com.google.common.truth.Truth.assertThat;
-
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZoneOffset;
@@ -18,13 +15,20 @@ import org.threeten.bp.ZoneOffset;
 import java.util.List;
 
 import ly.betime.shuriken.SharedPreferencesFake;
-import ly.betime.shuriken.apis.CalendarApiFake;
+import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
+
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AlarmGeneratorTest {
 
     private static final LocalDate TODAY = LocalDate.of(2019, 1, 5);
     private static final ZoneId ZONE_ID = ZoneOffset.UTC;
+
+    private static CalendarApi fakeCalendar = mock(CalendarApi.class);
 
     private static final LocalTime DEFAULT_ALARM =
             LocalTime.of(8, 0);
@@ -88,8 +92,9 @@ public class AlarmGeneratorTest {
     }
 
     private static AlarmGenerator alarmGenerator(List<CalendarEvent> events) {
+        when(fakeCalendar.getEvents(anyLong(), anyLong())).thenReturn(events);
         return new AlarmGenerator(
-                new CalendarApiFake(events, ZONE_ID),
+                fakeCalendar,
                 sharedPreferences,
                 new AlarmGenerator.EventPrepEstimate(),
                 ZONE_ID);

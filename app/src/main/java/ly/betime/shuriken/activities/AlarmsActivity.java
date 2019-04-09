@@ -2,6 +2,7 @@ package ly.betime.shuriken.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,6 +10,8 @@ import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Lists;
+
+import org.threeten.bp.Instant;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,9 +28,10 @@ import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmService;
-import ly.betime.shuriken.service.DummyFiller;
 
 public class AlarmsActivity extends AMenuActivity {
+
+    private static final String LOG_TAG = "AlarmsActivity";
 
     @Inject
     public AlarmService alarmService;
@@ -103,6 +107,10 @@ public class AlarmsActivity extends AMenuActivity {
                 alarmsAdapter.notifyDataSetChanged();
             }
         });
+
+        if (calendarApi.getPermission(this)) {
+            Log.i(LOG_TAG, "Next week events: " + calendarApi.getEvents(Instant.now().toEpochMilli(), Instant.now().toEpochMilli() + 1000L * 60 * 60 * 24 * 7).toString());
+        }
     }
 
     /**
