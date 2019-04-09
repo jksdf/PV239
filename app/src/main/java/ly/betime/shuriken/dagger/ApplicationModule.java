@@ -16,6 +16,7 @@ import dagger.Module;
 import dagger.Provides;
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.activities.AlarmsActivity;
+import ly.betime.shuriken.preferences.Preferences;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -29,7 +30,7 @@ public class ApplicationModule {
 
     @Provides
     public SharedPreferences sharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
+        return application.getApplicationContext().getSharedPreferences(Preferences.NAME, Context.MODE_PRIVATE);
     }
 
     @Provides
