@@ -9,13 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.common.collect.Lists;
 
-import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
-
-import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -24,7 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
-import ly.betime.shuriken.adapters.AlarmsAdapter;
+import ly.betime.shuriken.adapters.ShurikenAdapter;
+import ly.betime.shuriken.adapters.data.ShurikenData;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
@@ -41,8 +37,8 @@ public class AlarmsActivity extends AMenuActivity {
     @Inject
     public CalendarApi calendarApi;
 
-    private List<Alarm> alarms;
-    private AlarmsAdapter alarmsAdapter;
+    private ShurikenData shurikenData;
+    private ShurikenAdapter shurikenAdapter;
 
     private RecyclerView alarmsView;
     private FloatingActionButton addButton;
@@ -63,7 +59,10 @@ public class AlarmsActivity extends AMenuActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        renderAlarmList();
+
+        shurikenData = new ShurikenData();
+        refreshAlarms();
+        refreshEvents();
     }
 
     /**
@@ -83,35 +82,39 @@ public class AlarmsActivity extends AMenuActivity {
      * Gets all alarms from service and render them. Should be only used if all items have to be rendered.
      * Use notify functions of {@link RecyclerView.Adapter} if only one item changed.
      */
-    public void renderAlarmList() {
-        alarmService.listAlarms().observe(this, x->{
-            if (alarms == null) {
-                alarms = Lists.newArrayList(x);
-            } else {
-                alarms.clear();
-                alarms.addAll(x);
-            }
+    public void renderShurikenList() {
+        if (!shurikenData.isPrepared())
+            return;
 
-            Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
+        shurikenData.refreshData();
 
-            if (alarmsAdapter == null) {
-                alarmsAdapter = new AlarmsAdapter(alarms, languageTextHelper);
-                alarmsAdapter.setAlarmSwitchListener(
-                        (alarm, state) ->
-                                alarmService.setAlarm(
-                                        alarm,
-                                        state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE));
+        if (shurikenAdapter == null) {
+            shurikenAdapter = new ShurikenAdapter(shurikenData.getData(), languageTextHelper);
+            shurikenAdapter.setAlarmSwitchListener(
+                    (alarm, state) ->
+                            alarmService.setAlarm(
+                                    alarm,
+                                    state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE));
 
-                alarmsView.setAdapter(alarmsAdapter);
-                alarmsView.setLayoutManager(new LinearLayoutManager(this));
-            } else {
-                alarmsAdapter.notifyDataSetChanged();
-            }
-        });
-
-        if (calendarApi.getPermission(this)) {
-            Log.i(LOG_TAG, "Next week events: " + calendarApi.getEvents(LocalDate.now(), LocalDate.now().plusDays(6)).toString());
+            alarmsView.setAdapter(shurikenAdapter);
+            alarmsView.setLayoutManager(new LinearLayoutManager(this));
+        } else {
+            shurikenAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void refreshAlarms() {
+        alarmService.listAlarms().observe(this, x->{
+            shurikenData.setAlarms(x);
+            renderShurikenList();
+        });
+    }
+
+    private void refreshEvents() {
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        shurikenData.setEvents(calendarApi.getEvents(tomorrow, tomorrow));
+        Log.i(LOG_TAG, shurikenData.getEvents().get(0).toString());
+        renderShurikenList();
     }
 
     /**
@@ -127,16 +130,16 @@ public class AlarmsActivity extends AMenuActivity {
      * Delete alarm
      *
      * @param alarmEntity AlarmEntity
-     * @param position    Position of alarm in the AlarmsAdapter, if now know use negative number
+     * @param position    Position of alarm in the ShurikenAdapter, if now know use negative number
      */
     public void deleteAlarm(Alarm alarmEntity, int position) {
-        alarms.remove(alarmEntity);
+        shurikenData.getData().remove(alarmEntity);
         alarmService.removeAlarm(alarmEntity);
         alarmsView.post(() -> {
             if (position >= 0) {
-                alarmsAdapter.notifyItemRemoved(position);
+                shurikenAdapter.notifyItemRemoved(position);
             } else {
-                alarmsAdapter.notifyDataSetChanged();
+                shurikenAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -150,13 +153,13 @@ public class AlarmsActivity extends AMenuActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Alarm alarm = alarms.get(alarmsAdapter.getContextMenuPosition());
+        Alarm alarm = (Alarm) shurikenData.getData().get(shurikenAdapter.getContextMenuPosition());
         switch (item.getItemId()) {
             case R.id.editAlarm:
                 startAlarmFormActivity(alarm);
                 return true;
             case R.id.deleteAlarm:
-                deleteAlarm(alarm, alarmsAdapter.getContextMenuPosition());
+                deleteAlarm(alarm, shurikenAdapter.getContextMenuPosition());
                 return true;
             default:
                 return super.onContextItemSelected(item);
