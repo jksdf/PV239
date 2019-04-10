@@ -4,6 +4,7 @@
     package="ly.betime.shuriken">
 
     <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".App"
@@ -49,6 +50,22 @@
         <receiver
             android:name=".receivers.AlarmReceiver"
             android:enabled="true" />
+        <receiver
+            android:name=".receivers.StartJobsReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receivers.CalendarCheckReceiver"
+            android:enabled="true" />
+
     </application>
 
 </manifest>

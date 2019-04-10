@@ -22,4 +22,9 @@ public class PersistanceModule {
     public AlarmDAO alarm() {
         return db.alarmDAO();
     }
+
+    @Provides
+    public GeneratedAlarmDAO generatedAlarm() {
+        return db.generatedAlarmDAO();
+    }
 }

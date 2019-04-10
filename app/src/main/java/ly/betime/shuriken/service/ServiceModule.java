@@ -10,4 +10,9 @@ public class ServiceModule {
     public AlarmService alarmService(AlarmServiceImpl alarmService) {
         return alarmService;
     }
+
+    @Provides
+    public GeneratedAlarmService generatedAlarmService(GeneratedAlarmServiceImpl generatedAlarmService) {
+        return generatedAlarmService;
+    }
 }

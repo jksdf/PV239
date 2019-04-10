@@ -6,11 +6,17 @@ import ly.betime.shuriken.activities.AlarmFormActivity;
 import ly.betime.shuriken.activities.AlarmsActivity;
 import ly.betime.shuriken.persistance.PersistanceModule;
 import ly.betime.shuriken.receivers.AlarmReceiver;
+import ly.betime.shuriken.receivers.CalendarCheckReceiver;
 import ly.betime.shuriken.receivers.ReloadAlarmsReceiver;
+import ly.betime.shuriken.receivers.StartJobsReceiver;
 import ly.betime.shuriken.service.ServiceModule;
 
 @Component(modules = {ApplicationModule.class, PersistanceModule.class, ServiceModule.class})
 public interface MyComponent {
+    void inject(StartJobsReceiver startJobsReceiver);
+
+    void inject(CalendarCheckReceiver calendarCheckReceiver);
+
     @Component.Builder
     interface Builder {
         MyComponent build();
