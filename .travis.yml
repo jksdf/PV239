@@ -4,4 +4,3 @@ android:
     - build-tools-26.0.2
     - android-26
     - sys-img-x86-android-26
-./gradlew build connectedCheck
