@@ -24,6 +24,6 @@ public class EventListTitleViewHolder extends ShurikenViewHolder {
     @Override
     public void bind(int position) {
         LocalDate date = (LocalDate) adapter.getShurikens().get(position);
-        dateView.setText(adapter.getLanguageTextHelper().getEventListDate().format(date));
+        dateView.setText(adapter.getLanguageTextHelper().getEventDateFormatter().format(date));
     }
 }
