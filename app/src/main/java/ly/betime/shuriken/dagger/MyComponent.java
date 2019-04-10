@@ -4,6 +4,7 @@ import dagger.Component;
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.activities.AlarmFormActivity;
 import ly.betime.shuriken.activities.AlarmsActivity;
+import ly.betime.shuriken.activities.CalendarActivity;
 import ly.betime.shuriken.persistance.PersistanceModule;
 import ly.betime.shuriken.receivers.AlarmReceiver;
 import ly.betime.shuriken.receivers.ReloadAlarmsReceiver;
@@ -32,5 +33,7 @@ public interface MyComponent {
     void inject(ReloadAlarmsReceiver app);
 
     void inject(AlarmReceiver alarmReceiver);
+
+    void inject(CalendarActivity app);
 
 }

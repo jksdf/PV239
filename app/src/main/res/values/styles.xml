@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -166,6 +167,29 @@
         <item name="android:gravity">right</item>
         <item name="android:lines">1</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Calendar">
+        <item name="mcv_showOtherDates">all</item>
+        <item name="mcv_dateTextAppearance">@style/Calendar.Text</item>
+        <item name="mcv_selectionColor">@color/colorPrimary</item>
+        <item name="mcv_headerTextAppearance">@style/Calendar.Header</item>
+        <item name="mcv_weekDayTextAppearance">@style/Calendar.Header</item>
+        <item name="mcv_rightArrow">@drawable/ic_keyboard_arrow_right_24</item>
+        <item name="mcv_leftArrow">@drawable/ic_keyboard_arrow_left_24dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">@drawable/form_item_bg</item>
+        <item name="mcv_tileHeight">50dp</item>
+    </style>
+
+    <style name="Calendar.Text" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/calendar_date_color</item>
+    </style>
+
+    <style name="Calendar.Header" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">@color/colorLightBackground</item>
     </style>
 
 </resources>
