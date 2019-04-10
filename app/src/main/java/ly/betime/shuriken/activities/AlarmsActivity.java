@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.Lists;
 
 import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
 
 import java.util.Collections;
 import java.util.List;
@@ -109,7 +110,7 @@ public class AlarmsActivity extends AMenuActivity {
         });
 
         if (calendarApi.getPermission(this)) {
-            Log.i(LOG_TAG, "Next week events: " + calendarApi.getEvents(Instant.now().toEpochMilli(), Instant.now().toEpochMilli() + 1000L * 60 * 60 * 24 * 7).toString());
+            Log.i(LOG_TAG, "Next week events: " + calendarApi.getEvents(LocalDate.now(), LocalDate.now().plusDays(6)).toString());
         }
     }
 

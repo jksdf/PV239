@@ -38,7 +38,7 @@ public class AlarmGenerator {
         int minute = sharedPreferences.getInt("DefaultAlarmMinute", DEFAULT_ALARM_MINUTE);
         LocalTime time = LocalTime.of(hour, minute);
         long start = date.atStartOfDay().atZone(zoneId).toInstant().toEpochMilli();
-        List<CalendarEvent> events = calendarApi.getEvents(start, start + 1000L * 60 * 60 * 24);
+        List<CalendarEvent> events = calendarApi.getEvents(date, date.plusDays(1));
         CalendarEvent nextEvent = null;
         for (CalendarEvent event : events) {
             if (event.getStatus() == CalendarContract.Events.STATUS_CONFIRMED) {
