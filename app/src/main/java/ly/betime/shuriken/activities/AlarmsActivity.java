@@ -62,7 +62,9 @@ public class AlarmsActivity extends AMenuActivity {
 
         shurikenData = new ShurikenData();
         refreshAlarms();
-        refreshEvents();
+        if (calendarApi.getPermission(this)) {
+            refreshEvents();
+        }
     }
 
     /**
@@ -114,7 +116,6 @@ public class AlarmsActivity extends AMenuActivity {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         shurikenData.setTomorrow(tomorrow);
         shurikenData.setEvents(calendarApi.getEvents(tomorrow, tomorrow));
-        Log.i(LOG_TAG, shurikenData.getEvents().get(0).toString());
         renderShurikenList();
     }
 

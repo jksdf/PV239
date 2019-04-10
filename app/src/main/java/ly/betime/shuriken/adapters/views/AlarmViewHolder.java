@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
+
 import androidx.annotation.NonNull;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.ShurikenAdapter;
@@ -14,6 +16,7 @@ public class AlarmViewHolder extends ShurikenViewHolder {
 
     private final TextView alarmTime;
     private final TextView alarmTimePeriod;
+    private final TextView alarmName;
     private final TextView alarmRepeat;
     private final Switch switchButton;
 
@@ -21,6 +24,7 @@ public class AlarmViewHolder extends ShurikenViewHolder {
         super(itemView, adapter);
         alarmTime = itemView.findViewById(R.id.alarmTimeTextView);
         alarmTimePeriod = itemView.findViewById(R.id.alarmTimePeriodTextView);
+        alarmName = itemView.findViewById(R.id.alarmNameTextView);
         alarmRepeat = itemView.findViewById(R.id.alarmRepeatTextView);
         switchButton = itemView.findViewById(R.id.alarmSwitch);
 
@@ -51,6 +55,7 @@ public class AlarmViewHolder extends ShurikenViewHolder {
 
         alarmTime.setText(alarm.getTime().format(adapter.getLanguageTextHelper().getAlarmTimeFormatter()));
         alarmTimePeriod.setText(alarm.getTime().format(adapter.getLanguageTextHelper().getAlarmPeriodFormatter()));
+        alarmName.setText(!Strings.isNullOrEmpty(alarm.getName()) ? " | " + alarm.getName() : "");
         alarmRepeat.setText(adapter.getLanguageTextHelper().getAlarmRepeatText(alarm.getRepeating()));
         switchButton.setChecked(alarm.isEnabled());
 
@@ -65,10 +70,12 @@ public class AlarmViewHolder extends ShurikenViewHolder {
         if (enabled) {
             alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorText));
             alarmTimePeriod.setTextColor(itemView.getResources().getColor(R.color.colorText));
+            alarmName.setTextColor(itemView.getResources().getColor(R.color.colorText));
             alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorText));
         } else {
             alarmTime.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
             alarmTimePeriod.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
+            alarmName.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
             alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
         }
     }
