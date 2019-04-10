@@ -44,8 +44,6 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
                 new TodayDecorator(today, getResources().getColor(R.color.colorText))
         );
 
-        //TODO: First day of week
-
         onMonthChanged(calendarView, CalendarDay.from(today));
         calendarView.setOnMonthChangedListener(this);
     }
