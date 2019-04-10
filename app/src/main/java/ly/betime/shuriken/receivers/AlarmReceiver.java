@@ -15,8 +15,6 @@ import org.threeten.bp.temporal.ChronoUnit;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.entities.Alarm;

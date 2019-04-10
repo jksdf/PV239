@@ -1,7 +1,5 @@
 package ly.betime.shuriken.preferences;
 
-import android.text.InputFilter;
-
 public class Preference {
     private final String name;
     private final int labelStringId;
@@ -21,7 +19,7 @@ public class Preference {
         return labelStringId;
     }
 
-    public Class<Object> getType() {
+    public Class getType() {
         return type;
     }
 

@@ -6,7 +6,6 @@ import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import org.threeten.bp.ZoneId;
 
@@ -15,7 +14,7 @@ import javax.inject.Named;
 import dagger.Module;
 import dagger.Provides;
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
-import ly.betime.shuriken.activities.AlarmsActivity;
+import ly.betime.shuriken.preferences.Preferences;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -29,7 +28,7 @@ public class ApplicationModule {
 
     @Provides
     public SharedPreferences sharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
+        return application.getApplicationContext().getSharedPreferences(Preferences.NAME, Context.MODE_PRIVATE);
     }
 
     @Provides
