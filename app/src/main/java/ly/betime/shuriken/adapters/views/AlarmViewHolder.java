@@ -45,6 +45,7 @@ public class AlarmViewHolder extends ShurikenViewHolder {
         });
     }
 
+    @Override
     public void bind(int position) {
         Alarm alarm = (Alarm) adapter.getShurikens().get(position);
 

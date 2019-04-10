@@ -67,9 +67,7 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ShurikenViewHolder viewHolder, int position) {
-        if (viewHolder instanceof AlarmViewHolder) {
-            ((AlarmViewHolder) viewHolder).bind(position);
-        }
+        viewHolder.bind(position);
     }
 
     @Override

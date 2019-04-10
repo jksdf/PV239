@@ -13,4 +13,6 @@ public abstract class ShurikenViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.adapter = adapter;
     }
+
+    public abstract void bind(int position);
 }
