@@ -35,4 +35,5 @@
     <string name="snooze_settings">Snooze time (minutes)</string>
     <string name="alarm_sound">Alarm sound</string>
     <string name="sound_pick_title">Select sound</string>
+    <string name="number">Number</string>
 </resources>
