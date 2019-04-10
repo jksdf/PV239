@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -155,6 +156,8 @@
     <style name="Preference.Label">
         <item name="android:textColor">@color/colorText</item>
         <item name="android:background">#00000000</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">none</item>
     </style>
 
     <style name="Preference.Input">
@@ -162,6 +165,71 @@
         <item name="android:textColorHint">@color/colorTextDarkest</item>
         <item name="android:background">#00000000</item>
         <item name="android:gravity">right</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Calendar">
+        <item name="mcv_showOtherDates">all</item>
+        <item name="mcv_dateTextAppearance">@style/Calendar.Text</item>
+        <item name="mcv_selectionColor">@color/colorPrimary</item>
+        <item name="mcv_headerTextAppearance">@style/Calendar.Header</item>
+        <item name="mcv_weekDayTextAppearance">@style/Calendar.Header</item>
+        <item name="mcv_rightArrow">@drawable/ic_keyboard_arrow_right_24</item>
+        <item name="mcv_leftArrow">@drawable/ic_keyboard_arrow_left_24dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">@drawable/form_item_bg</item>
+        <item name="mcv_tileHeight">50dp</item>
+    </style>
+
+    <style name="Calendar.Text" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/calendar_date_color</item>
+    </style>
+
+    <style name="Calendar.Header" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">@color/colorLightBackground</item>
+    </style>
+
+    <style name="EventListTitleLayout">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+
+    <style name="EventListTitle">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="EventListDate">
+        <item name="android:textColor">@color/colorTextDark</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Event" parent="EventListTitleLayout">
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="EventHeader">
+        <item name="android:background">@drawable/event_title_bg</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="EventHeaderName">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="EventHeaderDate">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/colorTextDark</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 </resources>

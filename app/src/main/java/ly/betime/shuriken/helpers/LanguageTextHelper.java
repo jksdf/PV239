@@ -24,6 +24,7 @@ public class LanguageTextHelper {
     private DateTimeFormatter alarmTimeFormatter12;
     private DateTimeFormatter alarmPeriod;
     private DateTimeFormatter alarmPeriodNone = DateTimeFormatter.ofPattern("");
+    private DateTimeFormatter eventDate;
 
     @Inject
     public LanguageTextHelper(@Named("application") Context context) {
@@ -35,6 +36,7 @@ public class LanguageTextHelper {
         alarmTimeFormatter24 = DateTimeFormatter.ofPattern(context.getString(R.string.alarm_time_format_24));
         alarmTimeFormatter12 = DateTimeFormatter.ofPattern(context.getString(R.string.alarm_time_format_12));
         alarmPeriod = DateTimeFormatter.ofPattern(context.getString(R.string.alarm_period_format));
+        eventDate = DateTimeFormatter.ofPattern(context.getString(R.string.event_date_format));
     }
 
     public DateTimeFormatter getAlarmTimeFormatter() {
@@ -43,6 +45,10 @@ public class LanguageTextHelper {
 
     public DateTimeFormatter getAlarmPeriodFormatter() {
         return DateFormat.is24HourFormat(context) ? alarmPeriodNone : alarmPeriod;
+    }
+
+    public DateTimeFormatter getEventDateFormatter() {
+        return eventDate;
     }
 
     public String getAlarmRepeatText(EnumSet<DayOfWeek> days) {

@@ -25,6 +25,12 @@ public abstract class AMenuActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 return true;
+            case R.id.calendar:
+                if (!(this instanceof CalendarActivity)) {
+                    intent = new Intent(this, CalendarActivity.class);
+                    startActivity(intent);
+                }
+                return true;
             case R.id.settings:
                 if (!(this instanceof SettingsActivity)) {
                     intent = new Intent(this, SettingsActivity.class);
