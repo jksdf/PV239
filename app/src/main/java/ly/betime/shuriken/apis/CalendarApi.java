@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 
 import org.threeten.bp.Instant;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 
 import java.util.ArrayList;
@@ -41,13 +43,17 @@ public class CalendarApi {
         return true;
     }
 
-    public List<CalendarEvent> getEvents(long from, long to) {
+    public List<CalendarEvent> getEvents(LocalDate from, LocalDate to) {
+        return getEvents(from.atStartOfDay(), to.plusDays(1).atStartOfDay());
+    }
+
+    public List<CalendarEvent> getEvents(LocalDateTime from, LocalDateTime to) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED) {
             throw new RuntimeException("Do not have the permission.");
         }
         List<CalendarEvent> events = new ArrayList<>();
 
-        try (Cursor c = CalendarContract.Instances.query(context.getContentResolver(), new String[]{CalendarContract.Instances.BEGIN, CalendarContract.Instances.END, CalendarContract.Instances.EVENT_ID}, from, to)) {
+        try (Cursor c = CalendarContract.Instances.query(context.getContentResolver(), new String[]{CalendarContract.Instances.BEGIN, CalendarContract.Instances.END, CalendarContract.Instances.EVENT_ID}, from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())) {
             if (c == null) {
                 throw new RuntimeException("Can not load calendar.");
             }
