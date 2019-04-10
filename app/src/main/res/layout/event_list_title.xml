@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    style="@style/EventListTitleLayout">
+
+    <TextView
+        android:id="@+id/eventListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tomorrow_events_title"
+        style="@style/EventListTitle" />
+
+    <TextView
+        android:id="@+id/eventListDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        style="@style/EventListDate" />
+</LinearLayout>

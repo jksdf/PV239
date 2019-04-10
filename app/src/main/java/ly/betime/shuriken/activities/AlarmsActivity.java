@@ -112,6 +112,7 @@ public class AlarmsActivity extends AMenuActivity {
 
     private void refreshEvents() {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
+        shurikenData.setTomorrow(tomorrow);
         shurikenData.setEvents(calendarApi.getEvents(tomorrow, tomorrow));
         Log.i(LOG_TAG, shurikenData.getEvents().get(0).toString());
         renderShurikenList();

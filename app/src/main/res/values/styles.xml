@@ -192,4 +192,21 @@
         <item name="android:background">@color/colorLightBackground</item>
     </style>
 
+    <style name="EventListTitleLayout">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+
+    <style name="EventListTitle">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="EventListDate">
+        <item name="android:textColor">@color/colorTextDark</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>
