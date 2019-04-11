@@ -1,6 +1,7 @@
 package ly.betime.shuriken.activities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -42,6 +43,9 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     @Inject
     public LanguageTextHelper languageTextHelper;
 
+    @Inject
+    public SharedPreferences sharedPreferences;
+
     private TextView alarmName;
     private TextView alarmTime;
     private TextView alarmPeriod;
@@ -52,6 +56,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
     private Ringtone beep;
     private Timer timer;
+    private Timer isRingingTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,17 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
         playSound();
         addListeners();
+        ringingLengthLimit();
+    }
+
+    private void ringingLengthLimit() {
+        isRingingTimer = new Timer();
+        isRingingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ActiveAlarmActivity.this.finish();
+            }
+        }, sharedPreferences.getLong(Preferences.MAX_RINGING_TIME, 5 * 60) * 1000);
     }
 
     @Override
@@ -82,6 +98,9 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         super.onDestroy();
         if (timer != null) {
             timer.cancel();
+        }
+        if (isRingingTimer != null) {
+            isRingingTimer.cancel();
         }
         beep.stop();
     }
