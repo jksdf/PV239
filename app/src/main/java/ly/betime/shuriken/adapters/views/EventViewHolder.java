@@ -11,6 +11,8 @@ import ly.betime.shuriken.apis.CalendarEvent;
 public class EventViewHolder extends ShurikenViewHolder  {
     public final static int VIEW = R.layout.event_item;
 
+    private CalendarEvent event;
+
     private final TextView headerNameView;
     private final TextView headerDateView;
 
@@ -22,7 +24,8 @@ public class EventViewHolder extends ShurikenViewHolder  {
 
     @Override
     public void bind(int position) {
-        CalendarEvent event = (CalendarEvent) adapter.getShurikens().get(position);
+        super.bind(position);
+        event = (CalendarEvent) adapter.getShurikens().get(position);
         headerNameView.setText(event.getName());
         headerDateView.setText(adapter.getLanguageTextHelper().getEventDateFormatter().format(event.getFrom()));
     }
