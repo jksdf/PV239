@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.persistance.GeneratedAlarmDAO;
 
@@ -58,6 +59,11 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                 return Futures.immediateFuture(suggestedAlarm);
             }
         }, MoreExecutors.directExecutor());
+    }
+
+    @Override
+    public LiveData<GeneratedAlarm> get(int id) {
+        return generatedAlarmDAO.get(id);
     }
 
     private static class UpdateAlarm extends AsyncTask<GeneratedAlarm, Void, Void> {

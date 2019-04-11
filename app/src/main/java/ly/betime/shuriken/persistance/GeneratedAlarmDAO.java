@@ -6,6 +6,7 @@ import org.threeten.bp.LocalDate;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -32,4 +33,7 @@ public interface GeneratedAlarmDAO {
     @Query("SELECT * FROM GeneratedAlarm WHERE forDate = :localDate LIMIT 1")
     @TypeConverters(LocalDateConverter.class)
     ListenableFuture<GeneratedAlarm> get(LocalDate localDate);
+
+    @Query("SELECT * FROM GeneratedAlarm WHERE id = :id LIMIT 1")
+    LiveData<GeneratedAlarm> get(int id);
 }

@@ -16,12 +16,15 @@ import java.util.TimerTask;
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
+import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.preferences.Preferences;
 import ly.betime.shuriken.service.AlarmService;
+import ly.betime.shuriken.service.GeneratedAlarmService;
 
 public class ActiveAlarmActivity extends AppCompatActivity {
 
@@ -32,6 +35,9 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
     @Inject
     public AlarmService alarmService;
+
+    @Inject
+    public GeneratedAlarmService generatedAlarmService;
 
     @Inject
     public LanguageTextHelper languageTextHelper;
@@ -99,8 +105,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     }
 
     private void setAlarmValues() {
-        int alarmId = getIntent().getIntExtra(ALARM_ID_EXTRA_NAME, -1);
-        alarmService.getAlarm(alarmId).observe(this, newAlarm -> {
+        Observer<Alarm> observer = newAlarm -> {
             alarm = newAlarm;
             if (alarm == null) {
                 throw new IllegalStateException("In " + this.getClass().getName() + " without valid alarm id");
@@ -108,7 +113,25 @@ public class ActiveAlarmActivity extends AppCompatActivity {
             alarmName.setText(alarm.getName());
             alarmTime.setText(alarm.getTime().format(languageTextHelper.getAlarmTimeFormatter()));
             alarmPeriod.setText(alarm.getTime().format(languageTextHelper.getAlarmPeriodFormatter()));
-        });
+        };
+
+        int alarmId = getIntent().getIntExtra(ALARM_ID_EXTRA_NAME, -1);
+        switch (AlarmManagerApi.AlarmType.fromIndex(getIntent().getIntExtra(ALARM_ID_EXTRA_TYPE, -1))) {
+            case NORMAL:
+                alarmService.getAlarm(alarmId).observe(this, observer);
+                return;
+            case GENERATED:
+                generatedAlarmService.get(alarmId).observe(this, generatedAlarm -> {
+                    Alarm fakeAlarm = new Alarm();
+                    fakeAlarm.setName("GENERATED " + generatedAlarm.getForDate());
+                    fakeAlarm.setTime(generatedAlarm.getRinging().toLocalTime());
+                    fakeAlarm.setRinging(generatedAlarm.getRinging());
+                    observer.onChanged(fakeAlarm);
+                });
+            default:
+                throw new AssertionError();
+        }
+
     }
 
     private void addListeners() {
