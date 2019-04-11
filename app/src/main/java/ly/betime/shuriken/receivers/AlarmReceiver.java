@@ -11,7 +11,6 @@ import android.util.Log;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.temporal.ChronoUnit;
 
-
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -34,30 +33,39 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         App.getComponent().inject(this);
-        HandlerThread handlerThread =  new HandlerThread("alarm_receiver");
+        HandlerThread handlerThread = new HandlerThread("alarm_receiver");
         handlerThread.start();
-        Handler handler =  new Handler(handlerThread.getLooper());
+        Handler handler = new Handler(handlerThread.getLooper());
         handler.post(() -> {
             Log.i(LOG_TAG, "Received alarm");
             int alarmId = intent.getIntExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_NAME, -1);
             if (alarmId == -1) {
+                Log.e(LOG_TAG, "Alarm has no ID");
+                return;
+            }
+            int alarmType = intent.getIntExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_TYPE, -1);
+            if (alarmType == -1) {
+                Log.e(LOG_TAG, "Alarm has no type");
                 return;
             }
             Alarm alarm = alarmService.getAlarmSync(alarmId);
             if (alarm == null) {
+                Log.e(LOG_TAG, "Alarm not found");
                 return;
             }
             long secondsDifference =
                     Math.abs(ChronoUnit.SECONDS.between(alarm.getRinging(), LocalDateTime.now()));
             if (secondsDifference > 60) {
-                Log.i(LOG_TAG, "Alarm triggered too late.");
+                Log.w(LOG_TAG, "Alarm triggered too late.");
                 alarmService.setAlarm(alarm, AlarmService.AlarmAction.DISABLE);
                 return;
             }
+            Log.i(LOG_TAG, "Alarm starting now");
             Intent newIntent =
                     new Intent(context, alarmActivity)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .putExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_NAME, alarmId);
+                            .putExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_NAME, alarmId)
+                            .putExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_TYPE, alarmType);
             context.startActivity(newIntent);
         });
 

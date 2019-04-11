@@ -65,8 +65,8 @@ public class AlarmServiceImpl implements AlarmService {
         if (alarm.isEnabled()) {
             LocalDateTime nextRinging = calculateNextRinging(alarm);
             alarm.setRinging(nextRinging);
-            alarmManagerApi.cancelAlarm(alarm.getId());
-            alarmManagerApi.setAlarm(alarm.getId(), nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+            alarmManagerApi.cancelAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL);
+            alarmManagerApi.setAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL, nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         } else {
             alarm.setRinging(null);
         }
@@ -129,18 +129,18 @@ public class AlarmServiceImpl implements AlarmService {
             case ENABLE:
                 LocalDateTime nextRinging = calculateNextRinging(alarm);
                 new UpdateTask(alarmDao).execute(alarm);
-                alarmManagerApi.setAlarm(alarm.getId(), nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                alarmManagerApi.setAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL, nextRinging.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                 return;
             case DISABLE:
                 alarm.setRinging(null);
                 new UpdateTask(alarmDao).execute(alarm);
-                alarmManagerApi.cancelAlarm(alarm.getId());
+                alarmManagerApi.cancelAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL);
                 return;
             case SNOOZE:
                 alarm.setRinging(LocalDateTime.now().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, 10)));
                 new UpdateTask(alarmDao).execute(alarm);
-                alarmManagerApi.cancelAlarm(alarm.getId());
-                alarmManagerApi.setAlarm(alarm.getId(), alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+                alarmManagerApi.cancelAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL);
+                alarmManagerApi.setAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL, alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                 return;
             default:
                 throw new AssertionError();

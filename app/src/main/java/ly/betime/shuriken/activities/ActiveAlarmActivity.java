@@ -28,6 +28,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private static final String LOG_TAG = "ActiveAlarmActivity";
 
     public static final String ALARM_ID_EXTRA_NAME = "alarm_id";
+    public static final String ALARM_ID_EXTRA_TYPE = "alarm_type";
 
     @Inject
     public AlarmService alarmService;
@@ -50,6 +51,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
+        Log.i(LOG_TAG, "Activated alarm");
 
         setContentView(R.layout.activity_active_alarm);
 

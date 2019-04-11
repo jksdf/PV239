@@ -12,9 +12,8 @@ import org.threeten.bp.Instant;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import ly.betime.shuriken.receivers.AlarmReceiver;
-
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
+import ly.betime.shuriken.receivers.AlarmReceiver;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,11 +34,12 @@ public class AlarmManagerApi {
 
     /**
      * Cancels an alarm with the specified identifier.
+     *
      * @param id of the alarm
      */
-    public void cancelAlarm(int id) {
+    public void cancelAlarm(int id, AlarmType alarmType) {
         Log.i(LOG_TAG, "Cancelling alarm, id: " + id);
-        PendingIntent pendingIntent = getPendingIntent(id, false);
+        PendingIntent pendingIntent = getPendingIntent(id, alarmType, false);
         if (pendingIntent == null) {
             Log.w(LOG_TAG, "Pending alarm not found, id: " + id);
             return;
@@ -49,12 +49,14 @@ public class AlarmManagerApi {
 
     /**
      * Sets an alarm.
-     * @param id of the alarm.
+     *
+     * @param id          of the alarm.
+     * @param type        of the alarm
      * @param triggerTime milliseconds since epoch when to trigger the alarm.
      */
-    public void setAlarm(int id, long triggerTime) {
-        Log.i(LOG_TAG, "Setting alarm " + id + " to " + Instant.ofEpochMilli(triggerTime) + " as " + triggerTime);
-        PendingIntent pendingIntent = getPendingIntent(id, true);
+    public void setAlarm(int id, AlarmType type, long triggerTime) {
+        Log.i(LOG_TAG, "Setting alarm " + id + " of type " + type + " to " + Instant.ofEpochMilli(triggerTime) + " as " + triggerTime);
+        PendingIntent pendingIntent = getPendingIntent(id, type, true);
         if (Build.VERSION.SDK_INT >= 21) {
             this.alarmManager.setAlarmClock(
                     new AlarmManager.AlarmClockInfo(triggerTime, pendingIntent), pendingIntent);
@@ -63,10 +65,32 @@ public class AlarmManagerApi {
         }
     }
 
-    private PendingIntent getPendingIntent(int id, boolean enable) {
+    private PendingIntent getPendingIntent(int id, AlarmType type, boolean enable) {
         Intent intent = new Intent(this.context, this.receiver);
         intent.putExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_NAME, id);
+        intent.putExtra(ActiveAlarmActivity.ALARM_ID_EXTRA_TYPE, type.idx);
         return PendingIntent.getBroadcast(
-                context, id, intent, enable ? 0 : PendingIntent.FLAG_NO_CREATE);
+                context, id * 2 + type.idx, intent, enable ? 0 : PendingIntent.FLAG_NO_CREATE);
+    }
+
+    public enum AlarmType {
+        NORMAL(0), GENERATED(1);
+
+        private int idx;
+
+        AlarmType(int idx) {
+            this.idx = idx;
+        }
+
+        public static AlarmType fromIndex(int index) {
+            switch (index) {
+                case 0:
+                    return NORMAL;
+                case 1:
+                    return GENERATED;
+                default:
+                    throw new IndexOutOfBoundsException();
+            }
+        }
     }
 }
