@@ -228,8 +228,25 @@
 
     <style name="EventHeaderDate">
         <item name="android:background">@null</item>
-        <item name="android:textColor">@color/colorTextDark</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="EventBody">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
+
+    <style name="EventBodyText">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="EventBodyText.Label">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
     </style>
 
 </resources>
