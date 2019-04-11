@@ -9,12 +9,14 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.ZoneId;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
+import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.persistance.GeneratedAlarmDAO;
 
@@ -23,11 +25,13 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
 
     private final AlarmGenerator alarmGenerator;
     private final GeneratedAlarmDAO generatedAlarmDAO;
+    private final AlarmManagerApi alarmManagerApi;
 
     @Inject
-    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO) {
+    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi) {
         this.alarmGenerator = alarmGenerator;
         this.generatedAlarmDAO = generatedAlarmDAO;
+        this.alarmManagerApi = alarmManagerApi;
     }
 
     @Override
@@ -42,19 +46,18 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
         return Futures.whenAllComplete(ImmutableList.of(suggestedAlarmFuture, persistedAlarmFuture)).callAsync(() -> {
             GeneratedAlarm suggestedAlarm = suggestedAlarmFuture.get();
             GeneratedAlarm persistedAlarm = persistedAlarmFuture.get();
-            Log.d(LOG_TAG, "" + suggestedAlarm);
-            Log.d(LOG_TAG, "" + persistedAlarm);
             if (persistedAlarm == null) {
                 Log.i(LOG_TAG, "Creating alarm " + suggestedAlarm);
                 return Futures.transform(generatedAlarmDAO.insert(suggestedAlarm), id -> {
-                    suggestedAlarm.setId((int) (long) id);
+                    suggestedAlarm.setId(id.intValue());
+                    alarmManagerApi.setAlarm(suggestedAlarm.getId(), AlarmManagerApi.AlarmType.GENERATED, suggestedAlarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                     return suggestedAlarm;
                 }, MoreExecutors.directExecutor());
             } else {
                 suggestedAlarm.setId(persistedAlarm.getId());
                 if (!suggestedAlarm.equals(persistedAlarm)) {
                     Log.i(LOG_TAG, "Updating alarm " + persistedAlarm + " to " + suggestedAlarm);
-                    new UpdateAlarm(generatedAlarmDAO).doInBackground(suggestedAlarm);
+                    new UpdateAlarm(generatedAlarmDAO, alarmManagerApi).doInBackground(suggestedAlarm);
                 }
                 return Futures.immediateFuture(suggestedAlarm);
             }
@@ -69,13 +72,16 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     private static class UpdateAlarm extends AsyncTask<GeneratedAlarm, Void, Void> {
 
         private final GeneratedAlarmDAO generatedAlarmDAO;
+        private final AlarmManagerApi alarmManagerApi;
 
-        public UpdateAlarm(GeneratedAlarmDAO generatedAlarmDAO) {
+        public UpdateAlarm(GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi) {
             this.generatedAlarmDAO = generatedAlarmDAO;
+            this.alarmManagerApi = alarmManagerApi;
         }
 
         @Override
         protected Void doInBackground(GeneratedAlarm... alarms) {
+            alarmManagerApi.setAlarm(alarms[0].getId(), AlarmManagerApi.AlarmType.GENERATED, alarms[0].getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
             generatedAlarmDAO.update(alarms[0]);
             return null;
         }
