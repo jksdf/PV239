@@ -137,7 +137,7 @@ public class AlarmServiceImpl implements AlarmService {
                 alarmManagerApi.cancelAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL);
                 return;
             case SNOOZE:
-                alarm.setRinging(LocalDateTime.now().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, 10)));
+                alarm.setRinging(LocalDateTime.now().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, Preferences.SNOOZE_TIME_DEFAULT)));
                 new UpdateTask(alarmDao).execute(alarm);
                 alarmManagerApi.cancelAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL);
                 alarmManagerApi.setAlarm(alarm.getId(), AlarmManagerApi.AlarmType.NORMAL, alarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());

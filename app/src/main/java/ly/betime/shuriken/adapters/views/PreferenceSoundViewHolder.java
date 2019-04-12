@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.PreferencesAdapter;
 import ly.betime.shuriken.preferences.Preference;
+import ly.betime.shuriken.preferences.Sound;
 
 public class PreferenceSoundViewHolder extends PreferenceViewHolder {
 
@@ -43,7 +44,7 @@ public class PreferenceSoundViewHolder extends PreferenceViewHolder {
     @Override
     public void setValues(Preference preference) {
         label.setText(preference.getLabelStringId());
-        setSoundName(sharedPref.getString(preference.getName(), null));
+        setSoundName(sharedPref.getString(preference.getName(), (String) preference.getDefaultValue()));
     }
 
     private void setSoundName(String value) {

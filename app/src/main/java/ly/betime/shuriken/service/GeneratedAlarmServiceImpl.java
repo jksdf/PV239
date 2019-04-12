@@ -76,7 +76,7 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
 
     @Override
     public void snooze(GeneratedAlarm generatedAlarm) {
-        generatedAlarm.setRinging(generatedAlarm.getRinging().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, 10)));
+        generatedAlarm.setRinging(generatedAlarm.getRinging().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, Preferences.SNOOZE_TIME_DEFAULT)));
         long time = generatedAlarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
         alarmManagerApi.setAlarm(generatedAlarm.getId(), AlarmManagerApi.AlarmType.GENERATED, time);
     }

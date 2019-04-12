@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.PreferencesAdapter;
@@ -54,6 +56,6 @@ public class PreferenceIntegerViewHolder extends PreferenceViewHolder {
     @Override
     public void setValues(Preference preference) {
         label.setText(preference.getLabelStringId());
-        value.setText(String.valueOf(sharedPref.getInt(preference.getName(), 0)));
+        value.setText(String.valueOf(sharedPref.getInt(preference.getName(), (Integer) preference.getDefaultValue())));
     }
 }

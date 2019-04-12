@@ -34,6 +34,6 @@ public class PreferenceBooleanViewHolder extends PreferenceViewHolder {
     @Override
     public void setValues(Preference preference) {
         label.setText(preference.getLabelStringId());
-        aSwitch.setChecked(sharedPref.getBoolean(preference.getName(), true));
+        aSwitch.setChecked(sharedPref.getBoolean(preference.getName(), (Boolean) preference.getDefaultValue()));
     }
 }
