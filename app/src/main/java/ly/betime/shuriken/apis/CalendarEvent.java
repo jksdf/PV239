@@ -15,6 +15,15 @@ public class CalendarEvent {
 
     private boolean expanded = false;
 
+    public CalendarEvent() {
+    }
+
+    public CalendarEvent(LocalDateTime from, LocalDateTime to, String name) {
+        this.from = from;
+        this.to = to;
+        this.name = name;
+    }
+
     public long getEventId() {
         return eventId;
     }

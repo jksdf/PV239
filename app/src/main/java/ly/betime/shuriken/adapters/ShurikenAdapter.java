@@ -1,6 +1,7 @@
 package ly.betime.shuriken.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.adapters.views.AlarmViewHolder;
+import ly.betime.shuriken.adapters.views.CalendarViewHolder;
 import ly.betime.shuriken.adapters.views.EventListTitleViewHolder;
 import ly.betime.shuriken.adapters.views.EventViewHolder;
 import ly.betime.shuriken.adapters.views.ShurikenViewHolder;
 import ly.betime.shuriken.apis.CalendarEvent;
+import ly.betime.shuriken.calendar.CalendarShuriken;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 
@@ -24,7 +27,10 @@ import ly.betime.shuriken.helpers.LanguageTextHelper;
  */
 public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
 
-    private final static int ALARM_VIEW = 1, EVENT_VIEW = 2, EVENT_TITLE_VIEW = 3;
+    private final static int ALARM_VIEW = 1,
+            EVENT_VIEW = 2,
+            EVENT_TITLE_VIEW = 3,
+            CALENDAR_VIEW = 4;
 
     private int contextMenuPosition;
     private final List<Object> shurikens;
@@ -48,6 +54,9 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
         if (obj instanceof LocalDate) {
             return EVENT_TITLE_VIEW;
         }
+        if (obj instanceof CalendarShuriken) {
+            return CALENDAR_VIEW;
+        }
         return -1;
     }
 
@@ -69,6 +78,9 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
             case EVENT_TITLE_VIEW:
                 contactView = inflater.inflate(EventListTitleViewHolder.VIEW, viewGroup, false);
                 return new EventListTitleViewHolder(contactView, this);
+            case CALENDAR_VIEW:
+                contactView = inflater.inflate(CalendarViewHolder.VIEW, viewGroup, false);
+                return new CalendarViewHolder(contactView, this);
             default:
                 throw new IllegalStateException("Unknown view type inside preferecnes adapter");
         }

@@ -54,13 +54,15 @@ public class AlarmsActivity extends AMenuActivity {
 
         addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener((View v) -> startAlarmFormActivity(null));
+
+        shurikenData = new ShurikenData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        shurikenData = new ShurikenData();
+        shurikenData.clean();
         refreshAlarms();
         if (calendarApi.getPermission(this)) {
             refreshEvents();

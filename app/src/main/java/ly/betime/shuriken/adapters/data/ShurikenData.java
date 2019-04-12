@@ -16,6 +16,18 @@ public class ShurikenData {
     private ArrayList<Object> data = new ArrayList<>();
 
     public ShurikenData() {
+        this(false);
+    }
+
+    /**
+     * Fill with empty lists so it can be rendered if initialized is true
+     * @param initialized If  true fill with empty lists
+     */
+    public ShurikenData(boolean initialized) {
+        if (initialized) {
+            alarms = Collections.emptyList();
+            events = Collections.emptyList();
+        }
     }
 
     public boolean isPrepared() {
@@ -25,8 +37,11 @@ public class ShurikenData {
     public void refreshData() {
         data.clear();
 
-        if (events.size() > 0) {
+        if (tomorrow != null) {
             data.add(tomorrow);
+        }
+
+        if (events.size() > 0) {
             data.addAll(events);
         }
         data.addAll(alarms);
@@ -50,7 +65,6 @@ public class ShurikenData {
     }
 
     public void setEvents(List<CalendarEvent> events) {
-        Collections.sort(events, (a, b) -> a.getFrom().compareTo(b.getFrom()));
         this.events = events;
     }
 
@@ -60,5 +74,11 @@ public class ShurikenData {
 
     public void setTomorrow(LocalDate tomorrow) {
         this.tomorrow = tomorrow;
+    }
+
+    public void clean() {
+        alarms = null;
+        tomorrow = null;
+        events = null;
     }
 }

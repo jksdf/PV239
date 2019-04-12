@@ -14,6 +14,7 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -87,6 +88,7 @@ public class CalendarApi {
                 c.moveToNext();
             }
         }
+        Collections.sort(events, (a, b) -> a.getFrom().compareTo(b.getFrom()));
         return events;
     }
 }
