@@ -1,5 +1,6 @@
 package ly.betime.shuriken.adapters.views;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import ly.betime.shuriken.entities.Alarm;
 
 public class AlarmViewHolder extends ShurikenViewHolder {
     public final static int VIEW = R.layout.alarm_item;
+
+    private Alarm alarm;
 
     private final TextView alarmTime;
     private final TextView alarmTimePeriod;
@@ -33,17 +36,17 @@ public class AlarmViewHolder extends ShurikenViewHolder {
 
     private void setListeners() {
         switchButton.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-            Alarm alarm = (Alarm) adapter.getShurikens().get(getAdapterPosition());
+            Alarm alarm = (Alarm) adapter.getShurikens().get(position);
             if (alarm.isEnabled() != isChecked) {
                 if (adapter.getAlarmSwitchListener() != null) {
                     adapter.getAlarmSwitchListener().alarmEnabledChanged(alarm, isChecked);
                 }
-                itemView.post(() -> adapter.notifyItemChanged(getAdapterPosition()));
+                itemView.post(() -> adapter.notifyItemChanged(position));
             }
         }));
 
         itemView.findViewById(R.id.alarmContainer).setOnLongClickListener((View v) -> {
-            adapter.setContextMenuPosition(getAdapterPosition());
+            adapter.setContextMenuPosition(position);
             itemView.showContextMenu();
             return true;
         });
@@ -51,7 +54,8 @@ public class AlarmViewHolder extends ShurikenViewHolder {
 
     @Override
     public void bind(int position) {
-        Alarm alarm = (Alarm) adapter.getShurikens().get(position);
+        super.bind(position);
+        alarm = (Alarm) adapter.getShurikens().get(position);
 
         alarmTime.setText(alarm.getTime().format(adapter.getLanguageTextHelper().getAlarmTimeFormatter()));
         alarmTimePeriod.setText(alarm.getTime().format(adapter.getLanguageTextHelper().getAlarmPeriodFormatter()));
@@ -78,21 +82,5 @@ public class AlarmViewHolder extends ShurikenViewHolder {
             alarmName.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
             alarmRepeat.setTextColor(itemView.getResources().getColor(R.color.colorTextDark));
         }
-    }
-
-    public TextView getAlarmTime() {
-        return alarmTime;
-    }
-
-    public TextView getAlarmTimePeriod() {
-        return alarmTimePeriod;
-    }
-
-    public TextView getAlarmRepeat() {
-        return alarmRepeat;
-    }
-
-    public Switch getSwitchButton() {
-        return switchButton;
     }
 }

@@ -92,10 +92,11 @@ public class AlarmsActivity extends AMenuActivity {
         if (shurikenAdapter == null) {
             shurikenAdapter = new ShurikenAdapter(shurikenData.getData(), languageTextHelper);
             shurikenAdapter.setAlarmSwitchListener(
-                    (alarm, state) ->
-                            alarmService.setAlarm(
-                                    alarm,
-                                    state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE));
+                    (alarm, state) -> alarmService.setAlarm(
+                            alarm,
+                            state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE
+                    )
+            );
 
             alarmsView.setAdapter(shurikenAdapter);
             alarmsView.setLayoutManager(new LinearLayoutManager(this));
