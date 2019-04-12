@@ -13,6 +13,17 @@ public class CalendarEvent {
     private String name;
     private int status;
 
+    private boolean expanded = false;
+
+    public CalendarEvent() {
+    }
+
+    public CalendarEvent(LocalDateTime from, LocalDateTime to, String name) {
+        this.from = from;
+        this.to = to;
+        this.name = name;
+    }
+
     public long getEventId() {
         return eventId;
     }
@@ -53,6 +64,14 @@ public class CalendarEvent {
         this.status = status;
     }
 
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -61,6 +80,7 @@ public class CalendarEvent {
                 .add("from", from)
                 .add("to", to)
                 .add("name", name)
+                .add("expanded", expanded)
                 .toString();
     }
 }

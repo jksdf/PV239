@@ -18,6 +18,11 @@
     <string name="repeat_non">Never repeat</string>
     <string name="repeat_delimiter">&#160;|&#160;</string>
 
+    <string name="show_more">Show more</string>
+    <string name="event_start">Event start: </string>
+    <string name="event_end">Event end: </string>
+
+
     <string name="edit_alarm">Edit alarm</string>
     <string name="delete_alarm">Delete alarm</string>
 
