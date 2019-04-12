@@ -35,7 +35,12 @@
     <!--Settings-->
     <string name="hour_format_24">Use 24-hour format</string>
     <string name="snooze_settings">Snooze time (minutes)</string>
+    <string name="max_ring_settings">Max ringing time</string>
     <string name="alarm_sound">Alarm sound</string>
     <string name="sound_pick_title">Select sound</string>
     <string name="number">Number</string>
+    <string name="channel_name">Betime.ly</string>
+    <string name="channel_description">Desc</string>
+    <string name="alarm_rang_too_long">The alarm rang for too long.</string>
+    <string name="cancelled_alarm_notif_msg">You had an alarm at </string>
 </resources>

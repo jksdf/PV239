@@ -14,4 +14,6 @@ public interface GeneratedAlarmService {
     ListenableFuture<GeneratedAlarm> get(LocalDate date);
 
     LiveData<GeneratedAlarm> get(int id);
+
+    void snooze(GeneratedAlarm generatedAlarm);
 }

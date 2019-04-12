@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.Log;
 
 import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -55,7 +56,7 @@ public class AlarmManagerApi {
      * @param triggerTime milliseconds since epoch when to trigger the alarm.
      */
     public void setAlarm(int id, AlarmType type, long triggerTime) {
-        Log.i(LOG_TAG, "Setting alarm " + id + " of type " + type + " to " + Instant.ofEpochMilli(triggerTime) + " as " + triggerTime);
+        Log.i(LOG_TAG, "Setting alarm " + id + " of type " + type + " to " + Instant.ofEpochMilli(triggerTime).atZone(ZoneId.systemDefault()));
         PendingIntent pendingIntent = getPendingIntent(id, type, true);
         if (Build.VERSION.SDK_INT >= 21) {
             this.alarmManager.setAlarmClock(
@@ -91,6 +92,10 @@ public class AlarmManagerApi {
                 default:
                     throw new IndexOutOfBoundsException();
             }
+        }
+
+        public int getIndex() {
+            return idx;
         }
     }
 }

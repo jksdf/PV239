@@ -1,5 +1,7 @@
 package ly.betime.shuriken.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
@@ -11,17 +13,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.ZoneId;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.inject.Inject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.Alarm;
+import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.preferences.Preferences;
 import ly.betime.shuriken.service.AlarmService;
@@ -30,6 +39,8 @@ import ly.betime.shuriken.service.GeneratedAlarmService;
 public class ActiveAlarmActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ActiveAlarmActivity";
+
+    private static final String ACTIVE_ALARM_ACTIVITY_NOTIFICATION = "ACTIVE_ALARM_ACTIVITY";
 
     public static final String ALARM_ID_EXTRA_NAME = "alarm_id";
     public static final String ALARM_ID_EXTRA_TYPE = "alarm_type";
@@ -52,7 +63,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private View snoozeButton;
     private View stopButton;
 
-    private Alarm alarm;
+    private AlarmWrapper alarmWrapper;
 
     private Ringtone beep;
     private Timer timer;
@@ -82,9 +93,25 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         isRingingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                ActiveAlarmActivity.this.finish();
+                Log.i(LOG_TAG, "Cancelling after inactivity");
+                createNotificationChannel();
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(ActiveAlarmActivity.this);
+
+                notificationManager.notify(alarmWrapper.getId() * 2 + alarmWrapper.getType().getIndex(),
+                        new NotificationCompat.Builder(ActiveAlarmActivity.this, ACTIVE_ALARM_ACTIVITY_NOTIFICATION)
+                                .setSmallIcon(R.drawable.ic_alarm_48)
+                                .setContentTitle(getString(R.string.alarm_rang_too_long))
+                                .setContentText(getString(R.string.cancelled_alarm_notif_msg) + alarmWrapper.getRinging().atZone(ZoneId.systemDefault()).toLocalTime())
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setAutoCancel(true)
+                                .build());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    finishAffinity();
+                } else {
+                    finish();
+                }
             }
-        }, sharedPreferences.getLong(Preferences.MAX_RINGING_TIME, 5 * 60) * 1000);
+        }, sharedPreferences.getInt(Preferences.MAX_RINGING_TIME, 5) * 60L * 1000L);
     }
 
     @Override
@@ -124,28 +151,31 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     }
 
     private void setAlarmValues() {
-        Observer<Alarm> observer = newAlarm -> {
-            alarm = newAlarm;
-            if (alarm == null) {
-                throw new IllegalStateException("In " + this.getClass().getName() + " without valid alarm id");
-            }
+        Observer<AlarmWrapper> observer = alarm -> {
             alarmName.setText(alarm.getName());
             alarmTime.setText(alarm.getTime().format(languageTextHelper.getAlarmTimeFormatter()));
             alarmPeriod.setText(alarm.getTime().format(languageTextHelper.getAlarmPeriodFormatter()));
         };
 
         int alarmId = getIntent().getIntExtra(ALARM_ID_EXTRA_NAME, -1);
+
         switch (AlarmManagerApi.AlarmType.fromIndex(getIntent().getIntExtra(ALARM_ID_EXTRA_TYPE, -1))) {
             case NORMAL:
-                alarmService.getAlarm(alarmId).observe(this, observer);
+                alarmService.getAlarm(alarmId).observe(this, alarm -> {
+                    if (alarm == null) {
+                        throw new IllegalStateException("In " + this.getClass().getName() + " without valid alarm id");
+                    }
+                    alarmWrapper = new AlarmWrapper(alarm);
+                    observer.onChanged(alarmWrapper);
+                });
                 return;
             case GENERATED:
                 generatedAlarmService.get(alarmId).observe(this, generatedAlarm -> {
-                    Alarm fakeAlarm = new Alarm();
-                    fakeAlarm.setName("GENERATED " + generatedAlarm.getForDate());
-                    fakeAlarm.setTime(generatedAlarm.getRinging().toLocalTime());
-                    fakeAlarm.setRinging(generatedAlarm.getRinging());
-                    observer.onChanged(fakeAlarm);
+                    if (generatedAlarm == null) {
+                        throw new IllegalStateException("In " + this.getClass().getName() + " without valid alarm id");
+                    }
+                    alarmWrapper = new AlarmWrapper(generatedAlarm);
+                    observer.onChanged(alarmWrapper);
                 });
             default:
                 throw new AssertionError();
@@ -156,7 +186,14 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private void addListeners() {
         snoozeButton.setOnClickListener((v) -> {
             Log.i(LOG_TAG, "Snoozed");
-            alarmService.setAlarm(alarm, AlarmService.AlarmAction.SNOOZE);
+            switch (alarmWrapper.getType()) {
+                case NORMAL:
+                    alarmService.setAlarm(alarmWrapper.alarm, AlarmService.AlarmAction.SNOOZE);
+                    break;
+                case GENERATED:
+                    generatedAlarmService.snooze(alarmWrapper.generatedAlarm);
+                    break;
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 finishAffinity();
             } else {
@@ -165,8 +202,15 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         });
 
         stopButton.setOnLongClickListener((v) -> {
-            Log.i(LOG_TAG, "Stoped");
-            alarmService.setAlarm(alarm, AlarmService.AlarmAction.DISABLE);
+            Log.i(LOG_TAG, "Stopped");
+            switch (alarmWrapper.getType()) {
+                case NORMAL:
+                    alarmService.setAlarm(alarmWrapper.alarm, AlarmService.AlarmAction.DISABLE);
+                    break;
+                case GENERATED:
+                    generatedAlarmService.cleanUp();
+                    break;
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 finishAffinity();
             } else {
@@ -174,5 +218,56 @@ public class ActiveAlarmActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(ACTIVE_ALARM_ACTIVITY_NOTIFICATION, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private class AlarmWrapper {
+        private final Alarm alarm;
+        private final GeneratedAlarm generatedAlarm;
+
+        private AlarmWrapper(Alarm alarm) {
+            this.alarm = alarm;
+            this.generatedAlarm = null;
+        }
+
+        private AlarmWrapper(GeneratedAlarm generatedAlarm) {
+            this.alarm = null;
+            this.generatedAlarm = generatedAlarm;
+        }
+
+        public Integer getId() {
+            return alarm != null ? alarm.getId() : generatedAlarm.getId();
+        }
+
+        public LocalDateTime getRinging() {
+            return alarm != null ? alarm.getRinging() : generatedAlarm.getRinging();
+        }
+
+        public AlarmManagerApi.AlarmType getType() {
+            return alarm != null ? AlarmManagerApi.AlarmType.NORMAL : AlarmManagerApi.AlarmType.GENERATED;
+        }
+
+        public String getName() {
+            if (alarm != null) {
+                return alarm.getName();
+            }
+            return "GENERATED " + generatedAlarm.getForDate();
+        }
+
+        public LocalTime getTime() {
+            return alarm != null ? alarm.getTime() : generatedAlarm.getRinging().toLocalTime();
+        }
+
     }
 }

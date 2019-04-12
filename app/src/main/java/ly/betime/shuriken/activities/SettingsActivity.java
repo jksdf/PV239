@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +26,8 @@ public class SettingsActivity extends AMenuActivity {
 
     private final List<Preference> preferenceList = Arrays.asList(
             new Preference(Preferences.ALARM_SOUND, R.string.alarm_sound, Sound.class),
-            new Preference(Preferences.SNOOZE_TIME, R.string.snooze_settings, Integer.class)
+            new Preference(Preferences.SNOOZE_TIME, R.string.snooze_settings, Integer.class),
+            new Preference(Preferences.MAX_RINGING_TIME, R.string.max_ring_settings, Integer.class)
     );
 
     private RecyclerView preferencesListView;

@@ -1,5 +1,6 @@
 package ly.betime.shuriken.service;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -19,6 +20,8 @@ import androidx.lifecycle.LiveData;
 import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.persistance.GeneratedAlarmDAO;
+import ly.betime.shuriken.preferences.Preference;
+import ly.betime.shuriken.preferences.Preferences;
 
 public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     private static final String LOG_TAG = "GeneratedAlarmServiceIm";
@@ -26,12 +29,14 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     private final AlarmGenerator alarmGenerator;
     private final GeneratedAlarmDAO generatedAlarmDAO;
     private final AlarmManagerApi alarmManagerApi;
+    private final SharedPreferences sharedPreferences;
 
     @Inject
-    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi) {
+    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi, SharedPreferences sharedPreferences) {
         this.alarmGenerator = alarmGenerator;
         this.generatedAlarmDAO = generatedAlarmDAO;
         this.alarmManagerApi = alarmManagerApi;
+        this.sharedPreferences = sharedPreferences;
     }
 
     @Override
@@ -67,6 +72,13 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     @Override
     public LiveData<GeneratedAlarm> get(int id) {
         return generatedAlarmDAO.get(id);
+    }
+
+    @Override
+    public void snooze(GeneratedAlarm generatedAlarm) {
+        generatedAlarm.setRinging(generatedAlarm.getRinging().plusMinutes(sharedPreferences.getInt(Preferences.SNOOZE_TIME, 10)));
+        long time = generatedAlarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        alarmManagerApi.setAlarm(generatedAlarm.getId(), AlarmManagerApi.AlarmType.GENERATED, time);
     }
 
     private static class UpdateAlarm extends AsyncTask<GeneratedAlarm, Void, Void> {
