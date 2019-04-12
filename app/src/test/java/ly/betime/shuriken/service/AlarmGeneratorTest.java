@@ -10,8 +10,6 @@ import org.junit.Test;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
-import org.threeten.bp.ZoneId;
-import org.threeten.bp.ZoneOffset;
 
 import java.util.List;
 

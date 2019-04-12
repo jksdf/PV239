@@ -22,7 +22,7 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferenceViewHolde
     private final static int INTEGER_VIEW = 1, BOOLEAN_VIEW = 2, SOUND_VIEW = 3;
 
     private final List<Preference> preferenceList;
-    private SettingsActivity activity;
+    private final SettingsActivity activity;
 
     public PreferencesAdapter(SettingsActivity activity, List<Preference> preferenceList) {
         this.preferenceList = preferenceList;

@@ -2,7 +2,6 @@ package ly.betime.shuriken.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -117,15 +116,6 @@ public class AlarmsActivity extends AMenuActivity {
         shurikenData.setTomorrow(tomorrow);
         shurikenData.setEvents(calendarApi.getEvents(tomorrow, tomorrow));
         renderShurikenList();
-    }
-
-    /**
-     * Delete alarm
-     *
-     * @param alarmEntity AlarmEntity
-     */
-    public void deleteAlarm(Alarm alarmEntity) {
-        deleteAlarm(alarmEntity, -1);
     }
 
     /**

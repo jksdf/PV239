@@ -13,7 +13,7 @@ public class ShurikenData {
     private LocalDate tomorrow;
     private List<Alarm> alarms;
     private List<CalendarEvent> events;
-    private ArrayList<Object> data = new ArrayList<>();
+    private final ArrayList<Object> data = new ArrayList<>();
 
     public ShurikenData() {
     }

@@ -77,7 +77,7 @@ public class AlarmManagerApi {
     public enum AlarmType {
         NORMAL(0), GENERATED(1);
 
-        private int idx;
+        private final int idx;
 
         AlarmType(int idx) {
             this.idx = idx;

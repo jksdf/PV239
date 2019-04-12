@@ -70,6 +70,7 @@ public class AlarmGenerator {
         public EventPrepEstimate() {
         }
 
+        @SuppressWarnings("unused")
         private long timeToPrep(CalendarEvent event) {
             return 1000L * 60 * 90;
         }

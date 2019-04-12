@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.PreferencesAdapter;

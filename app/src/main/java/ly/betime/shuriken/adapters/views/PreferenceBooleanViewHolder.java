@@ -24,11 +24,8 @@ public class PreferenceBooleanViewHolder extends PreferenceViewHolder {
     }
 
     private void setSwitchListener() {
-        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            applyWithEditor((e) -> {
-                e.putBoolean(adapter.get(getAdapterPosition()).getName(), isChecked);
-            });
-        });
+        aSwitch.setOnCheckedChangeListener((buttonView, isChecked) ->
+                applyWithEditor((e) -> e.putBoolean(adapter.get(getAdapterPosition()).getName(), isChecked)));
     }
 
     @Override

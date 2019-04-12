@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.PreferencesAdapter;
 import ly.betime.shuriken.preferences.Preference;
-import ly.betime.shuriken.preferences.Sound;
 
 public class PreferenceSoundViewHolder extends PreferenceViewHolder {
 

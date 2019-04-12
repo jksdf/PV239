@@ -232,6 +232,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private class AlarmWrapper {
         private final Alarm alarm;
         private final GeneratedAlarm generatedAlarm;

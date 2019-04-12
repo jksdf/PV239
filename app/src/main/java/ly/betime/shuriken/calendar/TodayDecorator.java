@@ -17,8 +17,8 @@ import androidx.annotation.ColorInt;
  */
 public class TodayDecorator implements DayViewDecorator {
 
-    private CalendarDay today;
-    private int color;
+    private final CalendarDay today;
+    private final int color;
 
     public TodayDecorator(LocalDate date, @ColorInt int color) {
         this(CalendarDay.from(date), color);

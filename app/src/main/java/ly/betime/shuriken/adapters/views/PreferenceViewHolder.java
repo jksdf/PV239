@@ -12,8 +12,8 @@ import ly.betime.shuriken.preferences.Preferences;
 
 public abstract class PreferenceViewHolder extends RecyclerView.ViewHolder {
 
-    PreferencesAdapter adapter;
-    SharedPreferences sharedPref;
+    protected final PreferencesAdapter adapter;
+    protected final SharedPreferences sharedPref;
 
     public PreferenceViewHolder(@NonNull View itemView, @NonNull PreferencesAdapter adapter) {
         super(itemView);

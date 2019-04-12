@@ -11,8 +11,8 @@ import androidx.annotation.ColorInt;
 
 public class EventDecorator implements DayViewDecorator {
 
-    private HashSet<CalendarDay> dates;
-    private int color;
+    private final HashSet<CalendarDay> dates;
+    private final int color;
 
     public EventDecorator(HashSet<CalendarDay> dates, @ColorInt int color) {
         this.color = color;

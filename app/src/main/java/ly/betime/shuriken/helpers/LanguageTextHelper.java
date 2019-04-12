@@ -23,7 +23,7 @@ public class LanguageTextHelper {
     private DateTimeFormatter alarmTimeFormatter24;
     private DateTimeFormatter alarmTimeFormatter12;
     private DateTimeFormatter alarmPeriod;
-    private DateTimeFormatter alarmPeriodNone = DateTimeFormatter.ofPattern("");
+    private static final DateTimeFormatter ALARM_PERIOD_NONE = DateTimeFormatter.ofPattern("");
     private DateTimeFormatter eventDate;
 
     @Inject
@@ -44,7 +44,7 @@ public class LanguageTextHelper {
     }
 
     public DateTimeFormatter getAlarmPeriodFormatter() {
-        return DateFormat.is24HourFormat(context) ? alarmPeriodNone : alarmPeriod;
+        return DateFormat.is24HourFormat(context) ? ALARM_PERIOD_NONE : alarmPeriod;
     }
 
     public DateTimeFormatter getEventDateFormatter() {

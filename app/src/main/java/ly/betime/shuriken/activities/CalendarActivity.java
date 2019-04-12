@@ -9,7 +9,6 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import org.threeten.bp.LocalDate;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 
 import javax.inject.Inject;
@@ -27,7 +26,7 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
     public CalendarApi calendarApi;
 
     private MaterialCalendarView calendarView;
-    private HashSet<LocalDate> fetchedEvents = new HashSet<>();
+    private final HashSet<LocalDate> fetchedEvents = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

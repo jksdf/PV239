@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +22,6 @@ import ly.betime.shuriken.preferences.Sound;
 public class SettingsActivity extends AMenuActivity {
 
     private static final int SOUND_PICKER_ACTIVITY = 64;
-
 
     private final List<Preference> preferenceList = Arrays.asList(
             new Preference(Preferences.ALARM_SOUND, Preferences.ALARM_SOUND_DEFAULT, R.string.alarm_sound, Sound.class),

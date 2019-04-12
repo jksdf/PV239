@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData;
 import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.persistance.GeneratedAlarmDAO;
-import ly.betime.shuriken.preferences.Preference;
 import ly.betime.shuriken.preferences.Preferences;
 
 public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
