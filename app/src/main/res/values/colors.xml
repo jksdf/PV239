@@ -12,4 +12,6 @@
     <color name="colorText">#ffffff</color>
     <color name="colorTextDark">#8CFFFFFF</color>
     <color name="colorTextDarkest">#59FFFFFF</color>
+
+    <color name="disablePinkSwitch">#DB8DB4</color>
 </resources>

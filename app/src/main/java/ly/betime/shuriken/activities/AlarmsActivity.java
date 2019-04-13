@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.ShurikenAdapter;
+import ly.betime.shuriken.adapters.data.GeneratedAlarmShuriken;
 import ly.betime.shuriken.adapters.data.ShurikenData;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmService;
+import ly.betime.shuriken.service.GeneratedAlarmService;
 
 public class AlarmsActivity extends AMenuActivity {
 
@@ -35,6 +37,8 @@ public class AlarmsActivity extends AMenuActivity {
     public  LanguageTextHelper languageTextHelper;
     @Inject
     public CalendarApi calendarApi;
+    @Inject
+    public GeneratedAlarmService generatedAlarmService;
 
     private ShurikenData shurikenData;
     private ShurikenAdapter shurikenAdapter;
@@ -66,6 +70,7 @@ public class AlarmsActivity extends AMenuActivity {
         if (calendarApi.getPermission(this)) {
             refreshEvents();
         }
+        refreshGeneratedAlarm();
     }
 
     /**
@@ -99,6 +104,11 @@ public class AlarmsActivity extends AMenuActivity {
                             state ? AlarmService.AlarmAction.ENABLE : AlarmService.AlarmAction.DISABLE
                     )
             );
+            shurikenAdapter.setGeneratedAlarmSwitchListener(
+                    (alarm, state) -> {
+                        //TODO(slivka): change state of generated alarm
+                    }
+            );
 
             alarmsView.setAdapter(shurikenAdapter);
             alarmsView.setLayoutManager(new LinearLayoutManager(this));
@@ -119,6 +129,13 @@ public class AlarmsActivity extends AMenuActivity {
         shurikenData.setTomorrow(tomorrow);
         shurikenData.setEvents(calendarApi.getEvents(tomorrow, tomorrow));
         renderShurikenList();
+    }
+
+    private void refreshGeneratedAlarm() {
+        generatedAlarmService.get(LocalDate.now()).observe(this, alarm -> {
+            shurikenData.setGeneratedAlarmShuriken(new GeneratedAlarmShuriken(alarm));
+            renderShurikenList();
+        });
     }
 
     /**

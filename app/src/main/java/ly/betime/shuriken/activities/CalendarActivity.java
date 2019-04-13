@@ -1,6 +1,7 @@
 package ly.betime.shuriken.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -22,16 +23,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.ShurikenAdapter;
+import ly.betime.shuriken.adapters.data.GeneratedAlarmShuriken;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.calendar.CalendarShuriken;
 import ly.betime.shuriken.calendar.EventDecorator;
+import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
+import ly.betime.shuriken.service.GeneratedAlarmService;
 
 public class CalendarActivity extends AMenuActivity implements OnMonthChangedListener, OnDateSelectedListener {
 
     @Inject
     public CalendarApi calendarApi;
+
+    @Inject
+    public GeneratedAlarmService generatedAlarmService;
 
     @Inject
     public LanguageTextHelper languageTextHelper;
@@ -71,6 +78,13 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
     private void renderRecyclerView() {
         if (shurikenAdapter == null) {
             shurikenAdapter = new ShurikenAdapter(adapterList, languageTextHelper);
+
+            shurikenAdapter.setGeneratedAlarmSwitchListener(
+                    (alarm, state) -> {
+                        //TODO(slivka): change state of generated alarm
+                    }
+            );
+
             recyclerView.setAdapter(shurikenAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else {
@@ -97,14 +111,16 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
             selectedDate = date;
             LocalDate localDate = date.getDate();
 
-            int oldEvents = adapterList.size() - 1;
-
-            adapterList.clear();
-            adapterList.add(calendarShuriken);
-            adapterList.addAll(calendarApi.getEvents(localDate, localDate));
-            if (!recyclerView.isComputingLayout()) {
-                shurikenAdapter.notifyItemRangeChanged(1, Math.max(oldEvents, adapterList.size() - 1));
-            }
+            generatedAlarmService.get(localDate).observe(this, alarm -> {
+                int oldEvents = adapterList.size() - 1;
+                adapterList.clear();
+                adapterList.add(calendarShuriken);
+                adapterList.add(new GeneratedAlarmShuriken(alarm, true));
+                adapterList.addAll(calendarApi.getEvents(localDate, localDate));
+                if (!recyclerView.isComputingLayout()) {
+                    shurikenAdapter.notifyItemRangeChanged(1, Math.max(oldEvents, adapterList.size() - 1));
+                }
+            });
         }
     }
 

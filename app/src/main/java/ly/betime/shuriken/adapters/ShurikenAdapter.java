@@ -12,14 +12,17 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import ly.betime.shuriken.adapters.data.GeneratedAlarmShuriken;
 import ly.betime.shuriken.adapters.views.AlarmViewHolder;
 import ly.betime.shuriken.adapters.views.CalendarViewHolder;
 import ly.betime.shuriken.adapters.views.EventListTitleViewHolder;
 import ly.betime.shuriken.adapters.views.EventViewHolder;
+import ly.betime.shuriken.adapters.views.GeneratedAlarmViewHolder;
 import ly.betime.shuriken.adapters.views.ShurikenViewHolder;
 import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.calendar.CalendarShuriken;
 import ly.betime.shuriken.entities.Alarm;
+import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 
 /**
@@ -30,12 +33,15 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
     private final static int ALARM_VIEW = 1,
             EVENT_VIEW = 2,
             EVENT_TITLE_VIEW = 3,
-            CALENDAR_VIEW = 4;
+            CALENDAR_VIEW = 4,
+            GENERATED_ALARM_VIEW = 5;
 
     private int contextMenuPosition;
     private final List<Object> shurikens;
     private final LanguageTextHelper languageTextHelper;
+
     private AlarmSwitchListener alarmSwitchListener;
+    private GeneratedAlarmSwitchListener generatedAlarmSwitchListener;
 
     public ShurikenAdapter(List<Object> shurikens, LanguageTextHelper languageTextHelper) {
         this.shurikens = shurikens;
@@ -56,6 +62,9 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
         }
         if (obj instanceof CalendarShuriken) {
             return CALENDAR_VIEW;
+        }
+        if (obj instanceof GeneratedAlarmShuriken) {
+            return GENERATED_ALARM_VIEW;
         }
         return -1;
     }
@@ -81,6 +90,9 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
             case CALENDAR_VIEW:
                 contactView = inflater.inflate(CalendarViewHolder.VIEW, viewGroup, false);
                 return new CalendarViewHolder(contactView, this);
+            case GENERATED_ALARM_VIEW:
+                contactView = inflater.inflate(GeneratedAlarmViewHolder.VIEW, viewGroup, false);
+                return new GeneratedAlarmViewHolder(contactView, this);
             default:
                 throw new IllegalStateException("Unknown view type inside preferecnes adapter");
         }
@@ -116,6 +128,14 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
         this.alarmSwitchListener = alarmSwitchListener;
     }
 
+    public GeneratedAlarmSwitchListener getGeneratedAlarmSwitchListener() {
+        return generatedAlarmSwitchListener;
+    }
+
+    public void setGeneratedAlarmSwitchListener(GeneratedAlarmSwitchListener generatedAlarmSwitchListener) {
+        this.generatedAlarmSwitchListener = generatedAlarmSwitchListener;
+    }
+
     public LanguageTextHelper getLanguageTextHelper() {
         return languageTextHelper;
     }
@@ -123,5 +143,10 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
     @FunctionalInterface
     public interface AlarmSwitchListener {
         void alarmEnabledChanged(Alarm alarmEntity, boolean enabled);
+    }
+
+    @FunctionalInterface
+    public interface GeneratedAlarmSwitchListener {
+        void alarmEnabledChanged(GeneratedAlarm alarmEntity, boolean enabled);
     }
 }

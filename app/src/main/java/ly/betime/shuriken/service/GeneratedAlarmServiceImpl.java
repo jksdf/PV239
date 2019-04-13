@@ -54,7 +54,7 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
             GeneratedAlarm persistedAlarm = persistedAlarmFuture.get();
             if (persistedAlarm == null) {
                 Log.i(LOG_TAG, "Creating alarm " + suggestedAlarm);
-                Futures.transform(generatedAlarmDAO.insert(suggestedAlarm), id -> {
+                return Futures.transform(generatedAlarmDAO.insert(suggestedAlarm), id -> {
                     suggestedAlarm.setId(id.intValue());
                     alarmManagerApi.setAlarm(suggestedAlarm.getId(), AlarmManagerApi.AlarmType.GENERATED, suggestedAlarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
                     return suggestedAlarm;
@@ -67,7 +67,6 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                 }
                 return Futures.immediateFuture(suggestedAlarm);
             }
-            return null;
         }, MoreExecutors.directExecutor()));
     }
 

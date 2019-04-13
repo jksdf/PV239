@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">betime.ly</string>
     <string name="recommendation_title"><b>Waifu\'s Choice</b></string>
+    <string name="recommendation_title_with_date"><b>Waifu\'s Choice for %1$s</b></string>
     <string name="tomorrow_events_title"><b>明日</b></string>
 
     <!--Menu-->
@@ -12,6 +13,7 @@
     <string name="alarm_time_format_24">HH:mm</string>
     <string name="alarm_time_format_12">hh:mm</string>
     <string name="alarm_period_format">a</string>
+    <string name="alarm_title_format">MMMM dd yyyy</string>
     <string name="event_date_format">MMMM dd yyyy (eee)</string>
 
     <string name="repeat_everyday">Everyday</string>

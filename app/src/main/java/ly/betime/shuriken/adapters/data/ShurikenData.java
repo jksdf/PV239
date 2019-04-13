@@ -3,6 +3,7 @@ package ly.betime.shuriken.adapters.data;
 import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class ShurikenData {
     private LocalDate tomorrow;
     private List<Alarm> alarms;
     private List<CalendarEvent> events;
+    private List<GeneratedAlarmShuriken> generatedAlarmShuriken;
     private final ArrayList<Object> data = new ArrayList<>();
 
     public ShurikenData() {
@@ -27,11 +29,12 @@ public class ShurikenData {
         if (initialized) {
             alarms = Collections.emptyList();
             events = Collections.emptyList();
+            generatedAlarmShuriken = Collections.emptyList();
         }
     }
 
     public boolean isPrepared() {
-        return alarms != null && events != null;
+        return alarms != null && events != null && generatedAlarmShuriken != null;
     }
 
     public void refreshData() {
@@ -39,6 +42,10 @@ public class ShurikenData {
 
         if (tomorrow != null) {
             data.add(tomorrow);
+        }
+
+        if (generatedAlarmShuriken != null) {
+            data.addAll(generatedAlarmShuriken);
         }
 
         if (events.size() > 0) {
@@ -51,34 +58,27 @@ public class ShurikenData {
         return data;
     }
 
-    public List<Alarm> getAlarms() {
-        return alarms;
-    }
-
     public void setAlarms(List<Alarm> alarms) {
         Collections.sort(alarms, (a, b) -> a.getTime().compareTo(b.getTime()));
         this.alarms = alarms;
-    }
-
-    public List<CalendarEvent> getEvents() {
-        return events;
     }
 
     public void setEvents(List<CalendarEvent> events) {
         this.events = events;
     }
 
-    public LocalDate getTomorrow() {
-        return tomorrow;
-    }
-
     public void setTomorrow(LocalDate tomorrow) {
         this.tomorrow = tomorrow;
+    }
+
+    public void setGeneratedAlarmShuriken(GeneratedAlarmShuriken generatedAlarmShuriken) {
+        this.generatedAlarmShuriken = Collections.singletonList(generatedAlarmShuriken);
     }
 
     public void clean() {
         alarms = null;
         tomorrow = null;
         events = null;
+        generatedAlarmShuriken = null;
     }
 }
