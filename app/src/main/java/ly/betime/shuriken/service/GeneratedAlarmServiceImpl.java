@@ -13,6 +13,7 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZoneId;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -48,8 +49,7 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     public LiveData<GeneratedAlarm> get(LocalDate date) {
         ListenableFuture<GeneratedAlarm> suggestedAlarmFuture = alarmGenerator.generateAlarm(date);
         ListenableFuture<GeneratedAlarm> persistedAlarmFuture = generatedAlarmDAO.get(date);
-        MutableLiveData<GeneratedAlarm> generatedAlarmLiveData = new MutableLiveData<>();
-        Futures.whenAllComplete(ImmutableList.of(suggestedAlarmFuture, persistedAlarmFuture)).callAsync(() -> {
+        return futureToLiveData(Futures.whenAllComplete(ImmutableList.of(suggestedAlarmFuture, persistedAlarmFuture)).callAsync(() -> {
             GeneratedAlarm suggestedAlarm = suggestedAlarmFuture.get();
             GeneratedAlarm persistedAlarm = persistedAlarmFuture.get();
             if (persistedAlarm == null) {
@@ -57,8 +57,7 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                 Futures.transform(generatedAlarmDAO.insert(suggestedAlarm), id -> {
                     suggestedAlarm.setId(id.intValue());
                     alarmManagerApi.setAlarm(suggestedAlarm.getId(), AlarmManagerApi.AlarmType.GENERATED, suggestedAlarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                    generatedAlarmLiveData.setValue(suggestedAlarm);
-                    return null;
+                    return suggestedAlarm;
                 }, MoreExecutors.directExecutor());
             } else {
                 suggestedAlarm.setId(persistedAlarm.getId());
@@ -66,11 +65,10 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                     Log.i(LOG_TAG, "Updating alarm " + persistedAlarm + " to " + suggestedAlarm);
                     new UpdateAlarm(generatedAlarmDAO, alarmManagerApi).doInBackground(suggestedAlarm);
                 }
-                generatedAlarmLiveData.setValue(suggestedAlarm);
+                return Futures.immediateFuture(suggestedAlarm);
             }
             return null;
-        }, MoreExecutors.directExecutor());
-        return generatedAlarmLiveData;
+        }, MoreExecutors.directExecutor()));
     }
 
     @Override
@@ -122,5 +120,13 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
             }
             return null;
         }
+    }
+
+    private static <T> LiveData<T> futureToLiveData(ListenableFuture<T> future) {
+        MutableLiveData<T> liveData = new MutableLiveData<>();
+        future.addListener(() -> {
+            liveData.postValue(Futures.getUnchecked(future));
+        }, MoreExecutors.directExecutor());
+        return liveData;
     }
 }
