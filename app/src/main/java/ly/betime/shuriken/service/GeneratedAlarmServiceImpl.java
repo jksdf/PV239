@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.persistance.GeneratedAlarmDAO;
@@ -44,18 +45,20 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     }
 
     @Override
-    public ListenableFuture<GeneratedAlarm> get(LocalDate date) {
+    public LiveData<GeneratedAlarm> get(LocalDate date) {
         ListenableFuture<GeneratedAlarm> suggestedAlarmFuture = alarmGenerator.generateAlarm(date);
         ListenableFuture<GeneratedAlarm> persistedAlarmFuture = generatedAlarmDAO.get(date);
-        return Futures.whenAllComplete(ImmutableList.of(suggestedAlarmFuture, persistedAlarmFuture)).callAsync(() -> {
+        MutableLiveData<GeneratedAlarm> generatedAlarmLiveData = new MutableLiveData<>();
+        Futures.whenAllComplete(ImmutableList.of(suggestedAlarmFuture, persistedAlarmFuture)).callAsync(() -> {
             GeneratedAlarm suggestedAlarm = suggestedAlarmFuture.get();
             GeneratedAlarm persistedAlarm = persistedAlarmFuture.get();
             if (persistedAlarm == null) {
                 Log.i(LOG_TAG, "Creating alarm " + suggestedAlarm);
-                return Futures.transform(generatedAlarmDAO.insert(suggestedAlarm), id -> {
+                Futures.transform(generatedAlarmDAO.insert(suggestedAlarm), id -> {
                     suggestedAlarm.setId(id.intValue());
                     alarmManagerApi.setAlarm(suggestedAlarm.getId(), AlarmManagerApi.AlarmType.GENERATED, suggestedAlarm.getRinging().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-                    return suggestedAlarm;
+                    generatedAlarmLiveData.setValue(suggestedAlarm);
+                    return null;
                 }, MoreExecutors.directExecutor());
             } else {
                 suggestedAlarm.setId(persistedAlarm.getId());
@@ -63,9 +66,11 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                     Log.i(LOG_TAG, "Updating alarm " + persistedAlarm + " to " + suggestedAlarm);
                     new UpdateAlarm(generatedAlarmDAO, alarmManagerApi).doInBackground(suggestedAlarm);
                 }
-                return Futures.immediateFuture(suggestedAlarm);
+                generatedAlarmLiveData.setValue(suggestedAlarm);
             }
+            return null;
         }, MoreExecutors.directExecutor());
+        return generatedAlarmLiveData;
     }
 
     @Override
