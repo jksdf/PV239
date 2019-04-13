@@ -59,13 +59,17 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
 
         recyclerView = findViewById(R.id.recyclerView);
 
-        createCalendar();
+        if (calendarApi.getPermission(this)) {
+            createCalendar();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        renderRecyclerView();
+        if (calendarApi.getPermission(this)) {
+            renderRecyclerView();
+        }
     }
 
     private void createCalendar() {

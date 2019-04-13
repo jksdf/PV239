@@ -69,8 +69,8 @@ public class AlarmsActivity extends AMenuActivity {
         refreshAlarms();
         if (calendarApi.getPermission(this)) {
             refreshEvents();
+            refreshGeneratedAlarm();
         }
-        refreshGeneratedAlarm();
     }
 
     /**
