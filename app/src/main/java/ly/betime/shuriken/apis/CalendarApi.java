@@ -91,4 +91,15 @@ public class CalendarApi {
         Collections.sort(events, (a, b) -> a.getFrom().compareTo(b.getFrom()));
         return events;
     }
+
+    public CalendarEvent getEvent(Long id) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED) {
+            throw new RuntimeException("Do not have the permission.");
+        }
+        //TODO(slivka): implement
+        if (id == null) {
+            return null;
+        }
+        return null;
+    }
 }

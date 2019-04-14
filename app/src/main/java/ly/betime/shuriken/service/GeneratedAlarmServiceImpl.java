@@ -20,6 +20,8 @@ import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import ly.betime.shuriken.apis.AlarmManagerApi;
+import ly.betime.shuriken.apis.CalendarApi;
+import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.dagger.MyApplication;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.persistance.GeneratedAlarmDAO;
@@ -27,20 +29,25 @@ import ly.betime.shuriken.preferences.Preferences;
 
 public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     private static final String LOG_TAG = "GeneratedAlarmServiceIm";
+    private static final String NOTIFICATION_TAG = "GENERATED_ALARM";
 
     private final AlarmGenerator alarmGenerator;
     private final GeneratedAlarmDAO generatedAlarmDAO;
     private final AlarmManagerApi alarmManagerApi;
     private final SharedPreferences sharedPreferences;
     private final ExecutorService executorService;
+    private final NotificationService notificationService;
+    private final CalendarApi calendarApi;
 
     @Inject
-    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi, SharedPreferences sharedPreferences, @MyApplication ExecutorService executorService) {
+    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi, SharedPreferences sharedPreferences, @MyApplication ExecutorService executorService, NotificationService notificationService, CalendarApi calendarApi) {
         this.alarmGenerator = alarmGenerator;
         this.generatedAlarmDAO = generatedAlarmDAO;
         this.alarmManagerApi = alarmManagerApi;
         this.sharedPreferences = sharedPreferences;
         this.executorService = executorService;
+        this.notificationService = notificationService;
+        this.calendarApi = calendarApi;
     }
 
     @Override
@@ -68,14 +75,34 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                     if (persistedAlarm.getTime().equals(suggestedAlarm.getTime())) {
                         suggestedAlarm.setRinging(null);
                     } else {
-                        // TODO(slivka): notify that new generated alarm is available
+                        CalendarEvent event = calendarApi.getEvent(suggestedAlarm.getEventId());
+                        String bodyText;
+                        if (event == null) {
+                            bodyText = "A new alarm is available because you do not have any events in the morning.";
+                        } else {
+                            bodyText = "A new alarm is available because you have \"" + event.getName() + "\" in the morning at " + event.getFrom().atZone(ZoneId.systemDefault()).toLocalTime() + ".";
+                        }
+                        notificationService.notify(-1, NOTIFICATION_TAG,
+                                "New generated alarm is available",
+                                bodyText);
+                        Log.d(LOG_TAG, "Notification: " + bodyText);
                     }
                 } else {
                     if (persistedAlarm.getTime().equals(suggestedAlarm.getTime())) {
                         suggestedAlarm.setRinging(persistedAlarm.getRinging());
                     } else {
                         suggestedAlarm.setRinging(suggestedAlarm.getForDate().atTime(suggestedAlarm.getTime()));
-                        // TODO(slivka): notify that the alarm has changed
+                        CalendarEvent event = calendarApi.getEvent(suggestedAlarm.getEventId());
+                        String bodyText;
+                        if (event == null) {
+                            bodyText = "A new alarm is set to " + suggestedAlarm.getTime() + " because you do not have any events in the morning.";
+                        } else {
+                            bodyText = "A new alarm is available because you have \"" + event.getName() + "\" in the morning at " + event.getFrom().atZone(ZoneId.systemDefault()).toLocalTime() + ".";
+                        }
+                        notificationService.notify(-1, NOTIFICATION_TAG,
+                                "New generated alarm is available",
+                                bodyText);
+                        Log.d(LOG_TAG, "Notification: " + bodyText);
                     }
                 }
                 suggestedAlarm.setId(persistedAlarm.getId());
