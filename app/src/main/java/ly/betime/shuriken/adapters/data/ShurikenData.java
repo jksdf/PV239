@@ -44,13 +44,14 @@ public class ShurikenData {
             data.add(tomorrow);
         }
 
+        if (events.size() > 0) {
+            data.addAll(events);
+        }
+
         if (generatedAlarmShuriken != null) {
             data.addAll(generatedAlarmShuriken);
         }
 
-        if (events.size() > 0) {
-            data.addAll(events);
-        }
         data.addAll(alarms);
     }
 
