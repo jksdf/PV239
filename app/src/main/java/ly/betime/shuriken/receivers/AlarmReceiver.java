@@ -53,6 +53,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                 Log.e(LOG_TAG, "Alarm not found");
                 return;
             }
+            if (alarm.getRinging() == null) {
+                Log.e(LOG_TAG, "Alarm ringing not set.");
+                return;
+            }
             long secondsDifference =
                     Math.abs(ChronoUnit.SECONDS.between(alarm.getRinging(), LocalDateTime.now()));
             if (secondsDifference > 60) {

@@ -7,7 +7,12 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.common.util.concurrent.MoreExecutors;
+
 import org.threeten.bp.ZoneId;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Named;
 
@@ -51,6 +56,12 @@ public class ApplicationModule {
     @Provides
     public ZoneId zoneId() {
         return ZoneId.systemDefault();
+    }
+
+    @Provides
+    @MyApplication
+    public ExecutorService executorService() {
+        return Executors.newFixedThreadPool(1);
     }
 
 }

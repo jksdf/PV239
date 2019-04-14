@@ -21,6 +21,8 @@ public interface AlarmService {
 
     void setAlarm(Alarm alarm, AlarmAction action);
 
+    String getNextAlarm();
+
     enum AlarmAction {
         DISABLE, ENABLE, SNOOZE
     }

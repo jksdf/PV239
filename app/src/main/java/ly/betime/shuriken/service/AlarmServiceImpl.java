@@ -1,12 +1,17 @@
 package ly.betime.shuriken.service;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.common.base.MoreObjects;
+
+import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 
 import java.util.List;
 
@@ -145,6 +150,18 @@ public class AlarmServiceImpl implements AlarmService {
             default:
                 throw new AssertionError();
         }
+    }
+
+    @Override
+    public String getNextAlarm() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+            return null;
+        }
+        AlarmManager.AlarmClockInfo nextAlarm = alarmManagerApi.getNextAlarm();
+        if (nextAlarm == null) {
+            return "No alarm";
+        }
+        return String.format("An alarm is set at %s", Instant.ofEpochMilli(nextAlarm.getTriggerTime()).atOffset(ZoneOffset.UTC).atZoneSameInstant(ZoneId.systemDefault()).toString());
     }
 
     private LocalDateTime calculateNextRinging(Alarm alarm) {

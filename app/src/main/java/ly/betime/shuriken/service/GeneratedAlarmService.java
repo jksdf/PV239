@@ -14,4 +14,8 @@ public interface GeneratedAlarmService {
     LiveData<GeneratedAlarm> get(int id);
 
     void snooze(GeneratedAlarm generatedAlarm);
+
+    void disable(GeneratedAlarm generatedAlarm);
+
+    void enable(GeneratedAlarm generatedAlarm);
 }

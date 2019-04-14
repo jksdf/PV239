@@ -41,7 +41,7 @@ public class AlarmGeneratorTest {
     public void noEvent() throws Exception {
         AlarmGenerator alarmGenerator = alarmGenerator(ImmutableList.of());
         GeneratedAlarm alarm = alarmGenerator.generateAlarm(TODAY).get();
-        assertThat(alarm.getRinging().toLocalTime()).isEqualTo(DEFAULT_ALARM);
+        assertThat(alarm.getTime()).isEqualTo(DEFAULT_ALARM);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class AlarmGeneratorTest {
                 alarmGenerator(
                         ImmutableList.of(
                                 calendarEvent(TODAY, 12, 0, CalendarContract.Events.STATUS_CONFIRMED)));
-        assertThat(alarmGenerator.generateAlarm(TODAY).get().getRinging().toLocalTime()).isEqualTo(DEFAULT_ALARM);
+        assertThat(alarmGenerator.generateAlarm(TODAY).get().getTime()).isEqualTo(DEFAULT_ALARM);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class AlarmGeneratorTest {
                 alarmGenerator(ImmutableList.of(
                         calendarEvent(TODAY, 7, 0, CalendarContract.Events.STATUS_CANCELED),
                         calendarEvent(TODAY, 12, 0, CalendarContract.Events.STATUS_CONFIRMED)));
-        assertThat(alarmGenerator.generateAlarm(TODAY).get().getRinging().toLocalTime()).isEqualTo(DEFAULT_ALARM);
+        assertThat(alarmGenerator.generateAlarm(TODAY).get().getTime()).isEqualTo(DEFAULT_ALARM);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class AlarmGeneratorTest {
                         calendarEvent(TODAY, 9, 0, CalendarContract.Events.STATUS_CONFIRMED),
                         calendarEvent(TODAY, 7, 0, CalendarContract.Events.STATUS_CONFIRMED),
                         calendarEvent(TODAY, 12, 0, CalendarContract.Events.STATUS_CONFIRMED)));
-        assertThat(alarmGenerator.generateAlarm(TODAY).get().getRinging().toLocalTime()).isEqualTo(LocalTime.of(5, 30));
+        assertThat(alarmGenerator.generateAlarm(TODAY).get().getTime()).isEqualTo(LocalTime.of(5, 30));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class AlarmGeneratorTest {
                 alarmGenerator(ImmutableList.of(
                         calendarEvent(TODAY, 9, 0, CalendarContract.Events.STATUS_CONFIRMED),
                         calendarEvent(TODAY, 12, 0, CalendarContract.Events.STATUS_CONFIRMED)));
-        assertThat(alarmGenerator.generateAlarm(TODAY).get().getRinging().toLocalTime()).isEqualTo(LocalTime.of(7, 30));
+        assertThat(alarmGenerator.generateAlarm(TODAY).get().getTime()).isEqualTo(LocalTime.of(7, 30));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class AlarmGeneratorTest {
                         calendarEvent(TODAY.plusDays(1), 0, 10, CalendarContract.Events.STATUS_CONFIRMED),
                         calendarEvent(TODAY, 12, 0, CalendarContract.Events.STATUS_CONFIRMED)));
         GeneratedAlarm alarm = alarmGenerator.generateAlarm(TODAY).get();
-        assertThat(alarm.getRinging().toLocalTime()).isEqualTo(DEFAULT_ALARM);
+        assertThat(alarm.getTime()).isEqualTo(DEFAULT_ALARM);
     }
 
     private static AlarmGenerator alarmGenerator(List<CalendarEvent> events) {

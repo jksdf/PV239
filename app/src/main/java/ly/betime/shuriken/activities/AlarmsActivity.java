@@ -1,7 +1,9 @@
 package ly.betime.shuriken.activities;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -106,7 +108,11 @@ public class AlarmsActivity extends AMenuActivity {
             );
             shurikenAdapter.setGeneratedAlarmSwitchListener(
                     (alarm, state) -> {
-                        //TODO(slivka): change state of generated alarm
+                        if (state) {
+                            generatedAlarmService.enable(alarm);
+                        } else {
+                            generatedAlarmService.disable(alarm);
+                        }
                     }
             );
 
@@ -115,6 +121,8 @@ public class AlarmsActivity extends AMenuActivity {
         } else {
             shurikenAdapter.notifyDataSetChanged();
         }
+
+        Log.i(LOG_TAG, alarmService.getNextAlarm());
     }
 
     private void refreshAlarms() {
@@ -133,6 +141,7 @@ public class AlarmsActivity extends AMenuActivity {
 
     private void refreshGeneratedAlarm() {
         generatedAlarmService.get(LocalDate.now()).observe(this, alarm -> {
+            Log.w(LOG_TAG, "Setting the generated alarm " + alarm);
             shurikenData.setGeneratedAlarmShuriken(new GeneratedAlarmShuriken(alarm));
             renderShurikenList();
         });

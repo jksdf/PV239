@@ -13,6 +13,7 @@ import org.threeten.bp.ZoneId;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import androidx.annotation.RequiresApi;
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.receivers.AlarmReceiver;
 
@@ -64,6 +65,11 @@ public class AlarmManagerApi {
         } else {
             this.alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public AlarmManager.AlarmClockInfo getNextAlarm() {
+        return alarmManager.getNextAlarmClock();
     }
 
     private PendingIntent getPendingIntent(int id, AlarmType type, boolean enable) {

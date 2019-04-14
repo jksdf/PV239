@@ -5,6 +5,7 @@ import com.google.common.base.Objects;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.LocalTime;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -22,6 +23,9 @@ public class GeneratedAlarm {
     private LocalDate forDate;
 
     private Long eventId;
+
+    @TypeConverters(TimeConverter.class)
+    private LocalTime time;
 
     public Integer getId() {
         return id;
@@ -55,6 +59,14 @@ public class GeneratedAlarm {
         this.eventId = eventId;
     }
 
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,12 +75,13 @@ public class GeneratedAlarm {
         return Objects.equal(getId(), alarm.getId()) &&
                 Objects.equal(getRinging(), alarm.getRinging()) &&
                 Objects.equal(getForDate(), alarm.getForDate()) &&
-                Objects.equal(getEventId(), alarm.getEventId());
+                Objects.equal(getEventId(), alarm.getEventId()) &&
+                Objects.equal(getTime(), alarm.getTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId(), getRinging(), getForDate(), getEventId());
+        return Objects.hashCode(getId(), getRinging(), getForDate(), getEventId(), getTime());
     }
 
     @Override
@@ -78,6 +91,7 @@ public class GeneratedAlarm {
                 .add("ringing", getRinging())
                 .add("forDate", getForDate())
                 .add("eventId", getEventId())
+                .add("time", getTime())
                 .toString();
     }
 }

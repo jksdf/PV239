@@ -85,7 +85,11 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
 
             shurikenAdapter.setGeneratedAlarmSwitchListener(
                     (alarm, state) -> {
-                        //TODO(slivka): change state of generated alarm
+                        if (state) {
+                            generatedAlarmService.enable(alarm);
+                        } else {
+                            generatedAlarmService.disable(alarm);
+                        }
                     }
             );
 

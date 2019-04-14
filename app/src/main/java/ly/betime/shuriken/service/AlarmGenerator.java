@@ -2,6 +2,7 @@ package ly.betime.shuriken.service;
 
 import android.content.SharedPreferences;
 import android.provider.CalendarContract;
+import android.util.Log;
 
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -20,8 +21,9 @@ import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 
 public class AlarmGenerator {
-    static final int DEFAULT_ALARM_HOUR = 8;
+    static final int DEFAULT_ALARM_HOUR = 10;
     static final int DEFAULT_ALARM_MINUTE = 0;
+    private static final String LOG_TAG = "AlarmGenerator";
 
     private final CalendarApi calendarApi;
     private final SharedPreferences sharedPreferences;
@@ -48,19 +50,20 @@ public class AlarmGenerator {
                 }
             }
         }
-        generatedAlarm.setRinging(date.atTime(defaultTime));
+        generatedAlarm.setTime(defaultTime);
         if (nextEvent != null) {
             LocalDateTime preppedDateTime = nextEvent.getFrom().minus(eventPrepEstimate.timeToPrep(nextEvent), ChronoUnit.MILLIS);
             if (nextEvent.getFrom().getDayOfMonth() == preppedDateTime.getDayOfMonth()) {
                 LocalTime preppedTime = preppedDateTime.toLocalTime();
 
                 if (preppedTime.isBefore(defaultTime)) {
-                    generatedAlarm.setRinging(date.atTime(preppedTime));
+                    generatedAlarm.setTime(preppedTime);
                     generatedAlarm.setEventId(nextEvent.getEventId());
                 }
             }
         }
         generatedAlarm.setForDate(date);
+        Log.d(LOG_TAG, "alarm is " + generatedAlarm);
         return Futures.immediateFuture(generatedAlarm);
     }
 
