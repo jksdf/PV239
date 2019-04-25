@@ -26,7 +26,8 @@ public class SettingsActivity extends AMenuActivity {
     private final List<Preference> preferenceList = Arrays.asList(
             new Preference(Preferences.ALARM_SOUND, Preferences.ALARM_SOUND_DEFAULT, R.string.alarm_sound, Sound.class),
             new Preference(Preferences.SNOOZE_TIME, Preferences.SNOOZE_TIME_DEFAULT, R.string.snooze_settings, Integer.class),
-            new Preference(Preferences.MAX_RINGING_TIME, Preferences.MAX_RINGING_TIME_DEFAULT, R.string.max_ring_settings, Integer.class)
+            new Preference(Preferences.MAX_RINGING_TIME, Preferences.MAX_RINGING_TIME_DEFAULT, R.string.max_ring_settings, Integer.class),
+            new Preference(Preferences.VIBRATE, Preferences.VIBRATE_DEFAULT, R.string.vibrate_settings, Boolean.class)
     );
 
     private RecyclerView preferencesListView;

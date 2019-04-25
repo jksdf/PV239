@@ -9,6 +9,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
+import ly.betime.shuriken.preferences.Preference;
 import ly.betime.shuriken.preferences.Preferences;
 import ly.betime.shuriken.service.AlarmService;
 import ly.betime.shuriken.service.GeneratedAlarmService;
@@ -44,6 +47,9 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
     public static final String ALARM_ID_EXTRA_NAME = "alarm_id";
     public static final String ALARM_ID_EXTRA_TYPE = "alarm_type";
+
+    private static final long[] VIBRATION_THEME = new long[]{0, 500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40, 500};
+    private static final int[] VIBRATION_AMPLITUDES = new int[]{255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
 
     @Inject
     public AlarmService alarmService;
@@ -68,6 +74,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private Ringtone beep;
     private Timer timer;
     private Timer isRingingTimer;
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +91,20 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         stopButton = findViewById(R.id.stopButton);
 
         playSound();
+        vibrate();
         addListeners();
         ringingLengthLimit();
+    }
+
+    private void vibrate() {
+        if (sharedPreferences.getBoolean(Preferences.VIBRATE, Preferences.VIBRATE_DEFAULT)) {
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createWaveform(VIBRATION_THEME, VIBRATION_AMPLITUDES, 0));
+            } else {
+                vibrator.vibrate(VIBRATION_THEME, 0);
+            }
+        }
     }
 
     private void ringingLengthLimit() {
@@ -128,6 +147,9 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         }
         if (isRingingTimer != null) {
             isRingingTimer.cancel();
+        }
+        if (vibrator != null) {
+            vibrator.cancel();
         }
         beep.stop();
     }

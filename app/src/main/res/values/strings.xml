@@ -43,6 +43,7 @@
     <string name="hour_format_24">Use 24-hour format</string>
     <string name="snooze_settings">Snooze time (minutes)</string>
     <string name="max_ring_settings">Max ringing time</string>
+    <string name="vibrate_settings">Vibrate</string>
     <string name="alarm_sound">Alarm sound</string>
     <string name="sound_pick_title">Select sound</string>
     <string name="number">Number</string>

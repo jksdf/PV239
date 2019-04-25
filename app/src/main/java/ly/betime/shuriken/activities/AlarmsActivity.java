@@ -1,6 +1,5 @@
 package ly.betime.shuriken.activities;
 
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

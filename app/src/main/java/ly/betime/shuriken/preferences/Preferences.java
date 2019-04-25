@@ -15,6 +15,9 @@ public final class Preferences {
     public static final String MAX_RINGING_TIME = "MAX_RINGING_TIME";
     public static final int MAX_RINGING_TIME_DEFAULT = 10;
 
+    public static final String VIBRATE = "vibrate";
+    public static final boolean VIBRATE_DEFAULT = true;
+
     private Preferences() {
     }
 }
