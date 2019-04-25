@@ -1,24 +1,30 @@
-package ly.betime.shuriken.activities;
+package ly.betime.shuriken.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.threeten.bp.LocalDate;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
+import ly.betime.shuriken.activities.AlarmFormActivity;
 import ly.betime.shuriken.adapters.ShurikenAdapter;
 import ly.betime.shuriken.adapters.data.GeneratedAlarmShuriken;
 import ly.betime.shuriken.adapters.data.ShurikenData;
@@ -28,14 +34,14 @@ import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmService;
 import ly.betime.shuriken.service.GeneratedAlarmService;
 
-public class AlarmsActivity extends AMenuActivity {
+public class AlarmsFragment extends Fragment {
 
-    private static final String LOG_TAG = "AlarmsActivity";
+    private static final String LOG_TAG = "AlarmsFragment";
 
     @Inject
     public AlarmService alarmService;
     @Inject
-    public  LanguageTextHelper languageTextHelper;
+    public LanguageTextHelper languageTextHelper;
     @Inject
     public CalendarApi calendarApi;
     @Inject
@@ -47,28 +53,37 @@ public class AlarmsActivity extends AMenuActivity {
     private RecyclerView alarmsView;
     private FloatingActionButton addButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        App.getComponent().inject(this);
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_alarms);
-        alarmsView = findViewById(R.id.alarmsContainer);
-        registerForContextMenu(alarmsView);
-
-        addButton = findViewById(R.id.addButton);
-        addButton.setOnClickListener((View v) -> startAlarmFormActivity(null));
-
-        shurikenData = new ShurikenData();
+    public AlarmsFragment() {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getComponent().inject(this);
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_alarms, container, false);
+
+        alarmsView = view.findViewById(R.id.alarmsContainer);
+        registerForContextMenu(alarmsView);
+
+        addButton = view.findViewById(R.id.addButton);
+        addButton.setOnClickListener((View v) -> startAlarmFormActivity(null));
+
+        shurikenData = new ShurikenData();
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         shurikenData.clean();
         refreshAlarms();
-        if (calendarApi.getPermission(this)) {
+        if (calendarApi.getPermission(getActivity())) {
             refreshEvents();
             refreshGeneratedAlarm();
         }
@@ -79,8 +94,8 @@ public class AlarmsActivity extends AMenuActivity {
      *
      * @param alarm Alarm for editing if any is needed
      */
-    protected void startAlarmFormActivity(@Nullable Alarm alarm) {
-        Intent intent = new Intent(this, AlarmFormActivity.class);
+    protected void startAlarmFormActivity(@javax.annotation.Nullable Alarm alarm) {
+        Intent intent = new Intent(getContext(), AlarmFormActivity.class);
         if (alarm != null) {
             intent.putExtra(AlarmFormActivity.ALARM_ID_MESSAGE, alarm.getId());
         }
@@ -97,7 +112,7 @@ public class AlarmsActivity extends AMenuActivity {
 
         shurikenData.refreshData();
 
-        if (shurikenAdapter == null) {
+        if (alarmsView.getAdapter() == null || shurikenAdapter == null) {
             shurikenAdapter = new ShurikenAdapter(shurikenData.getData(), languageTextHelper);
             shurikenAdapter.setAlarmSwitchListener(
                     (alarm, state) -> alarmService.setAlarm(
@@ -116,7 +131,7 @@ public class AlarmsActivity extends AMenuActivity {
             );
 
             alarmsView.setAdapter(shurikenAdapter);
-            alarmsView.setLayoutManager(new LinearLayoutManager(this));
+            alarmsView.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             shurikenAdapter.notifyDataSetChanged();
         }
@@ -167,7 +182,7 @@ public class AlarmsActivity extends AMenuActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
+        MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.alarm_context_menu, menu);
     }
 

@@ -5,15 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import ly.betime.shuriken.activities.SettingsActivity;
+
+import java.util.List;
+
 import ly.betime.shuriken.adapters.views.PreferenceBooleanViewHolder;
 import ly.betime.shuriken.adapters.views.PreferenceIntegerViewHolder;
 import ly.betime.shuriken.adapters.views.PreferenceSoundViewHolder;
 import ly.betime.shuriken.adapters.views.PreferenceViewHolder;
+import ly.betime.shuriken.fragments.SettingsFragment;
 import ly.betime.shuriken.preferences.Preference;
 import ly.betime.shuriken.preferences.Sound;
 
@@ -22,11 +23,11 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferenceViewHolde
     private final static int INTEGER_VIEW = 1, BOOLEAN_VIEW = 2, SOUND_VIEW = 3;
 
     private final List<Preference> preferenceList;
-    private final SettingsActivity activity;
+    private final SettingsFragment fragment;
 
-    public PreferencesAdapter(SettingsActivity activity, List<Preference> preferenceList) {
+    public PreferencesAdapter(SettingsFragment fragment, List<Preference> preferenceList) {
         this.preferenceList = preferenceList;
-        this.activity = activity;
+        this.fragment = fragment;
     }
 
     @Override
@@ -76,8 +77,8 @@ public class PreferencesAdapter extends RecyclerView.Adapter<PreferenceViewHolde
         return preferenceList.get(position);
     }
 
-    public SettingsActivity getActivity() {
-        return activity;
+    public SettingsFragment getActivity() {
+        return fragment;
     }
 
     @Override

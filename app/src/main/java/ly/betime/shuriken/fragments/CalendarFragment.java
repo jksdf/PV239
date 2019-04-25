@@ -1,7 +1,15 @@
-package ly.betime.shuriken.activities;
+package ly.betime.shuriken.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -17,9 +25,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.App;
 import ly.betime.shuriken.R;
 import ly.betime.shuriken.adapters.ShurikenAdapter;
@@ -28,11 +33,10 @@ import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.calendar.CalendarShuriken;
 import ly.betime.shuriken.calendar.EventDecorator;
-import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.GeneratedAlarmService;
 
-public class CalendarActivity extends AMenuActivity implements OnMonthChangedListener, OnDateSelectedListener {
+public class CalendarFragment extends Fragment implements OnMonthChangedListener, OnDateSelectedListener {
 
     @Inject
     public CalendarApi calendarApi;
@@ -52,22 +56,28 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
     private CalendarShuriken calendarShuriken;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
+    }
 
-        recyclerView = findViewById(R.id.recyclerView);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_calendar, container, false);
 
-        if (calendarApi.getPermission(this)) {
-            createCalendar();
-        }
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+        return view;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        if (calendarApi.getPermission(this)) {
+        if (calendarApi.getPermission(getActivity())) {
+            if (calendarShuriken == null) {
+                createCalendar();
+            }
             renderRecyclerView();
         }
     }
@@ -80,7 +90,7 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
     }
 
     private void renderRecyclerView() {
-        if (shurikenAdapter == null) {
+        if (recyclerView.getAdapter() == null || shurikenAdapter == null) {
             shurikenAdapter = new ShurikenAdapter(adapterList, languageTextHelper);
 
             shurikenAdapter.setGeneratedAlarmSwitchListener(
@@ -94,7 +104,7 @@ public class CalendarActivity extends AMenuActivity implements OnMonthChangedLis
             );
 
             recyclerView.setAdapter(shurikenAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
             shurikenAdapter.notifyDataSetChanged();
         }

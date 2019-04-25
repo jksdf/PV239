@@ -3,8 +3,8 @@ package ly.betime.shuriken.dagger;
 import dagger.Component;
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.activities.AlarmFormActivity;
-import ly.betime.shuriken.activities.AlarmsActivity;
-import ly.betime.shuriken.activities.CalendarActivity;
+import ly.betime.shuriken.fragments.AlarmsFragment;
+import ly.betime.shuriken.fragments.CalendarFragment;
 import ly.betime.shuriken.persistance.PersistanceModule;
 import ly.betime.shuriken.receivers.AlarmReceiver;
 import ly.betime.shuriken.receivers.CalendarCheckReceiver;
@@ -17,6 +17,10 @@ public interface MyComponent {
     void inject(StartJobsReceiver startJobsReceiver);
 
     void inject(CalendarCheckReceiver calendarCheckReceiver);
+
+    void inject(AlarmsFragment alarmsFragment);
+
+    void inject(CalendarFragment calendarFragment);
 
     @Component.Builder
     interface Builder {
@@ -32,14 +36,11 @@ public interface MyComponent {
 
     void inject(AlarmFormActivity app);
 
-    void inject(AlarmsActivity app);
-
     void inject(ActiveAlarmActivity app);
 
     void inject(ReloadAlarmsReceiver app);
 
     void inject(AlarmReceiver alarmReceiver);
 
-    void inject(CalendarActivity app);
 
 }
