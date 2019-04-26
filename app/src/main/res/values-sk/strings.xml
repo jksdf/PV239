@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">betime.ly</string>
+    <string name="alarm_period_format">a</string>
+    <string name="alarm_rang_too_long">Budík zvonil pridlho</string>
+    <string name="alarm_sound">Zvuk budíku</string>
+    <string name="alarm_time_format_12">hh:mm</string>
+    <string name="alarm_time_format_24">HH:mm</string>
+    <string name="alarm_title_format">dd. MMMM yyyy</string>
+    <string name="alarms">Budíky</string>
+    <string name="calendar">Kalendár</string>
+    <string name="cancel">Zrušiť</string>
+    <string name="channel_description">Popis</string>
+    <string name="channel_name">betime.ly</string>
+    <string name="cancelled_alarm_notif_msg">Zvonil vám budík o %1$s</string>
+    <string name="delete_alarm">Zmazať budík</string>
+    <string name="edit_alarm">Upraviť budík</string>
+    <string name="event_end">Koniec udalosti:</string>
+    <string name="event_start">Začiatok udalosti:</string>
+    <string name="hour_format_24">24-hodinový formát času</string>
+    <string name="label">Názov</string>
+    <string name="label_hint">Zobrazené počas zvonenia budíka</string>
+    <string name="logo_alt">Náš nádherný maskot Betimely-čan</string>
+    <string name="max_ring_settings">Maximálna doba zvonenia</string>
+    <string name="number">Číslo</string>
+    <string name="ok">Áno</string>
+    <string name="recommendation_title"><b>Odporučený budík</b></string>
+    <string name="recommendation_title_with_date"><b>Odporučený budík %1$s</b></string>
+    <string name="repeat">Opakovať</string>
+    <string name="repeat_delimiter">&#160;|&#160;</string>
+    <string name="repeat_everyday">Každý deň</string>
+    <string name="repeat_non">Neopakovať</string>
+    <string name="save">Uložiť</string>
+    <string name="settings">Nastavenia</string>
+    <string name="show_more">Zobraziť viac</string>
+    <string name="snooze">😿 Odložiť 😿</string>
+    <string name="snooze_settings">Čas medzi odloženiami (minúty)</string>
+    <string name="sound_pick_title">Vyberte zvuk</string>
+    <string name="stop">🙀 Podržaním zastavíte 😹</string>
+    <string name="tomorrow_events_title"><b>Zajtra</b></string>
+    <string name="vibrate_settings">Vibrovať</string>
+    <string name="event_date_format">dd. MM. yyyy (eee)</string>
+</resources>

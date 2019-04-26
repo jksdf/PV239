@@ -120,7 +120,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
                         new NotificationCompat.Builder(ActiveAlarmActivity.this, ACTIVE_ALARM_ACTIVITY_NOTIFICATION)
                                 .setSmallIcon(R.drawable.ic_alarm_48)
                                 .setContentTitle(getString(R.string.alarm_rang_too_long))
-                                .setContentText(getString(R.string.cancelled_alarm_notif_msg) + alarmWrapper.getRinging().atZone(ZoneId.systemDefault()).toLocalTime())
+                                .setContentText(getString(R.string.cancelled_alarm_notif_msg, alarmWrapper.getRinging().atZone(ZoneId.systemDefault()).toLocalTime()))
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                 .setAutoCancel(true)
                                 .build());

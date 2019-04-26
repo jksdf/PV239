@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">betime.ly</string>
-    <string name="recommendation_title"><b>Waifu\'s Choice</b></string>
-    <string name="recommendation_title_with_date"><b>Waifu\'s Choice for %1$s</b></string>
-    <string name="tomorrow_events_title"><b>明日</b></string>
+    <string name="recommendation_title"><b>Recommended alarm</b></string>
+    <string name="recommendation_title_with_date"><b>Recommended alarm for %1$s</b></string>
+    <string name="tomorrow_events_title"><b>Tommorow</b></string>
 
     <!--Menu-->
     <string name="alarms">Alarms</string>
@@ -35,7 +35,7 @@
     <string name="save">Save</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="stop">🙀 Hold to staph 😹</string>
+    <string name="stop">🙀 Hold to stop 😹</string>
     <string name="snooze">😿 Snooze 😿</string>
     <string name="logo_alt">Our beautiful mascot Betimely-chan</string>
 
@@ -47,8 +47,8 @@
     <string name="alarm_sound">Alarm sound</string>
     <string name="sound_pick_title">Select sound</string>
     <string name="number">Number</string>
-    <string name="channel_name">Betime.ly</string>
+    <string name="channel_name">betime.ly</string>
     <string name="channel_description">Desc</string>
     <string name="alarm_rang_too_long">The alarm rang for too long.</string>
-    <string name="cancelled_alarm_notif_msg">You had an alarm at </string>
+    <string name="cancelled_alarm_notif_msg">You had an alarm at %1$s</string>
 </resources>

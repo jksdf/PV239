@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">betime.ly</string>
+    <string name="alarm_period_format">a</string>
+    <string name="channel_name">betime.ly</string>
+    <string name="tomorrow_events_title"><b>明日</b></string>
+    <string name="vibrate_settings">震わせる</string>
+    <string name="stop">🙀 押すと止まります 😹</string>
+    <string name="sound_pick_title">音を選択</string>
+    <string name="snooze_settings">スヌーズタイム「分」</string>
+    <string name="snooze">😿 スヌーズ 😿</string>
+    <string name="show_more">もっと見せる</string>
+    <string name="settings">設定</string>
+    <string name="save">セーブ</string>
+    <string name="repeat_non">決して繰り返さない</string>
+    <string name="repeat_everyday">毎日</string>
+    <string name="repeat_delimiter">&#160;|&#160;</string>
+    <string name="repeat">繰り返す</string>
+    <string name="ok">ＯＫ</string>
+    <string name="number" translatable="false">数</string>
+    <string name="recommendation_title"><b>おすすめアラーム</b></string>
+    <string name="recommendation_title_with_date"><b>おすすめアラーム %1$s</b></string>
+    <string name="logo_alt">可愛いマスコットベータイムリちゃん</string>
+    <string name="label">名前</string>
+    <string name="event_start">イベント開始</string>
+    <string name="event_end">イベント終了</string>
+    <string name="event_date_format">yyyy MM dd (eee)</string>
+    <string name="edit_alarm">アラームを編集</string>
+    <string name="delete_alarm">アラームを削除</string>
+    <string name="channel_description">説明</string>
+    <string name="cancel">キャンセル</string>
+    <string name="calendar">カレンダー</string>
+    <string name="alarms">アラーム</string>
+    <string name="alarm_title_format">yyyy MM dd</string>
+    <string name="alarm_time_format_24">HH:mm</string>
+    <string name="alarm_time_format_12">hh:mm</string>
+    <string name="alarm_sound">アラーム音</string>
+    <string name="max_ring_settings">最大呼び出し時間</string>
+    <string name="label_hint">呼び出し中に表示</string>
+    <string name="hour_format_24">24時間表示</string>
+    <string name="alarm_rang_too_long">アラームが長すぎます。</string>
+    <string name="cancelled_alarm_notif_msg">％1$sでアラームがありました</string>
+</resources>
