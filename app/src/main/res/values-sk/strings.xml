@@ -40,4 +40,6 @@
     <string name="tomorrow_events_title"><b>Zajtra</b></string>
     <string name="vibrate_settings">Vibrovať</string>
     <string name="event_date_format">dd. MM. yyyy (eee)</string>
+    <string name="share">Zdieľať</string>
+    <string name="event_share_title">Udalosť: %1$s</string>
 </resources>

@@ -51,4 +51,6 @@
     <string name="channel_description">Desc</string>
     <string name="alarm_rang_too_long">The alarm rang for too long.</string>
     <string name="cancelled_alarm_notif_msg">You had an alarm at %1$s</string>
+    <string name="share">Share</string>
+    <string name="event_share_title">Event: %1$s</string>
 </resources>

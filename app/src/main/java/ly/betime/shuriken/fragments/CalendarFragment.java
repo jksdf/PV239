@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -92,7 +91,7 @@ public class CalendarFragment extends Fragment implements OnMonthChangedListener
 
     private void renderRecyclerView() {
         if (recyclerView.getAdapter() == null || shurikenAdapter == null) {
-            shurikenAdapter = new ShurikenAdapter(adapterList, languageTextHelper);
+            shurikenAdapter = new ShurikenAdapter(adapterList, languageTextHelper, this);
 
             shurikenAdapter.setGeneratedAlarmSwitchListener(
                     (alarm, state) -> {

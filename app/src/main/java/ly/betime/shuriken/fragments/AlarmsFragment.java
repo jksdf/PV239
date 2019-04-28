@@ -113,7 +113,7 @@ public class AlarmsFragment extends Fragment {
         shurikenData.refreshData();
 
         if (alarmsView.getAdapter() == null || shurikenAdapter == null) {
-            shurikenAdapter = new ShurikenAdapter(shurikenData.getData(), languageTextHelper);
+            shurikenAdapter = new ShurikenAdapter(shurikenData.getData(), languageTextHelper, this);
             shurikenAdapter.setAlarmSwitchListener(
                     (alarm, state) -> alarmService.setAlarm(
                             alarm,

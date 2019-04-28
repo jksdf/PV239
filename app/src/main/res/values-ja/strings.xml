@@ -39,5 +39,7 @@
     <string name="label_hint">呼び出し中に表示</string>
     <string name="hour_format_24">24時間表示</string>
     <string name="alarm_rang_too_long">アラームが長すぎます。</string>
-    <string name="cancelled_alarm_notif_msg">％1$sでアラームがありました</string>
+    <string name="cancelled_alarm_notif_msg">%1$s でアラームがありました</string>
+    <string name="share">共有</string>
+    <string name="event_share_title">イベント　%1$s</string>
 </resources>

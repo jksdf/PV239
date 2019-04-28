@@ -11,6 +11,7 @@ import org.threeten.bp.LocalDate;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import ly.betime.shuriken.adapters.data.GeneratedAlarmShuriken;
 import ly.betime.shuriken.adapters.views.AlarmViewHolder;
@@ -42,10 +43,12 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
 
     private AlarmSwitchListener alarmSwitchListener;
     private GeneratedAlarmSwitchListener generatedAlarmSwitchListener;
+    private Fragment fragment;
 
-    public ShurikenAdapter(List<Object> shurikens, LanguageTextHelper languageTextHelper) {
+    public ShurikenAdapter(List<Object> shurikens, LanguageTextHelper languageTextHelper, Fragment fragment) {
         this.shurikens = shurikens;
         this.languageTextHelper = languageTextHelper;
+        this.fragment = fragment;
     }
 
     @Override
@@ -138,6 +141,10 @@ public class ShurikenAdapter extends RecyclerView.Adapter<ShurikenViewHolder> {
 
     public LanguageTextHelper getLanguageTextHelper() {
         return languageTextHelper;
+    }
+
+    public Fragment getFragment() {
+        return fragment;
     }
 
     @FunctionalInterface
