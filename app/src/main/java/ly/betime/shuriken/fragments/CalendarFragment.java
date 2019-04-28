@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -117,9 +118,25 @@ public class CalendarFragment extends Fragment implements OnMonthChangedListener
             return;
         fetchedEvents.add(start);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        List<CalendarEvent> events = calendarApi.getEvents(start, end);
+
+        List<CalendarEvent> allDayEvents = new ArrayList<>();
+        List<CalendarEvent> normalEvents = new ArrayList<>();
+        for (CalendarEvent event : events) {
+            if (event.isAllDay()) {
+                allDayEvents.add(event);
+            } else {
+                normalEvents.add(event);
+            }
+        }
+
         calendarView.addDecorators(new EventDecorator(
-                eventsToDays(calendarApi.getEvents(start, end)),
+                eventsToDays(normalEvents),
                 getResources().getColor(R.color.colorPrimary)
+        ));
+        calendarView.addDecorators(new EventDecorator(
+                eventsToDays(allDayEvents),
+                getResources().getColor(R.color.disablePinkSwitch)
         ));
     }
 

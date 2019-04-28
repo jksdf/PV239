@@ -72,7 +72,6 @@ public class LanguageTextHelper {
             }
             sb.append(day.getDisplayName(
                     TextStyle.SHORT,
-                    // TODO: Probably will need to change if we add manual way of changing locale
                     context.getResources().getConfiguration().locale));
         }
 

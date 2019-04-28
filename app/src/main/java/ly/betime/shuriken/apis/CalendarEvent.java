@@ -72,6 +72,11 @@ public class CalendarEvent {
         this.expanded = expanded;
     }
 
+    public boolean isAllDay() {
+        // TODO(slivka): implement
+        return false;
+    }
+
     @NonNull
     @Override
     public String toString() {
