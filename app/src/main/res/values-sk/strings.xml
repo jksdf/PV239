@@ -42,4 +42,14 @@
     <string name="event_date_format">dd. MM. yyyy (eee)</string>
     <string name="share">Zdieľať</string>
     <string name="event_share_title">Udalosť: %1$s</string>
+    <string name="start">Začať</string>
+    <string name="tutorial_slide1_title">Ahoj</string>
+    <string name="tutorial_slide1_desc">Sme budík, vieš dobre ako funguje budík.
+    My ale taktiež tvoríme budíky pre teba!</string>
+    <string name="tutorial_slide2_title">Automatické budíky!</string>
+    <string name="tutorial_slide3_title">To nie je všetko!</string>
+    <string name="tutorial_slide2_desc">Tu môžeš vydieť čo sa deje zajtra a budík, ktorý sme vytvorili na základe zajtrajších udalostí. Môžeš ho dokonca vypnúť!</string>
+    <string name="tutorial_slide3_desc">Alebo si pozri kalendár. Tu vidíš čo sa deje v budúcnosti. A taktiež vidíš kedy si myslíme, že je najlepšie ťa zobudiť.ň</string>
+    <string name="skip">Preskočiť</string>
+    <string name="next">Ďalej</string>
 </resources>

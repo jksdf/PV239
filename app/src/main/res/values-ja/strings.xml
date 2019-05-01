@@ -42,4 +42,14 @@
     <string name="cancelled_alarm_notif_msg">%1$s でアラームがありました</string>
     <string name="share">共有</string>
     <string name="event_share_title">イベント　%1$s</string>
+    <string name="start">スタート</string>
+    <string name="tutorial_slide1_title">こんにちは！</string>
+    <string name="tutorial_slide3_title">もっとあります！</string>
+    <string name="tutorial_slide2_title">自動アラーム！</string>
+    <string name="tutorial_slide1_desc">僕たちはアラームアプリです。お客様はそれがどのように機能するか知っています。
+    しかし僕達はまたお客様のためにアラームを作成します！</string>
+    <string name="tutorial_slide2_desc">これらのイベントに基づいて作成した明日とアラームのイベントを確認できます。　それを消すことができます！</string>
+    <string name="tutorial_slide3_desc">またはカレンダーを見て、将来何が起こっているのかを確認します。そして、いつ目を覚ますのが最善だと僕たちが考えるのかを見てください。</string>
+    <string name="skip">スキップ</string>
+    <string name="next">次</string>
 </resources>

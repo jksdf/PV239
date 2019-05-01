@@ -18,6 +18,9 @@ public final class Preferences {
     public static final String VIBRATE = "vibrate";
     public static final boolean VIBRATE_DEFAULT = true;
 
+    public static final String FIRST_START = "firstStart";
+    public static final boolean FIRST_START_DEFAULT_VALUE = false;
+
     private Preferences() {
     }
 }

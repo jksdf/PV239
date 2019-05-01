@@ -53,4 +53,16 @@
     <string name="cancelled_alarm_notif_msg">You had an alarm at %1$s</string>
     <string name="share">Share</string>
     <string name="event_share_title">Event: %1$s</string>
+
+    <!--Tutorial-->
+    <string name="start">Start</string>
+    <string name="tutorial_slide1_title">Hello!</string>
+    <string name="tutorial_slide1_desc">We are an alarm app; you know how it works.         But we also create alarms for you!</string>
+    <string name="tutorial_slide2_title">Automatic alarms!</string>
+    <string name="tutorial_slide2_desc">You can see your events for tomorrow and alarm we created based on these events. You can even turn it off!</string>
+    <string name="tutorial_slide3_title">There\'s more!</string>
+    <string name="tutorial_slide3_desc">Or look in the calendar to see what\'s happening in the future. And see when we think it is best for you to wake up.</string>
+    <string name="next">Go to next</string>
+    <string name="skip">Skip</string>
+
 </resources>
