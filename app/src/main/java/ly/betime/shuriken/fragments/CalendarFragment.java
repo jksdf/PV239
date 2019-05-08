@@ -148,11 +148,13 @@ public class CalendarFragment extends Fragment implements OnMonthChangedListener
             generatedAlarmService.get(localDate).observe(this, alarm -> {
                 int oldEvents = adapterList.size() - 1;
                 adapterList.clear();
+                shurikenAdapter.notifyItemRangeRemoved(1, oldEvents);
                 adapterList.add(calendarShuriken);
                 adapterList.add(new GeneratedAlarmShuriken(alarm, true));
                 adapterList.addAll(calendarApi.getEvents(localDate, localDate));
                 if (!recyclerView.isComputingLayout()) {
-                    shurikenAdapter.notifyItemRangeChanged(1, Math.max(oldEvents, adapterList.size() - 1));
+                    recyclerView.getRecycledViewPool().clear();
+                    shurikenAdapter.notifyItemRangeInserted(1,adapterList.size() - 1);
                 }
             });
         }
