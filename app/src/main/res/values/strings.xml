@@ -65,5 +65,11 @@
     <string name="next">Go to next</string>
     <string name="skip">Skip</string>
     <string name="open_from_notification">Open</string>
+    <string name="generated">Generated</string>
+    <string name="notification_available_alarm_no_event">A new alarm is available because you do not have any events in the morning.</string>
+    <string name="notification_available_alarm_with_event">A new alarm is available because you have \"%1$s\" in the morning at %2$s.</string>
+    <string name="notification_new_alarm_title">Generated alarm was changed</string>
+    <string name="notification_new_alarm_no_event">A new alarm is set to %1$s because you do not have any events in the morning.</string>
+    <string name="notification_new_alarm_event">A new alarm is set because you have \"%1$s\" in the morning at %2$s.</string>
 
 </resources>

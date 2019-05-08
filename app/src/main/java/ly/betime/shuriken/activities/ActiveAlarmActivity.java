@@ -285,7 +285,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
             if (alarm != null) {
                 return alarm.getName();
             }
-            return "GENERATED " + generatedAlarm.getForDate();
+            return getString(R.string.generated);
         }
 
         public LocalTime getTime() {

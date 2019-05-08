@@ -1,5 +1,6 @@
 package ly.betime.shuriken.service;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,9 +17,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import ly.betime.shuriken.R;
 import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
@@ -38,9 +41,10 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     private final ExecutorService executorService;
     private final NotificationService notificationService;
     private final CalendarApi calendarApi;
+    private final Context context;
 
     @Inject
-    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi, SharedPreferences sharedPreferences, @MyApplication ExecutorService executorService, NotificationService notificationService, CalendarApi calendarApi) {
+    public GeneratedAlarmServiceImpl(AlarmGenerator alarmGenerator, GeneratedAlarmDAO generatedAlarmDAO, AlarmManagerApi alarmManagerApi, SharedPreferences sharedPreferences, @MyApplication ExecutorService executorService, NotificationService notificationService, CalendarApi calendarApi, @Named("application") Context context) {
         this.alarmGenerator = alarmGenerator;
         this.generatedAlarmDAO = generatedAlarmDAO;
         this.alarmManagerApi = alarmManagerApi;
@@ -48,6 +52,7 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
         this.executorService = executorService;
         this.notificationService = notificationService;
         this.calendarApi = calendarApi;
+        this.context = context;
     }
 
     @Override
@@ -78,12 +83,12 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                         CalendarEvent event = calendarApi.getEvent(suggestedAlarm.getEventId());
                         String bodyText;
                         if (event == null) {
-                            bodyText = "A new alarm is available because you do not have any events in the morning.";
+                            bodyText = context.getString(R.string.notification_available_alarm_no_event);
                         } else {
-                            bodyText = "A new alarm is available because you have \"" + event.getName() + "\" in the morning at " + event.getFrom().atZone(ZoneId.systemDefault()).toLocalTime() + ".";
+                            bodyText = context.getString(R.string.notification_available_alarm_with_event, event.getName(), event.getFrom().atZone(ZoneId.systemDefault()).toLocalTime());
                         }
                         notificationService.notify(-1, NOTIFICATION_TAG,
-                                "New generated alarm is available",
+                                context.getString(R.string.notification_new_alarm_title),
                                 bodyText);
                         Log.d(LOG_TAG, "Notification: " + bodyText);
                     }
@@ -95,12 +100,12 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
                         CalendarEvent event = calendarApi.getEvent(suggestedAlarm.getEventId());
                         String bodyText;
                         if (event == null) {
-                            bodyText = "A new alarm is set to " + suggestedAlarm.getTime() + " because you do not have any events in the morning.";
+                            bodyText = context.getString(R.string.notification_new_alarm_no_event, suggestedAlarm.getTime());
                         } else {
-                            bodyText = "A new alarm is available because you have \"" + event.getName() + "\" in the morning at " + event.getFrom().atZone(ZoneId.systemDefault()).toLocalTime() + ".";
+                            bodyText = context.getString(R.string.notification_new_alarm_event, event.getName(), event.getFrom().atZone(ZoneId.systemDefault()).toLocalTime());
                         }
                         notificationService.notify(-1, NOTIFICATION_TAG,
-                                "New generated alarm is available",
+                                context.getString(R.string.notification_new_alarm_title),
                                 bodyText);
                         Log.d(LOG_TAG, "Notification: " + bodyText);
                     }

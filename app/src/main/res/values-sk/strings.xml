@@ -53,4 +53,10 @@
     <string name="skip">Preskočiť</string>
     <string name="next">Ďalej</string>
     <string name="open_from_notification">Otvoriť</string>
+    <string name="generated">Generovaný</string>
+    <string name="notification_available_alarm_no_event">Nový alarm je dostupný pretože nemáte ráno žiadnu udalosť.</string>
+    <string name="notification_available_alarm_with_event">Nový alarm je dostupný pretože máte \"%1$s\" o \"%2$s\".</string>
+    <string name="notification_new_alarm_title">Generováný alarm bol zmenený</string>
+    <string name="notification_new_alarm_no_event">Alarm bol akutalizovaný na %1$s pretože nemáte žiadnu udalosť.</string>
+    <string name="notification_new_alarm_event">Nový alarm je zapnutý pretože máte \"%1$s\" o %2$s.</string>
 </resources>
