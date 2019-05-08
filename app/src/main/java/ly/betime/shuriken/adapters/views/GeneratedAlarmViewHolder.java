@@ -33,13 +33,12 @@ public class GeneratedAlarmViewHolder extends ShurikenViewHolder {
 
     private void setListeners() {
         switchButton.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-            // TODO(slivka): Uncomment when isEnabled is added
-//            if (alarm.isEnabled() != isChecked) {
-//                if (adapter.getGeneratedAlarmSwitchListener() != null) {
-//                    adapter.getGeneratedAlarmSwitchListener().alarmEnabledChanged(alarm, isChecked);
-//                }
-//                itemView.post(() -> adapter.notifyItemChanged(position));
-//            }
+            if (alarm.isEnabled() != isChecked) {
+                if (adapter.getGeneratedAlarmSwitchListener() != null) {
+                    adapter.getGeneratedAlarmSwitchListener().alarmEnabledChanged(alarm, isChecked);
+                }
+                itemView.post(() -> adapter.notifyItemChanged(position));
+            }
         }));
     }
 
@@ -52,17 +51,17 @@ public class GeneratedAlarmViewHolder extends ShurikenViewHolder {
         if (alarmShuriken.isShowDate()) {
             title.setText(itemView.getContext().getResources().getString(
                     R.string.recommendation_title_with_date,
-                adapter.getLanguageTextHelper().getAlarmTitleFormatter().format(alarm.getRinging())
+                adapter.getLanguageTextHelper().getAlarmTitleFormatter().format(alarm.getDateTime())
             ));
         } else {
             title.setText(R.string.recommendation_title);
         }
 
-        alarmTime.setText(alarm.getRinging().format(adapter.getLanguageTextHelper().getAlarmTimeFormatter())); // TODO(slivka): getTime
-        alarmTimePeriod.setText(alarm.getRinging().format(adapter.getLanguageTextHelper().getAlarmPeriodFormatter())); // TODO(slivka): getTime
-        //switchButton.setChecked(alarm.isEnabled()); // TODO(slivka): Uncomment when isEnabled is added
-//
-        setColors(true); // TODO(slivka): add alarm isEnabled when finished
+        alarmTime.setText(alarm.getDateTime().format(adapter.getLanguageTextHelper().getAlarmTimeFormatter()));
+        alarmTimePeriod.setText(alarm.getDateTime().format(adapter.getLanguageTextHelper().getAlarmPeriodFormatter()));
+        switchButton.setChecked(alarm.isEnabled());
+
+        setColors(alarm.isEnabled());
     }
 
     /**

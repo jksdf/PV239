@@ -67,6 +67,14 @@ public class GeneratedAlarm {
         this.time = time;
     }
 
+    public LocalDateTime getDateTime() {
+        return getTime().atDate(getForDate());
+    }
+
+    public boolean isEnabled() {
+        return getRinging() != null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

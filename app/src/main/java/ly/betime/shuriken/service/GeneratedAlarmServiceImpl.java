@@ -131,13 +131,13 @@ public class GeneratedAlarmServiceImpl implements GeneratedAlarmService {
     @Override
     public void disable(GeneratedAlarm generatedAlarm) {
         generatedAlarm.setRinging(null);
-        new UpdateAlarm(generatedAlarmDAO, alarmManagerApi).doInBackground(generatedAlarm);
+        new UpdateAlarm(generatedAlarmDAO, alarmManagerApi).execute(generatedAlarm);
     }
 
     @Override
     public void enable(GeneratedAlarm generatedAlarm) {
         generatedAlarm.setRinging(generatedAlarm.getForDate().atTime(generatedAlarm.getTime()));
-        new UpdateAlarm(generatedAlarmDAO, alarmManagerApi).doInBackground(generatedAlarm);
+        new UpdateAlarm(generatedAlarmDAO, alarmManagerApi).execute(generatedAlarm);
     }
 
     private static class UpdateAlarm extends AsyncTask<GeneratedAlarm, Void, Void> {

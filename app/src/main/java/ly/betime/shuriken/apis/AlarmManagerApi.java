@@ -40,10 +40,10 @@ public class AlarmManagerApi {
      * @param id of the alarm
      */
     public void cancelAlarm(int id, AlarmType alarmType) {
-        Log.i(LOG_TAG, "Cancelling alarm, id: " + id);
+        Log.i(LOG_TAG, "Cancelling alarm, id: " + id + " type: " + alarmType);
         PendingIntent pendingIntent = getPendingIntent(id, alarmType, false);
         if (pendingIntent == null) {
-            Log.w(LOG_TAG, "Pending alarm not found, id: " + id);
+            Log.w(LOG_TAG, "Pending alarm not found, id: " + id + " type: " + alarmType);
             return;
         }
         this.alarmManager.cancel(pendingIntent);
