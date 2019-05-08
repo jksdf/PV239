@@ -21,6 +21,7 @@ import ly.betime.shuriken.entities.GeneratedAlarm;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -94,8 +95,8 @@ public class AlarmGeneratorTest {
     }
 
     private static AlarmGenerator alarmGenerator(List<CalendarEvent> events) {
-        when(fakeCalendar.getEvents((LocalDate) any(), any(), ImmutableSet.of())).thenReturn(events);
-        when(fakeCalendar.getEvents((LocalDateTime) any(), any(), ImmutableSet.of())).thenReturn(events);
+        when(fakeCalendar.getEvents((LocalDate) any(), any(), eq(ImmutableSet.of()))).thenReturn(events);
+        when(fakeCalendar.getEvents((LocalDateTime) any(), any(), eq(ImmutableSet.of()))).thenReturn(events);
         return new AlarmGenerator(
                 fakeCalendar,
                 sharedPreferences,
