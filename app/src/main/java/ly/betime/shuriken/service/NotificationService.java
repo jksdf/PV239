@@ -1,8 +1,11 @@
 package ly.betime.shuriken.service;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 
 import javax.inject.Inject;
@@ -11,6 +14,7 @@ import javax.inject.Named;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import ly.betime.shuriken.R;
+import ly.betime.shuriken.activities.MainActivity;
 
 
 public class NotificationService {
@@ -32,6 +36,7 @@ public class NotificationService {
                         .setContentText(text)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setAutoCancel(true)
+                        .addAction(R.drawable.ic_alarm_48, context.getString(R.string.open_from_notification), PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
                         .build());
     }
 

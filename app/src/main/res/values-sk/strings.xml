@@ -52,4 +52,5 @@
     <string name="tutorial_slide3_desc">Alebo si pozri kalendár. Tu vidíš čo sa deje v budúcnosti. A taktiež vidíš kedy si myslíme, že je najlepšie ťa zobudiť.ň</string>
     <string name="skip">Preskočiť</string>
     <string name="next">Ďalej</string>
+    <string name="open_from_notification">Otvoriť</string>
 </resources>

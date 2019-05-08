@@ -52,4 +52,5 @@
     <string name="tutorial_slide3_desc">またはカレンダーを見て、将来何が起こっているのかを確認します。そして、いつ目を覚ますのが最善だと僕たちが考えるのかを見てください。</string>
     <string name="skip">スキップ</string>
     <string name="next">次</string>
+    <string name="open_from_notification">観る</string>
 </resources>

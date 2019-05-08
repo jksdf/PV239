@@ -64,5 +64,6 @@
     <string name="tutorial_slide3_desc">Or look in the calendar to see what\'s happening in the future. And see when we think it is best for you to wake up.</string>
     <string name="next">Go to next</string>
     <string name="skip">Skip</string>
+    <string name="open_from_notification">Open</string>
 
 </resources>
