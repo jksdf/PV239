@@ -1,5 +1,11 @@
 package ly.betime.shuriken.preferences;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public final class Preferences {
 
     public static final String NAME = "betime.ly.preferences";
@@ -20,6 +26,21 @@ public final class Preferences {
 
     public static final String FIRST_START = "firstStart";
     public static final boolean FIRST_START_DEFAULT_VALUE = true;
+
+    public static final String CALENDARS_SELECTED = "calendarsSelected";
+    public static final String CALENDARS_SELECTED_DEFAULT = "";
+
+    public static Set<Integer> parseInts(String source) {
+        Set<Integer> ints = new HashSet<>();
+        for (String part : Splitter.on(',').omitEmptyStrings().split(source)) {
+            ints.add(Integer.valueOf(part));
+        }
+        return ints;
+    }
+
+    public static String serializeInts(Set<Integer> ints) {
+        return Joiner.on(',').join(ints);
+    }
 
     private Preferences() {
     }

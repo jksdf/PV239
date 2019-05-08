@@ -21,6 +21,8 @@ import javax.inject.Inject;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.entities.GeneratedAlarm;
+import ly.betime.shuriken.preferences.Preference;
+import ly.betime.shuriken.preferences.Preferences;
 
 public class AlarmGenerator {
     static final int DEFAULT_ALARM_HOUR = 10;
@@ -43,7 +45,7 @@ public class AlarmGenerator {
         int hour = sharedPreferences.getInt("DefaultAlarmHour", DEFAULT_ALARM_HOUR);
         int minute = sharedPreferences.getInt("DefaultAlarmMinute", DEFAULT_ALARM_MINUTE);
         LocalTime defaultTime = LocalTime.of(hour, minute);
-        List<CalendarEvent> events = calendarApi.getEvents(date, date.plusDays(1), ImmutableSet.of());
+        List<CalendarEvent> events = calendarApi.getEvents(date, date.plusDays(1), Preferences.parseInts(sharedPreferences.getString(Preferences.CALENDARS_SELECTED, Preferences.CALENDARS_SELECTED_DEFAULT)));
         CalendarEvent nextEvent = null;
         for (CalendarEvent event : events) {
             if (event.getStatus() == CalendarContract.Events.STATUS_CONFIRMED) {
