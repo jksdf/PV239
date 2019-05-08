@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import org.threeten.bp.LocalDate;
 
@@ -149,7 +151,7 @@ public class AlarmsFragment extends Fragment {
     private void refreshEvents() {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         shurikenData.setTomorrow(tomorrow);
-        shurikenData.setEvents(calendarApi.getEvents(tomorrow, tomorrow));
+        shurikenData.setEvents(calendarApi.getEvents(tomorrow, tomorrow, ImmutableSet.of()));
         renderShurikenList();
     }
 

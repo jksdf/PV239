@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -117,7 +119,7 @@ public class CalendarFragment extends Fragment implements OnMonthChangedListener
             return;
         fetchedEvents.add(start);
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
-        List<CalendarEvent> events = calendarApi.getEvents(start, end);
+        List<CalendarEvent> events = calendarApi.getEvents(start, end, ImmutableSet.of());
 
         List<CalendarEvent> allDayEvents = new ArrayList<>();
         List<CalendarEvent> normalEvents = new ArrayList<>();
@@ -151,7 +153,7 @@ public class CalendarFragment extends Fragment implements OnMonthChangedListener
                 shurikenAdapter.notifyItemRangeRemoved(1, oldEvents);
                 adapterList.add(calendarShuriken);
                 adapterList.add(new GeneratedAlarmShuriken(alarm, true));
-                adapterList.addAll(calendarApi.getEvents(localDate, localDate));
+                adapterList.addAll(calendarApi.getEvents(localDate, localDate, ImmutableSet.of()));
                 if (!recyclerView.isComputingLayout()) {
                     recyclerView.getRecycledViewPool().clear();
                     shurikenAdapter.notifyItemRangeInserted(1,adapterList.size() - 1);

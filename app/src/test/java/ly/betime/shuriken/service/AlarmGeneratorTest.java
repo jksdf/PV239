@@ -5,6 +5,7 @@ import android.provider.CalendarContract;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDate;
@@ -93,8 +94,8 @@ public class AlarmGeneratorTest {
     }
 
     private static AlarmGenerator alarmGenerator(List<CalendarEvent> events) {
-        when(fakeCalendar.getEvents((LocalDate) any(), any())).thenReturn(events);
-        when(fakeCalendar.getEvents((LocalDateTime) any(), any())).thenReturn(events);
+        when(fakeCalendar.getEvents((LocalDate) any(), any(), ImmutableSet.of())).thenReturn(events);
+        when(fakeCalendar.getEvents((LocalDateTime) any(), any(), ImmutableSet.of())).thenReturn(events);
         return new AlarmGenerator(
                 fakeCalendar,
                 sharedPreferences,

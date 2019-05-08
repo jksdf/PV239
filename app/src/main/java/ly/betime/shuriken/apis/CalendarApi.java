@@ -16,12 +16,15 @@ import org.threeten.bp.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class CalendarApi {
@@ -42,11 +45,14 @@ public class CalendarApi {
         return true;
     }
 
-    public List<CalendarEvent> getEvents(LocalDate from, LocalDate to) {
-        return getEvents(from.atStartOfDay(), to.plusDays(1).atStartOfDay());
+    public List<CalendarEvent> getEvents(LocalDate from, LocalDate to, Set<Integer> calendarIds) {
+        return getEvents(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), calendarIds);
     }
 
-    public List<CalendarEvent> getEvents(LocalDateTime from, LocalDateTime to) {
+    public List<CalendarEvent> getEvents(LocalDateTime from, LocalDateTime to, Set<Integer> calendarIds) {
+        checkNotNull(calendarIds);
+        checkNotNull(from);
+        checkNotNull(to);
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED) {
             throw new RuntimeException("Do not have the permission.");
         }
@@ -72,13 +78,15 @@ public class CalendarApi {
                 event.setAllDay(c.getInt(allDayIdx) == 1);
                 ZoneId timeZone;
                 String selection = "(" + CalendarContract.Events._ID + " = ?)";
+                int calendarId;
                 try (Cursor ec =
                              context
                                      .getContentResolver()
                                      .query(EVENTS_URI,
                                              new String[]{CalendarContract.Events.TITLE,
                                                      CalendarContract.Events.STATUS,
-                                                     CalendarContract.Events.EVENT_TIMEZONE},
+                                                     CalendarContract.Events.EVENT_TIMEZONE,
+                                                     CalendarContract.Events.CALENDAR_ID},
                                              selection,
                                              new String[]{eventId + ""}, null)) {
                     if (ec == null) {
@@ -92,10 +100,12 @@ public class CalendarApi {
                     event.setName(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.TITLE)));
                     event.setStatus(ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.STATUS)));
                     timeZone = ZoneId.of(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.EVENT_TIMEZONE)));
+                    calendarId = ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.CALENDAR_ID));
                 }
                 event.setFrom(Instant.ofEpochMilli(c.getLong(beginIdx)).atZone(timeZone).toLocalDateTime());
                 event.setTo(Instant.ofEpochMilli(c.getLong(endIdx)).atZone(timeZone).toLocalDateTime());
-                if (!event.getTo().equals(from)) {
+                if (!event.getTo().equals(from)
+                        && (calendarIds.isEmpty() || calendarIds.contains(calendarId))) {
                     events.add(event);
                 }
             }

@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.provider.CalendarContract;
 import android.util.Log;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -41,7 +43,7 @@ public class AlarmGenerator {
         int hour = sharedPreferences.getInt("DefaultAlarmHour", DEFAULT_ALARM_HOUR);
         int minute = sharedPreferences.getInt("DefaultAlarmMinute", DEFAULT_ALARM_MINUTE);
         LocalTime defaultTime = LocalTime.of(hour, minute);
-        List<CalendarEvent> events = calendarApi.getEvents(date, date.plusDays(1));
+        List<CalendarEvent> events = calendarApi.getEvents(date, date.plusDays(1), ImmutableSet.of());
         CalendarEvent nextEvent = null;
         for (CalendarEvent event : events) {
             if (event.getStatus() == CalendarContract.Events.STATUS_CONFIRMED) {
