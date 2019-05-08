@@ -55,7 +55,8 @@ public class CalendarApi {
         try (Cursor c = CalendarContract.Instances.query(context.getContentResolver(),
                 new String[]{CalendarContract.Instances.BEGIN,
                         CalendarContract.Instances.END,
-                        CalendarContract.Instances.EVENT_ID},
+                        CalendarContract.Instances.EVENT_ID,
+                        CalendarContract.Instances.ALL_DAY},
                 from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())) {
             if (c == null) {
                 throw new RuntimeException("Can not load calendar.");
@@ -63,10 +64,12 @@ public class CalendarApi {
             int beginIdx = c.getColumnIndexOrThrow(CalendarContract.Instances.BEGIN);
             int endIdx = c.getColumnIndexOrThrow(CalendarContract.Instances.END);
             int eventIdx = c.getColumnIndexOrThrow(CalendarContract.Instances.EVENT_ID);
+            int allDayIdx = c.getColumnIndexOrThrow(CalendarContract.Instances.ALL_DAY);
             for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
                 CalendarEvent event = new CalendarEvent();
                 long eventId = c.getLong(eventIdx);
                 event.setEventId(eventId);
+                event.setAllDay(c.getInt(allDayIdx) == 1);
                 ZoneId timeZone;
                 String selection = "(" + CalendarContract.Events._ID + " = ?)";
                 try (Cursor ec =
@@ -117,7 +120,8 @@ public class CalendarApi {
                                              CalendarContract.Events.STATUS,
                                              CalendarContract.Events.DTSTART,
                                              CalendarContract.Events.DTEND,
-                                             CalendarContract.Events.EVENT_TIMEZONE},
+                                             CalendarContract.Events.EVENT_TIMEZONE,
+                                             CalendarContract.Events.ALL_DAY},
                                      selection,
                                      new String[]{id + ""}, null)) {
             if (ec == null) {
@@ -142,6 +146,7 @@ public class CalendarApi {
                             .ofEpochMilli(ec.getLong(ec.getColumnIndexOrThrow(CalendarContract.Events.DTEND)))
                             .atZone(timeZone)
                             .toLocalDateTime());
+            event.setAllDay(ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.ALL_DAY)) == 1);
             event.setEventId(id);
             return event;
         }

@@ -12,6 +12,9 @@ public class CalendarEvent {
     private LocalDateTime to;
     private String name;
     private int status;
+    private boolean isAllDay;
+
+
 
     private boolean expanded = false;
 
@@ -72,9 +75,12 @@ public class CalendarEvent {
         this.expanded = expanded;
     }
 
+    public void setAllDay(boolean allDay) {
+        isAllDay = allDay;
+    }
+
     public boolean isAllDay() {
-        // TODO(slivka): implement
-        return false;
+        return isAllDay;
     }
 
     @NonNull
