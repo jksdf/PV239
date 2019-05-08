@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="switch_padding">50dp</dimen>
+    <integer name="poll_rate_normal">1800</integer>
+    <integer name="poll_rate_debug">60</integer>
 </resources>
