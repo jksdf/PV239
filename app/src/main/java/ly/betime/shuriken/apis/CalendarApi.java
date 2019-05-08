@@ -28,12 +28,10 @@ public class CalendarApi {
     private static final Uri EVENTS_URI = Uri.parse("content://com.android.calendar/events");
 
     private final Context context;
-    private final ZoneId zoneId;
 
     @Inject
-    public CalendarApi(@Named("application") Context context, ZoneId zoneId) {
+    public CalendarApi(@Named("application") Context context) {
         this.context = context;
-        this.zoneId = zoneId;
     }
 
     public boolean getPermission(Activity activity) {
@@ -54,7 +52,11 @@ public class CalendarApi {
         }
         List<CalendarEvent> events = new ArrayList<>();
 
-        try (Cursor c = CalendarContract.Instances.query(context.getContentResolver(), new String[]{CalendarContract.Instances.BEGIN, CalendarContract.Instances.END, CalendarContract.Instances.EVENT_ID}, from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())) {
+        try (Cursor c = CalendarContract.Instances.query(context.getContentResolver(),
+                new String[]{CalendarContract.Instances.BEGIN,
+                        CalendarContract.Instances.END,
+                        CalendarContract.Instances.EVENT_ID},
+                from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())) {
             if (c == null) {
                 throw new RuntimeException("Can not load calendar.");
             }
@@ -62,17 +64,20 @@ public class CalendarApi {
             int endIdx = c.getColumnIndexOrThrow(CalendarContract.Instances.END);
             int eventIdx = c.getColumnIndexOrThrow(CalendarContract.Instances.EVENT_ID);
             for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-                if (c.isAfterLast()) {
-                    break;
-                }
                 CalendarEvent event = new CalendarEvent();
-
-                event.setFrom(Instant.ofEpochMilli(c.getLong(beginIdx)).atZone(zoneId).toLocalDateTime());
-                event.setTo(Instant.ofEpochMilli(c.getLong(endIdx)).atZone(zoneId).toLocalDateTime());
                 long eventId = c.getLong(eventIdx);
                 event.setEventId(eventId);
+                ZoneId timeZone;
                 String selection = "(" + CalendarContract.Events._ID + " = ?)";
-                try (Cursor ec = context.getContentResolver().query(EVENTS_URI, new String[]{CalendarContract.Events.TITLE, CalendarContract.Events.STATUS}, selection, new String[]{eventId + ""}, null)) {
+                try (Cursor ec =
+                             context
+                                     .getContentResolver()
+                                     .query(EVENTS_URI,
+                                             new String[]{CalendarContract.Events.TITLE,
+                                                     CalendarContract.Events.STATUS,
+                                                     CalendarContract.Events.EVENT_TIMEZONE},
+                                             selection,
+                                             new String[]{eventId + ""}, null)) {
                     if (ec == null) {
                         throw new RuntimeException("Event not found.");
                     }
@@ -83,9 +88,13 @@ public class CalendarApi {
                     }
                     event.setName(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.TITLE)));
                     event.setStatus(ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.STATUS)));
+                    timeZone = ZoneId.of(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.EVENT_TIMEZONE)));
                 }
-                events.add(event);
-                c.moveToNext();
+                event.setFrom(Instant.ofEpochMilli(c.getLong(beginIdx)).atZone(timeZone).toLocalDateTime());
+                event.setTo(Instant.ofEpochMilli(c.getLong(endIdx)).atZone(timeZone).toLocalDateTime());
+                if (!event.getTo().equals(from)) {
+                    events.add(event);
+                }
             }
         }
         Collections.sort(events, (a, b) -> a.getFrom().compareTo(b.getFrom()));
@@ -93,13 +102,48 @@ public class CalendarApi {
     }
 
     public CalendarEvent getEvent(Long id) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED) {
-            throw new RuntimeException("Do not have the permission.");
-        }
-        //TODO(slivka): implement
         if (id == null) {
             return null;
         }
-        return null;
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) == PackageManager.PERMISSION_DENIED) {
+            throw new RuntimeException("Do not have the permission.");
+        }
+        String selection = "(" + CalendarContract.Events._ID + " = ?)";
+        try (Cursor ec =
+                     context
+                             .getContentResolver()
+                             .query(EVENTS_URI,
+                                     new String[]{CalendarContract.Events.TITLE,
+                                             CalendarContract.Events.STATUS,
+                                             CalendarContract.Events.DTSTART,
+                                             CalendarContract.Events.DTEND,
+                                             CalendarContract.Events.EVENT_TIMEZONE},
+                                     selection,
+                                     new String[]{id + ""}, null)) {
+            if (ec == null) {
+                throw new RuntimeException("Event not found.");
+            }
+            if (ec.getCount() != 1) {
+                throw new RuntimeException("Too many or few rows.");
+            }
+            ec.moveToFirst();
+
+            CalendarEvent event = new CalendarEvent();
+            event.setName(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.TITLE)));
+            event.setStatus(ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.STATUS)));
+            ZoneId timeZone = ZoneId.of(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.EVENT_TIMEZONE)));
+            event.setFrom(
+                    Instant
+                            .ofEpochMilli(ec.getLong(ec.getColumnIndexOrThrow(CalendarContract.Events.DTSTART)))
+                            .atZone(timeZone)
+                            .toLocalDateTime());
+            event.setTo(
+                    Instant
+                            .ofEpochMilli(ec.getLong(ec.getColumnIndexOrThrow(CalendarContract.Events.DTEND)))
+                            .atZone(timeZone)
+                            .toLocalDateTime());
+            event.setEventId(id);
+            return event;
+        }
     }
 }
