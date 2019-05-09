@@ -4,8 +4,6 @@ import android.content.SharedPreferences;
 import android.provider.CalendarContract;
 import android.util.Log;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -21,7 +19,6 @@ import javax.inject.Inject;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
 import ly.betime.shuriken.entities.GeneratedAlarm;
-import ly.betime.shuriken.preferences.Preference;
 import ly.betime.shuriken.preferences.Preferences;
 
 public class AlarmGenerator {
@@ -31,10 +28,10 @@ public class AlarmGenerator {
 
     private final CalendarApi calendarApi;
     private final SharedPreferences sharedPreferences;
-    private final EventPrepEstimate eventPrepEstimate;
+    private final EventPreparationEstimator eventPrepEstimate;
 
     @Inject
-    public AlarmGenerator(CalendarApi calendarApi, SharedPreferences sharedPreferences, EventPrepEstimate eventPrepEstimate) {
+    public AlarmGenerator(CalendarApi calendarApi, SharedPreferences sharedPreferences, EventPreparationEstimator eventPrepEstimate) {
         this.calendarApi = calendarApi;
         this.sharedPreferences = sharedPreferences;
         this.eventPrepEstimate = eventPrepEstimate;
@@ -69,17 +66,5 @@ public class AlarmGenerator {
         generatedAlarm.setForDate(date);
         Log.d(LOG_TAG, "alarm is " + generatedAlarm);
         return Futures.immediateFuture(generatedAlarm);
-    }
-
-    public static class EventPrepEstimate {
-
-        @Inject
-        public EventPrepEstimate() {
-        }
-
-        @SuppressWarnings("unused")
-        private long timeToPrep(CalendarEvent event) {
-            return 1000L * 60 * 90;
-        }
     }
 }

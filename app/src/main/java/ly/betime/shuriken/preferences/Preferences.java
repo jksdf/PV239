@@ -30,6 +30,12 @@ public final class Preferences {
     public static final String CALENDARS_SELECTED = "calendarsSelected";
     public static final String CALENDARS_SELECTED_DEFAULT = "";
 
+    public static final String MORNING_TIME_ESTIMATE = "morningTimeEstimate";
+    public static final int MORNING_TIME_ESTIMATE_DEFAULT = 60;
+
+    public static final String TRAVEL_TIME_ESTIMATE = "travelTimeEstimate";
+    public static final int TRAVEL_TIME_ESTIMATE_DEFAULT = 10;
+
     public static Set<Integer> parseInts(String source) {
         Set<Integer> ints = new HashSet<>();
         for (String part : Splitter.on(',').omitEmptyStrings().split(source)) {

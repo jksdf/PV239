@@ -13,8 +13,7 @@ public class CalendarEvent {
     private String name;
     private int status;
     private boolean isAllDay;
-
-
+    private String location;
 
     private boolean expanded = false;
 
@@ -83,6 +82,14 @@ public class CalendarEvent {
         return isAllDay;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -92,6 +99,7 @@ public class CalendarEvent {
                 .add("to", to)
                 .add("name", name)
                 .add("expanded", expanded)
+                .add("location", getLocation())
                 .toString();
     }
 }

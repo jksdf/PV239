@@ -15,4 +15,8 @@ public class ServiceModule {
     public GeneratedAlarmService generatedAlarmService(GeneratedAlarmServiceImpl generatedAlarmService) {
         return generatedAlarmService;
     }
+
+    @Provides EventPreparationEstimator eventPreparationEstimator(EventPreparationEstimatorImpl impl) {
+        return impl;
+    }
 }

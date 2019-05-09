@@ -100,7 +100,7 @@ public class AlarmGeneratorTest {
         return new AlarmGenerator(
                 fakeCalendar,
                 sharedPreferences,
-                new AlarmGenerator.EventPrepEstimate());
+                ignored -> 90 * 60 * 1000);
     }
 
     private static CalendarEvent calendarEvent(LocalDate day, int hour, int minute, int status) {
