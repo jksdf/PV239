@@ -53,4 +53,10 @@
     <string name="skip">スキップ</string>
     <string name="next">次</string>
     <string name="open_from_notification">観る</string>
+    <string name="generated">自動アラーム</string>
+    <string name="notification_new_alarm_title">自動アラームが変更されました</string>
+    <string name="notification_available_alarm_no_event">朝はイベントがいませんなので、新しい自動アラームを利用できます。</string>
+    <string name="notification_available_alarm_with_event">明日は%2$sに%1$sがありますなので、新しい自動アラームを利用できます。</string>
+    <string name="notification_new_alarm_event">明日は%2$sに%1$sがありますなので、新しい自動アラームをつけました。</string>
+    <string name="notification_new_alarm_no_event">朝はイベントがいませんなので、%1$sに新しい自動アラームをつけました。</string>
 </resources>
