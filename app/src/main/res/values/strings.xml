@@ -2,7 +2,7 @@
     <string name="app_name">betime.ly</string>
     <string name="recommendation_title"><b>Recommended alarm</b></string>
     <string name="recommendation_title_with_date"><b>Recommended alarm for %1$s</b></string>
-    <string name="tomorrow_events_title"><b>Tommorow</b></string>
+    <string name="tomorrow_events_title"><b>Tomorrow</b></string>
 
     <!--Menu-->
     <string name="alarms">Alarms</string>
