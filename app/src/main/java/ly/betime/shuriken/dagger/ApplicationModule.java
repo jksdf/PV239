@@ -11,6 +11,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 import org.threeten.bp.ZoneId;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -64,4 +65,9 @@ public class ApplicationModule {
         return Executors.newFixedThreadPool(1);
     }
 
+    @Provides
+    @MyApplication
+    public Executor executor(@MyApplication ExecutorService service) {
+        return service;
+    }
 }

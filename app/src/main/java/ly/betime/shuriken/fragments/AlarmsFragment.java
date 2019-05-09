@@ -31,6 +31,7 @@ import ly.betime.shuriken.adapters.ShurikenAdapter;
 import ly.betime.shuriken.adapters.data.GeneratedAlarmShuriken;
 import ly.betime.shuriken.adapters.data.ShurikenData;
 import ly.betime.shuriken.apis.CalendarApi;
+import ly.betime.shuriken.apis.PermissionObtainer;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
 import ly.betime.shuriken.service.AlarmService;
@@ -85,7 +86,7 @@ public class AlarmsFragment extends Fragment {
         super.onResume();
         shurikenData.clean();
         refreshAlarms();
-        if (calendarApi.getPermission(getActivity())) {
+        if (PermissionObtainer.obtain(getActivity())) {
             refreshEvents();
             refreshGeneratedAlarm();
         }

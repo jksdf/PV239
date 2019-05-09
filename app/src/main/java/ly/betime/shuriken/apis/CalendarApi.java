@@ -37,14 +37,6 @@ public class CalendarApi {
         this.context = context;
     }
 
-    public boolean getPermission(Activity activity) {
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.READ_CALENDAR}, 42);
-            return false;
-        }
-        return true;
-    }
-
     public List<CalendarEvent> getEvents(LocalDate from, LocalDate to, Set<Integer> calendarIds) {
         return getEvents(from.atStartOfDay(), to.plusDays(1).atStartOfDay(), calendarIds);
     }

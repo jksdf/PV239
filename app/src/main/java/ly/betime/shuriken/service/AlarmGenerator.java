@@ -13,11 +13,14 @@ import org.threeten.bp.LocalTime;
 import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import javax.inject.Inject;
 
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
+import ly.betime.shuriken.dagger.MyApplication;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.preferences.Preferences;
 
@@ -29,12 +32,14 @@ public class AlarmGenerator {
     private final CalendarApi calendarApi;
     private final SharedPreferences sharedPreferences;
     private final EventPreparationEstimator eventPrepEstimate;
+    private final Executor executor;
 
     @Inject
-    public AlarmGenerator(CalendarApi calendarApi, SharedPreferences sharedPreferences, EventPreparationEstimator eventPrepEstimate) {
+    public AlarmGenerator(CalendarApi calendarApi, SharedPreferences sharedPreferences, EventPreparationEstimator eventPrepEstimate, @MyApplication Executor executor) {
         this.calendarApi = calendarApi;
         this.sharedPreferences = sharedPreferences;
         this.eventPrepEstimate = eventPrepEstimate;
+        this.executor = executor;
     }
 
     public ListenableFuture<GeneratedAlarm> generateAlarm(LocalDate date) {
@@ -53,15 +58,22 @@ public class AlarmGenerator {
         }
         generatedAlarm.setTime(defaultTime);
         if (nextEvent != null) {
-            LocalDateTime preppedDateTime = nextEvent.getFrom().minus(eventPrepEstimate.timeToPrep(nextEvent), ChronoUnit.MILLIS);
-            if (nextEvent.getFrom().getDayOfMonth() == preppedDateTime.getDayOfMonth()) {
-                LocalTime preppedTime = preppedDateTime.toLocalTime();
+            final CalendarEvent nextEventFinal = nextEvent;
+            return Futures.transform(eventPrepEstimate.timeToPrep(nextEvent), time -> {
+                LocalDateTime preppedDateTime = nextEventFinal.getFrom().minus(time, ChronoUnit.MILLIS);
+                if (nextEventFinal.getFrom().getDayOfMonth() == preppedDateTime.getDayOfMonth()) {
+                    LocalTime preppedTime = preppedDateTime.toLocalTime();
 
-                if (preppedTime.isBefore(defaultTime)) {
-                    generatedAlarm.setTime(preppedTime);
-                    generatedAlarm.setEventId(nextEvent.getEventId());
+                    if (preppedTime.isBefore(defaultTime)) {
+                        generatedAlarm.setTime(preppedTime);
+                        generatedAlarm.setEventId(nextEventFinal.getEventId());
+                    }
                 }
-            }
+                generatedAlarm.setForDate(date);
+                Log.d(LOG_TAG, "alarm is " + generatedAlarm);
+                return generatedAlarm;
+            }, executor);
+
         }
         generatedAlarm.setForDate(date);
         Log.d(LOG_TAG, "alarm is " + generatedAlarm);

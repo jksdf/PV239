@@ -6,6 +6,8 @@ import android.provider.CalendarContract;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.MoreExecutors;
 
 import org.junit.Test;
 import org.threeten.bp.LocalDate;
@@ -100,7 +102,8 @@ public class AlarmGeneratorTest {
         return new AlarmGenerator(
                 fakeCalendar,
                 sharedPreferences,
-                ignored -> 90 * 60 * 1000);
+                ignored -> Futures.immediateFuture(90L * 60 * 1000),
+                MoreExecutors.directExecutor());
     }
 
     private static CalendarEvent calendarEvent(LocalDate day, int hour, int minute, int status) {

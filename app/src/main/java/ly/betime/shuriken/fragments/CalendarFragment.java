@@ -33,6 +33,7 @@ import ly.betime.shuriken.adapters.ShurikenAdapter;
 import ly.betime.shuriken.adapters.data.GeneratedAlarmShuriken;
 import ly.betime.shuriken.apis.CalendarApi;
 import ly.betime.shuriken.apis.CalendarEvent;
+import ly.betime.shuriken.apis.PermissionObtainer;
 import ly.betime.shuriken.calendar.CalendarShuriken;
 import ly.betime.shuriken.calendar.EventDecorator;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
@@ -76,7 +77,7 @@ public class CalendarFragment extends Fragment implements OnMonthChangedListener
     @Override
     public void onResume() {
         super.onResume();
-        if (calendarApi.getPermission(getActivity())) {
+        if (PermissionObtainer.obtain(getActivity())) {
             if (calendarShuriken == null) {
                 createCalendar();
             }

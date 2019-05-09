@@ -1,5 +1,7 @@
 package ly.betime.shuriken.service;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import ly.betime.shuriken.apis.CalendarEvent;
 
 interface EventPreparationEstimator {
@@ -9,5 +11,5 @@ interface EventPreparationEstimator {
      * @return time to prepare in milliseconds
      */
     @SuppressWarnings("unused")
-    long timeToPrep(CalendarEvent event);
+    ListenableFuture<Long> timeToPrep(CalendarEvent event);
 }
