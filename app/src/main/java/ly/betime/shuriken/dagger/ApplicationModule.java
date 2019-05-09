@@ -21,6 +21,9 @@ import dagger.Module;
 import dagger.Provides;
 import ly.betime.shuriken.activities.ActiveAlarmActivity;
 import ly.betime.shuriken.preferences.Preferences;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -69,5 +72,15 @@ public class ApplicationModule {
     @MyApplication
     public Executor executor(@MyApplication ExecutorService service) {
         return service;
+    }
+
+    @Provides
+    @MyApplication
+    public Retrofit retrofit() {
+        return new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
     }
 }

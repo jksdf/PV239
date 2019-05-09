@@ -4,12 +4,13 @@ import android.app.Application;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import androidx.multidex.MultiDexApplication;
 import ly.betime.shuriken.dagger.ApplicationModule;
 import ly.betime.shuriken.dagger.MyComponent;
 import ly.betime.shuriken.persistance.PersistanceModule;
 import ly.betime.shuriken.service.ServiceModule;
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     private static MyComponent component;
 

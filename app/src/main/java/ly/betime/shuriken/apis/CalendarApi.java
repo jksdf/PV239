@@ -78,7 +78,8 @@ public class CalendarApi {
                                              new String[]{CalendarContract.Events.TITLE,
                                                      CalendarContract.Events.STATUS,
                                                      CalendarContract.Events.EVENT_TIMEZONE,
-                                                     CalendarContract.Events.CALENDAR_ID},
+                                                     CalendarContract.Events.CALENDAR_ID,
+                                                     CalendarContract.Events.EVENT_LOCATION},
                                              selection,
                                              new String[]{eventId + ""}, null)) {
                     if (ec == null) {
@@ -93,6 +94,7 @@ public class CalendarApi {
                     event.setStatus(ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.STATUS)));
                     timeZone = ZoneId.of(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.EVENT_TIMEZONE)));
                     calendarId = ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.CALENDAR_ID));
+                    event.setLocation(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.EVENT_LOCATION)));
                 }
                 event.setFrom(Instant.ofEpochMilli(c.getLong(beginIdx)).atZone(timeZone).toLocalDateTime());
                 event.setTo(Instant.ofEpochMilli(c.getLong(endIdx)).atZone(timeZone).toLocalDateTime());
@@ -123,7 +125,8 @@ public class CalendarApi {
                                              CalendarContract.Events.DTSTART,
                                              CalendarContract.Events.DTEND,
                                              CalendarContract.Events.EVENT_TIMEZONE,
-                                             CalendarContract.Events.ALL_DAY},
+                                             CalendarContract.Events.ALL_DAY,
+                                             CalendarContract.Events.EVENT_LOCATION},
                                      selection,
                                      new String[]{id + ""}, null)) {
             if (ec == null) {
@@ -150,6 +153,7 @@ public class CalendarApi {
                             .toLocalDateTime());
             event.setAllDay(ec.getInt(ec.getColumnIndexOrThrow(CalendarContract.Events.ALL_DAY)) == 1);
             event.setEventId(id);
+            event.setLocation(ec.getString(ec.getColumnIndexOrThrow(CalendarContract.Events.EVENT_LOCATION)));
             return event;
         }
     }
