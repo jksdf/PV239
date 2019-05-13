@@ -13,6 +13,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.threeten.bp.LocalDateTime;
@@ -34,7 +35,6 @@ import ly.betime.shuriken.apis.AlarmManagerApi;
 import ly.betime.shuriken.entities.Alarm;
 import ly.betime.shuriken.entities.GeneratedAlarm;
 import ly.betime.shuriken.helpers.LanguageTextHelper;
-import ly.betime.shuriken.preferences.Preference;
 import ly.betime.shuriken.preferences.Preferences;
 import ly.betime.shuriken.service.AlarmService;
 import ly.betime.shuriken.service.GeneratedAlarmService;
@@ -81,6 +81,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         App.getComponent().inject(this);
         super.onCreate(savedInstanceState);
         Log.i(LOG_TAG, "Activated alarm");
+        keepScreenOn();
 
         setContentView(R.layout.activity_active_alarm);
 
@@ -94,6 +95,14 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         vibrate();
         addListeners();
         ringingLengthLimit();
+    }
+
+    private void keepScreenOn() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
     }
 
     private void vibrate() {
